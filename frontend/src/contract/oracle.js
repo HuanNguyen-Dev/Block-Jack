@@ -1,0 +1,1 @@
+// interact with oracle contract

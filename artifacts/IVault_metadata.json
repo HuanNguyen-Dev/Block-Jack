@@ -1,0 +1,64 @@
+{
+	"compiler": {
+		"version": "0.8.30+commit.73712a01"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "payout",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/Interfaces/IVault.sol": "IVault"
+		},
+		"evmVersion": "prague",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/Interfaces/IVault.sol": {
+			"keccak256": "0xeb857080c26b5b9088ee9da6157397b8a81d995265d55bc9824a04211b0c2d1a",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://fefedd82a77c4eaa105a8a96157698bfb57ae1f95babfd0a92850342e60975c2",
+				"dweb:/ipfs/QmWUFxz5eeMDZhPhMmxjERJKwgrErJhGPd7VYX5KHo9Djg"
+			]
+		}
+	},
+	"version": 1
+}
