@@ -38,7 +38,7 @@ function App() {
     <>
       <section id="center-index" style={{ backgroundImage: `url(${heroImg})` }}>
         <div className="title-container">
-          <h1>Welcome To BlockJack</h1>
+          <h1>Welcome To Block-Jack</h1>
         </div>
         <div className="play-button"
           onClick={() => console.log('Play clicked')}
