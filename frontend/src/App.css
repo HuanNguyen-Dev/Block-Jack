@@ -144,17 +144,6 @@ body {
   transition: transform 0.3s ease-in-out;
 }
 
-.card:hover img {
-  transform: scale(1.2);
-  /* Scale the image up by 1.2 times */
-}
-
-.card:hover {
-  transform: scale(1.2) translateX(20px) translateY(-20px) rotate(0deg);
-  /* Increase size, move diagonally */
-  z-index: 10;
-}
-
 .play-button {
   position: absolute;
   top: 40%;
