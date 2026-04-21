@@ -1,6 +1,6 @@
 import sunImg from '/frontend/src/assets/sun.png'
 import moonImg from '/frontend/src/assets/moon.png'
-import heroImg from '/frontend/src/assets/heroMain.jpg'
+import heroImg from '/frontend/src/assets/main.png'
 import { useEffect, useState } from 'react'
 import './App.css'
 
@@ -37,16 +37,16 @@ function App() {
   return (
     <>
       <section id="center-index" style={{ backgroundImage: `url(${heroImg})` }}>
-        <div className="title-container">
+        {/* <div className="title-container">
           <h1>Welcome To Block-Jack</h1>
-        </div>
-        <div className="play-button"
+        </div> */}
+        {/* <div className="play-button"
           onClick={() => console.log('Play clicked')}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}>
           <img src={sunImg} alt="Play Button" />
           {isHovered && (<div className="play-text">Play</div>)}
-        </div>
+        </div> */}
         <div className="cards-container">
           <div className="cards">
             {isLoaded ? (
@@ -63,7 +63,7 @@ function App() {
                     style={{
                       transform: hoveredCard === index
                         ? `rotate(${angle}deg) translateX(${horizontalTranslation}px) scale(1.2) translateY(-30px)` // Scale and move on hover
-                        : `rotate(${angle}deg) translateX(${horizontalTranslation}px)`, // Normal position
+                        : `rotate(${angle}deg) translateX(${horizontalTranslation}px translateY(-150px)`, // Normal position
                       zIndex: cards.length - index, // To make sure cards appear in the right order
                     }}
                   >
