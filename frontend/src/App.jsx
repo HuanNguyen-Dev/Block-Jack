@@ -1,121 +1,75 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import sunImg from '/frontend/src/assets/sun.png'
+import moonImg from '/frontend/src/assets/moon.png'
+import heroImg from '/frontend/src/assets/main.png'
+import { useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [cards, setCards] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hoveredCard, setHoveredCard] = useState(null);
+  const [isFanned, setisFanned] = useState(false);
+
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        // Fetch the deck of cards
+        const deckRes = await fetch('https://deckofcardsapi.com/api/deck/new/?deck_count=1&shuffle=false');
+        const deckData = await deckRes.json();
+        const deckId = deckData.deck_id;
+
+        // Fetch 21 cards from the deck
+        const cardsRes = await fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=20`);
+        const cardsData = await cardsRes.json();
+
+        // Set the cards data to state
+        setCards(cardsData.cards);
+        setIsLoaded(true);
+      } catch (error) {
+        // handle gracefully later
+        console.error('Error fetching cards:', error);
+      }
+    };
+
+    fetchCards();
+  }, []);
 
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
+      <section id="center-index" style={{ backgroundImage: `url(${heroImg})` }}>
+        <button className='play-button' style={{ transform: 'translate(-50%, calc(-50% - 120px))' }}>
+          <span>Play</span>
         </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
+        <div className="cards-container">
+          <div className="cards" style={{ transform: 'translateY(-80px)' }}
+                onClick={() => setisFanned(!isFanned)}>
+            {isLoaded ? (
+              cards.map((card, index) => {
+                const middleIndex = Math.floor(cards.length / 2);
+                const angle =  isFanned ? (index - middleIndex) * 0.8 : 0;
+                const horizontalTranslation = isFanned ? (index - middleIndex) * 20 : 0;
+                return (
+                  <div
+                    key={card.code}
+                    className="card"
+                    onClick={() => setIsSelectedCard(cardSelected === index ? null : index)}
+                    style={{
+                      transform: `rotate(${angle}deg) translateX(${horizontalTranslation}px) scale(1.2) translateY(-30px)`, 
+                      zIndex: isFanned ? index : cards.length - index,
+                    }}
+                  >
+                    <img src={card.image} alt={card.code} />
+                  </div>
+                )
+              })
+            ) : (
+              <p>Loading cards...</p>
+            )}
+          </div>
         </div>
       </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
     </>
-  )
+  );
 }
 
 export default App

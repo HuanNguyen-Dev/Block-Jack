@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Pixelify Sans');
+
+
 .counter {
   font-size: 16px;
   padding: 5px 10px;
@@ -11,6 +14,7 @@
   &:hover {
     border-color: var(--accent-border);
   }
+
   &:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
@@ -42,8 +46,7 @@
     z-index: 1;
     top: 34px;
     height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
+    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg) scale(1.4);
   }
 
   .vite {
@@ -51,18 +54,59 @@
     top: 107px;
     height: 26px;
     width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
+    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg) scale(0.8);
   }
 }
 
-#center {
+body {
+  background-color: #000000;
+  /* Dark grey for the background */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.title-container {
+  text-align: center;
+  margin-bottom: 50px;
+  padding: 20px;
+  background-color: #252525;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+}
+
+.title-container h1 {
+  font-size: 2.5rem;
+  margin: 0;
+  font-weight: bold;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+#center-index {
+
+  background-image: url(${heroImg});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  background-color: #252525;
+  border: 2px solid rgb(233, 203, 32);
+  color: white;
   display: flex;
   flex-direction: column;
   gap: 25px;
   place-content: center;
   place-items: center;
   flex-grow: 1;
+  padding-top: 100px;
 
   @media (max-width: 1024px) {
     padding: 32px 20px 24px;
@@ -70,14 +114,87 @@
   }
 }
 
+.cards-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+  position: relative;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.card {
+  width: 90px;
+  height: 130px;
+  position: absolute;
+  transition: transform 0.3s ease-in-out;
+  transform-origin: center center;
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.card:hover img {
+  transform: scale(1.2);
+  /* Scale the image up by 1.2 times */
+}
+
+.card:hover {
+  transform: scale(1.2) translateX(20px) translateY(-20px) rotate(0deg);
+  /* Increase size, move diagonally */
+  z-index: 10;
+}
+
+.play-button {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 100;
+
+  /* geeks for geeks rounded borders*/
+  border-radius: 50px;
+  background: #656b696b;
+  width: 120px;
+  height: 75px;
+  padding: 6px, 12px;
+
+  font-family: 'Pixelify Sans', sans-serif;
+  font-size: 36px;
+  font-weight: bold;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+
+.play-button:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+
 #next-steps {
+  background-color: #000000;
+  border: 2px solid rgb(233, 203, 32);
   display: flex;
   border-top: 1px solid var(--border);
   text-align: left;
 
-  & > div {
+  &>div {
     flex: 1 1 0;
     padding: 32px;
+
     @media (max-width: 1024px) {
       padding: 24px 20px;
     }
@@ -93,6 +210,13 @@
     flex-direction: column;
     text-align: center;
   }
+}
+
+#social {
+  background-color: #000000;
+  border: 2px solid rgb(233, 203, 32);
+  padding: 20px;
+  color: white;
 }
 
 #docs {
@@ -130,6 +254,7 @@
     &:hover {
       box-shadow: var(--shadow);
     }
+
     .button-icon {
       height: 18px;
       width: 18px;
@@ -155,7 +280,9 @@
 
 #spacer {
   height: 88px;
+  background-color: #222;
   border-top: 1px solid var(--border);
+
   @media (max-width: 1024px) {
     height: 48px;
   }
@@ -177,6 +304,7 @@
     left: 0;
     border-left-color: var(--border);
   }
+
   &::after {
     right: 0;
     border-right-color: var(--border);
