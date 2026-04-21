@@ -8,7 +8,7 @@ function App() {
   const [cards, setCards] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hoveredCard, setHoveredCard] = useState(null);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isFanned, setisFanned] = useState(false);
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -48,23 +48,21 @@ function App() {
           {isHovered && (<div className="play-text">Play</div>)}
         </div> */}
         <div className="cards-container">
-          <div className="cards">
+          <div className="cards" style={{ transform: 'translateY(-80px)' }}
+                onClick={() => setisFanned(!isFanned)}>
             {isLoaded ? (
               cards.map((card, index) => {
                 const middleIndex = Math.floor(cards.length / 2);
-                const angle = (index - middleIndex) * 2.5;
-                const horizontalTranslation = (index - middleIndex) * 50;
+                const angle =  isFanned ? (index - middleIndex) * 0.8 : 0;
+                const horizontalTranslation = isFanned ? (index - middleIndex) * 20 : 0;
                 return (
                   <div
                     key={card.code}
                     className="card"
-                    onMouseEnter={() => setHoveredCard(index)}
-                    onMouseLeave={() => setHoveredCard(null)}
+                    onClick={() => setIsSelectedCard(cardSelected === index ? null : index)}
                     style={{
-                      transform: hoveredCard === index
-                        ? `rotate(${angle}deg) translateX(${horizontalTranslation}px) scale(1.2) translateY(-30px)` // Scale and move on hover
-                        : `rotate(${angle}deg) translateX(${horizontalTranslation}px translateY(-150px)`, // Normal position
-                      zIndex: cards.length - index, // To make sure cards appear in the right order
+                      transform: `rotate(${angle}deg) translateX(${horizontalTranslation}px) scale(1.2) translateY(-30px)`, 
+                      zIndex: isFanned ? index : cards.length - index,
                     }}
                   >
                     <img src={card.image} alt={card.code} />
