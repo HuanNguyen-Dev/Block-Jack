@@ -37,16 +37,9 @@ function App() {
   return (
     <>
       <section id="center-index" style={{ backgroundImage: `url(${heroImg})` }}>
-        {/* <div className="title-container">
-          <h1>Welcome To Block-Jack</h1>
-        </div> */}
-        {/* <div className="play-button"
-          onClick={() => console.log('Play clicked')}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}>
-          <img src={sunImg} alt="Play Button" />
-          {isHovered && (<div className="play-text">Play</div>)}
-        </div> */}
+        <button className='play-button' style={{ transform: 'translate(-50%, calc(-50% - 120px))' }}>
+          <span>Play</span>
+        </button>
         <div className="cards-container">
           <div className="cards" style={{ transform: 'translateY(-80px)' }}
                 onClick={() => setisFanned(!isFanned)}>

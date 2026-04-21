@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Pixelify Sans');
+
+
 .counter {
   font-size: 16px;
   padding: 5px 10px;
@@ -110,10 +113,11 @@ body {
     gap: 18px;
   }
 }
+
 .cards-container {
   display: flex;
   justify-content: center;
-  gap: 15px; 
+  gap: 15px;
   margin-top: 20px;
   position: relative;
 }
@@ -139,9 +143,12 @@ body {
   border-radius: 8px;
   transition: transform 0.3s ease-in-out;
 }
+
 .card:hover img {
-  transform: scale(1.2); /* Scale the image up by 1.2 times */
+  transform: scale(1.2);
+  /* Scale the image up by 1.2 times */
 }
+
 .card:hover {
   transform: scale(1.2) translateX(20px) translateY(-20px) rotate(0deg);
   /* Increase size, move diagonally */
@@ -150,34 +157,30 @@ body {
 
 .play-button {
   position: absolute;
-  top: 40%;  /* Center the button vertically */
-  left: 50%;  /* Center the button horizontally */
-  transform: translate(-50%, -50%); /* Adjust the position to perfectly center it */
-  cursor: pointer;
-  z-index: 100; /* Ensure the play button is above everything else */
-}
-
-.play-button img {
-  width: 100px; /* Adjust size of the sun image */
-  height: auto;
-  transition: transform 0.3s ease-in-out;
-}
-
-.play-button:hover img {
-  transform: scale(1.5); /* Enlarge when hovered */
-}
-
-.play-text {
-  position: absolute;
-  top: -30px;  /* Move it above the sun image */
+  top: 40%;
   left: 50%;
-  transform: translateX(-50%);
-  font-size: 18px;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 100;
+
+  /* geeks for geeks rounded borders*/
+  border-radius: 50px;
+  background: #656b696b;
+  width: 120px;
+  height: 75px;
+  padding: 6px, 12px;
+
+  font-family: 'Pixelify Sans', sans-serif;
+  font-size: 36px;
   font-weight: bold;
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Optional: adds a shadow for readability */
-  opacity: 1; /* Ensure the text is visible when hovering */
-  transition: opacity 0.3s ease; /* Smooth fade-in */
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+
+.play-button:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 
