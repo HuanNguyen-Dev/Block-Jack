@@ -52,7 +52,7 @@ function Home() {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    flexDirection: 'colunmn',
+                    flexDirection: 'column',
                     padding: 0,
                     margin: 0,
                 }}>
