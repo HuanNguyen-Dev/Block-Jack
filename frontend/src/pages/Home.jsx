@@ -1,7 +1,9 @@
 import heroImg from '/frontend/src/assets/main.png'
 import { useEffect, useState } from 'react'
-import {useNavigate } from 'react-router-dom'
-function Home(){
+import { useNavigate } from 'react-router-dom'
+import { Box, cardHeaderClasses } from '@mui/material';
+
+function Home() {
     const [cards, setCards] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const [hoveredCard, setHoveredCard] = useState(null);
@@ -37,13 +39,33 @@ function Home(){
 
     return (
         <>
-            <section id="center-index" style={{ backgroundImage: `url(${heroImg})` }}>
-                <button className='play-button' 
-                onClick={() => navigate('/blackjack')}
-                style={{ transform: 'translate(-50%, calc(-50% - 120px))' }}>
+            <Box
+                id="center-index"
+                sx={{
+                    backgroundImage: `url(${heroImg})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    height: '100vh',
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'column',
+                    padding: 0,
+                    margin: 0,
+                }}>
+
+                <button className='play-button'
+                    onClick={() => navigate('/blackjack')}
+                    style={{ 
+                        position: 'relative',
+                        marginBottom: '180px',
+                        marginTop: '-40px',
+                        zIndex: (cards.length + 1),
+                     }}>
                     <span>Play</span>
                 </button>
-                <div className="cards-container">
+                <div className="cards-container" style={{position: 'relative'}}>
                     <div className="cards"
                         onClick={() => setisFanned(!isFanned)}>
                         {isLoaded ? (
@@ -57,14 +79,14 @@ function Home(){
                                     <div
                                         key={card.code}
                                         className="card"
-                                        onClick={() => setIsSelectedCard(cardSelected === index ? null : index)}
+                                        //onClick={() => setSelectedCard(cardSelected === index ? null : index)}
                                         onMouseEnter={() => setHoveredCard(index)}
                                         onMouseLeave={() => setHoveredCard(null)}
                                         style={{
                                             transform: `rotate(${angle}deg) 
                       translateX(${(isHovered(index) ? hoverX : 0) + horizontalTranslation}px) 
                       scale(${isHovered(index) ? 1.3 : 1.2}) 
-                      translateY(${isHovered(index) ? -130 : -100}px)`,
+                      translateY(${isHovered(index) ? -110 : -60}px)`,
                                             zIndex: hoveredCard === index ? cards.length + 1 : index,
                                             transition: 'transform 0.25s ease',
                                         }}
@@ -78,7 +100,7 @@ function Home(){
                         )}
                     </div>
                 </div>
-            </section>
+            </Box>
         </>
     );
 }
