@@ -1,5 +1,5 @@
 import React from 'react';
-import blackjackTableIMG from '../assets/blackjack-table.png'
+import blackjackTableIMG from '../assets/blackjack-table-pixilart.png'
 import { useEffect, useState } from 'react'
 
 
