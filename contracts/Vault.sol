@@ -7,8 +7,16 @@ contract Vault {
     // add logging e.g events for deposit, withdraw, payout
 
     // modifier for only the owner 
-
+    address public owner;
+    modifier onlyOwner(){
+        require(msg.sender == owner, "Not owner");
+        _;
+    }
     // constructor to assign the owner
+
+    constructor(){
+        owner = msg.sender;
+    }
 
     // deposit function extern payable
 
@@ -17,6 +25,7 @@ contract Vault {
     // payout functrion (only owner) - takes player and amount
 
     // receive() payable due to deposit being a payable function
+
 
 
 }

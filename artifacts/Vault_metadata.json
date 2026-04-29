@@ -4,7 +4,26 @@
 	},
 	"language": "Solidity",
 	"output": {
-		"abi": [],
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
 		"devdoc": {
 			"kind": "dev",
 			"methods": {},
@@ -33,11 +52,11 @@
 	},
 	"sources": {
 		"contracts/Vault.sol": {
-			"keccak256": "0x865490a8ba5c7b86b687a3bdaed71cc69384de666aa4e63c6967aae2a9fc735a",
+			"keccak256": "0x1e355bf4e88d556fecd0108fa61284a022f4db9b270df50de3acacc435dbc369",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://a402db549ab8261ce0f5b9c5e712bd76ac8b504b0bcf4713429a2585f9719218",
-				"dweb:/ipfs/QmQCUEZxHW59jBQRcbS4p5GJy8Z4AqqfRSgxqLQfsXtgHF"
+				"bzz-raw://0233f6914ec5f8370837996dcb76d4d5e0855adcafedaf07db2c7e03a98ad244",
+				"dweb:/ipfs/QmT5e3VoGrxeTwkYnSwfhQybzieQ9HSPz5wE5XAkeQR87A"
 			]
 		}
 	},
