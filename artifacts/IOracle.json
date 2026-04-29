@@ -49,10 +49,35 @@
 		},
 		"gasEstimates": null,
 		"methodIdentifiers": {
+			"generateSeed(uint256,uint256)": "041df082",
 			"randomise(uint256)": "64449c9c"
 		}
 	},
 	"abi": [
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "serverSeed",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "playerSeed",
+					"type": "uint256"
+				}
+			],
+			"name": "generateSeed",
+			"outputs": [
+				{
+					"internalType": "bytes32",
+					"name": "",
+					"type": "bytes32"
+				}
+			],
+			"stateMutability": "pure",
+			"type": "function"
+		},
 		{
 			"inputs": [
 				{

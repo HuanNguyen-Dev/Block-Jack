@@ -4,7 +4,191 @@
 	},
 	"language": "Solidity",
 	"output": {
-		"abi": [],
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_vault",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_oracle",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "tokenID",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "bet",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "finalSeed",
+						"type": "bytes32"
+					}
+				],
+				"name": "BetPlaced",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint8",
+						"name": "card",
+						"type": "uint8"
+					}
+				],
+				"name": "CardDrawn",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "tokenID",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					}
+				],
+				"name": "GameCreated",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "enum Result",
+						"name": "result",
+						"type": "uint8"
+					}
+				],
+				"name": "GameEnded",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_playerSeed",
+						"type": "uint256"
+					}
+				],
+				"name": "assignToken",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "hit",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "nextGameID",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "oracle",
+				"outputs": [
+					{
+						"internalType": "contract IOracle",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "bet",
+						"type": "uint256"
+					}
+				],
+				"name": "placeBets",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "stand",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "vault",
+				"outputs": [
+					{
+						"internalType": "contract IVault",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
 		"devdoc": {
 			"kind": "dev",
 			"methods": {},
@@ -33,19 +217,27 @@
 	},
 	"sources": {
 		"contracts/BlackJackTable.sol": {
-			"keccak256": "0x4415d4edfebe417925e01481fcca84d5dbb14d93efedcaf3f0cf67333c5bb99c",
+			"keccak256": "0x6ad16744cbed9933ad564ecc8e9d8b07a7fab75629e412f9650bcec379ce1546",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://c584b43443ec7f83f5cb7ce2387f318d93767200f101dd969b603b694157e9a5",
-				"dweb:/ipfs/QmcTqqPJT7Xq4nq4HTRrrSjoTFHzy8hfZsGfHLrXynDxo3"
+				"bzz-raw://f649ba75c389a467204f00a4788a8120cf500a2d30b79d820f969ce310465f63",
+				"dweb:/ipfs/QmYagFBUJQ6KdVY14T4w84SavPatKFhP36tKzo6Dev8Fxg"
+			]
+		},
+		"contracts/Data.sol": {
+			"keccak256": "0x5f22eb5f6d37f3889e6789081f6ffdf3cb8719a8618b975bf206b7acee1b7122",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://fc85eb0465967011b97fa23d38d5ae027ed682206abcdd95d19b740fb64cb1a2",
+				"dweb:/ipfs/QmNxa9rty65zgrGmSxQXLvhgkaisqKPMXTe57cfftCRSjt"
 			]
 		},
 		"contracts/interfaces/IOracle.sol": {
-			"keccak256": "0xbb73472ea208606a02063bddd3ecf44cecc885ca34658449f9ee6f8a4afdf36d",
+			"keccak256": "0xd50effd0e023100c3492da7eb214d902d117469566e110b5fb47fd9e0fb0f95e",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://79f33c60f0bb3d3585d84d4d758e5704e04a2d970aad3c20d93cf57778d42c88",
-				"dweb:/ipfs/QmZgwn7amPdB8hsciFejuGJW8uzhNnpsU7sXX9t6uSX1BJ"
+				"bzz-raw://8c2343bfd9701fa575626ef1ec16bd7587aad2c02337b4c613eac3ab919411b2",
+				"dweb:/ipfs/Qme36e94cBhijDyZkPa8uAhyvWNz4bMRXgkPa6PwtsWKh2"
 			]
 		},
 		"contracts/interfaces/IVault.sol": {

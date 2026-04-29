@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 import heroImg from '/frontend/src/assets/main.png'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -108,4 +106,3 @@ function Home() {
 }
 
 export default Home;
->>>>>>> Stashed changes
