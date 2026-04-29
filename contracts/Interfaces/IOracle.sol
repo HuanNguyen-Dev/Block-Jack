@@ -4,5 +4,5 @@ import "contracts/Data.sol";
 
 interface IOracle {
     function randomise(uint256 seed) external returns (uint256);
-    function generateSeed(uint256 serverSeed, uint256 playerSeed) external returns (bytes32);
+    function generateSeed(uint256 serverSeed, uint256 playerSeed) external pure returns (bytes32);
 }

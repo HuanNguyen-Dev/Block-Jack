@@ -26,7 +26,7 @@
 						"type": "bytes32"
 					}
 				],
-				"stateMutability": "nonpayable",
+				"stateMutability": "pure",
 				"type": "function"
 			},
 			{
@@ -85,11 +85,11 @@
 			]
 		},
 		"contracts/Interfaces/IOracle.sol": {
-			"keccak256": "0xd50effd0e023100c3492da7eb214d902d117469566e110b5fb47fd9e0fb0f95e",
+			"keccak256": "0xca16959dd7f3127d3e5da64c9a008d6e481b99e5b2930215a7511901bfd1dae6",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://8c2343bfd9701fa575626ef1ec16bd7587aad2c02337b4c613eac3ab919411b2",
-				"dweb:/ipfs/Qme36e94cBhijDyZkPa8uAhyvWNz4bMRXgkPa6PwtsWKh2"
+				"bzz-raw://d3643c7db2e6c13bb7c848afd615cf0bdf3163ef3e1a64dbf82298a009692547",
+				"dweb:/ipfs/QmVeaUtC9W3yU7NDXkjKN2DpjdsNSpaUM27HQqXxg9MWSC"
 			]
 		}
 	},

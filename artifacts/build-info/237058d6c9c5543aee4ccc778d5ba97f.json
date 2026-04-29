@@ -1,5 +1,5 @@
 {
-	"id": "79e16ef064057f7b7b880e085ae9cc83",
+	"id": "237058d6c9c5543aee4ccc778d5ba97f",
 	"_format": "hh-sol-build-info-1",
 	"solcVersion": "0.8.30",
 	"solcLongVersion": "0.8.30+commit.73712a01",
@@ -7,7 +7,7 @@
 		"language": "Solidity",
 		"sources": {
 			"contracts/Interfaces/IOracle.sol": {
-				"content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.30; // may have to change for ganache\r\nimport \"contracts/Data.sol\";\r\n\r\ninterface IOracle {\r\n    function randomise(uint256 seed) external returns (uint256);\r\n    function generateSeed(uint256 serverSeed, uint256 playerSeed) external returns (bytes32);\r\n}"
+				"content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.30; // may have to change for ganache\r\nimport \"contracts/Data.sol\";\r\n\r\ninterface IOracle {\r\n    function randomise(uint256 seed) external returns (uint256);\r\n    function generateSeed(uint256 serverSeed, uint256 playerSeed) external pure returns (bytes32);\r\n}"
 			},
 			"contracts/Data.sol": {
 				"content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.30; // may have to change for ganache\r\n\r\n        enum Result {\r\n        NONE,\r\n        PLAYER_WIN,\r\n        DEALER_WIN,\r\n        PUSH\r\n    }\r\n    enum Suit {\r\n        HEARTS,\r\n        DIAMONDS,\r\n        CLUBS,\r\n        SPADES\r\n    }\r\n\r\n    struct Card {\r\n        uint8 value;\r\n        Suit suit;\r\n    }\r\n\r\n    // game token struct\r\n    struct GameToken {\r\n        uint256 tokenID;\r\n        uint256 bet;\r\n        address player;\r\n        uint256 playerSeed;\r\n        uint256 serverSeed;\r\n        bytes32 finalSeed;\r\n        uint8 drawIndex;\r\n        bool isActive;\r\n        bool isCompleted;\r\n        Result result;\r\n        uint8[104] deck;\r\n        bool isShuffled;\r\n        uint8 playerHandTotalValue;\r\n        uint8 playerAceCount;\r\n        uint8 dealerHandTotalValue;\r\n        uint8 dealerAceCount;\r\n    }"
@@ -67,7 +67,7 @@
 									"type": "bytes32"
 								}
 							],
-							"stateMutability": "nonpayable",
+							"stateMutability": "pure",
 							"type": "function"
 						},
 						{
@@ -121,7 +121,7 @@
 							"randomise(uint256)": "64449c9c"
 						}
 					},
-					"metadata": "{\"compiler\":{\"version\":\"0.8.30+commit.73712a01\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"serverSeed\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"playerSeed\",\"type\":\"uint256\"}],\"name\":\"generateSeed\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"seed\",\"type\":\"uint256\"}],\"name\":\"randomise\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/Interfaces/IOracle.sol\":\"IOracle\"},\"evmVersion\":\"prague\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/Data.sol\":{\"keccak256\":\"0x5f22eb5f6d37f3889e6789081f6ffdf3cb8719a8618b975bf206b7acee1b7122\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://fc85eb0465967011b97fa23d38d5ae027ed682206abcdd95d19b740fb64cb1a2\",\"dweb:/ipfs/QmNxa9rty65zgrGmSxQXLvhgkaisqKPMXTe57cfftCRSjt\"]},\"contracts/Interfaces/IOracle.sol\":{\"keccak256\":\"0xd50effd0e023100c3492da7eb214d902d117469566e110b5fb47fd9e0fb0f95e\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8c2343bfd9701fa575626ef1ec16bd7587aad2c02337b4c613eac3ab919411b2\",\"dweb:/ipfs/Qme36e94cBhijDyZkPa8uAhyvWNz4bMRXgkPa6PwtsWKh2\"]}},\"version\":1}",
+					"metadata": "{\"compiler\":{\"version\":\"0.8.30+commit.73712a01\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"serverSeed\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"playerSeed\",\"type\":\"uint256\"}],\"name\":\"generateSeed\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"seed\",\"type\":\"uint256\"}],\"name\":\"randomise\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/Interfaces/IOracle.sol\":\"IOracle\"},\"evmVersion\":\"prague\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/Data.sol\":{\"keccak256\":\"0x5f22eb5f6d37f3889e6789081f6ffdf3cb8719a8618b975bf206b7acee1b7122\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://fc85eb0465967011b97fa23d38d5ae027ed682206abcdd95d19b740fb64cb1a2\",\"dweb:/ipfs/QmNxa9rty65zgrGmSxQXLvhgkaisqKPMXTe57cfftCRSjt\"]},\"contracts/Interfaces/IOracle.sol\":{\"keccak256\":\"0xca16959dd7f3127d3e5da64c9a008d6e481b99e5b2930215a7511901bfd1dae6\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d3643c7db2e6c13bb7c848afd615cf0bdf3163ef3e1a64dbf82298a009692547\",\"dweb:/ipfs/QmVeaUtC9W3yU7NDXkjKN2DpjdsNSpaUM27HQqXxg9MWSC\"]}},\"version\":1}",
 					"storageLayout": {
 						"storage": [],
 						"types": null
@@ -1031,7 +1031,7 @@
 												"nameLocation": "-1:-1:-1",
 												"nodeType": "VariableDeclaration",
 												"scope": 72,
-												"src": "296:7:1",
+												"src": "301:7:1",
 												"stateVariable": false,
 												"storageLocation": "default",
 												"typeDescriptions": {
@@ -1042,7 +1042,7 @@
 													"id": 69,
 													"name": "bytes32",
 													"nodeType": "ElementaryTypeName",
-													"src": "296:7:1",
+													"src": "301:7:1",
 													"typeDescriptions": {
 														"typeIdentifier": "t_bytes32",
 														"typeString": "bytes32"
@@ -1051,22 +1051,22 @@
 												"visibility": "internal"
 											}
 										],
-										"src": "295:9:1"
+										"src": "300:9:1"
 									},
 									"scope": 73,
-									"src": "216:89:1",
-									"stateMutability": "nonpayable",
+									"src": "216:94:1",
+									"stateMutability": "pure",
 									"virtual": false,
 									"visibility": "external"
 								}
 							],
 							"scope": 74,
-							"src": "125:183:1",
+							"src": "125:188:1",
 							"usedErrors": [],
 							"usedEvents": []
 						}
 					],
-					"src": "33:275:1"
+					"src": "33:280:1"
 				},
 				"id": 1
 			}
