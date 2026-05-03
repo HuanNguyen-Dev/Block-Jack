@@ -15,10 +15,10 @@ contract BlackJackTable {
     }
 
     // auto increment counter for token id
-    uint256 public nextGameID;
+    uint256 public nextGameID = 1;
     // Limits
-    uint256 constant lowLimit = 100 gwei;
-    uint256 constant highLimit = 0.001 ether;
+    uint256 constant lowLimit = 100 gwei; // 100,000,000,000
+    uint256 constant highLimit = 0.001 ether; // 1,000,000,000,000,000
     uint8 constant deckSize = 104;
 
     // Every player has a game id
@@ -70,6 +70,7 @@ contract BlackJackTable {
 
         // needed?
         require(token.gameState == State.BET, "Token has not been assigned");
+        vault.lockBet(msg.sender, bet);
         token.bet = bet;
 
         token.finalSeed = oracle.generateSeed(
@@ -269,6 +270,7 @@ contract BlackJackTable {
     ) internal {
         token.result = result;
         token.gameState = State.FINISHED;
+        activeGame[msg.sender] = 0;
         if (payout > 0) {
             vault.payout(token.player, payout);
         }

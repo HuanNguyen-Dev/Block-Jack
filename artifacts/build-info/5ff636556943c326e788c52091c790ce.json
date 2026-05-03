@@ -1,5 +1,5 @@
 {
-	"id": "114217aa688566dba7e5391cebf113d6",
+	"id": "5ff636556943c326e788c52091c790ce",
 	"_format": "hh-sol-build-info-1",
 	"solcVersion": "0.8.30",
 	"solcLongVersion": "0.8.30+commit.73712a01",
@@ -7,7 +7,7 @@
 		"language": "Solidity",
 		"sources": {
 			"contracts/Interfaces/IVault.sol": {
-				"content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.30; // may have to change for ganache\r\n\r\ninterface IVault {\r\n    function payout(address player, uint256 amount) external;\r\n}"
+				"content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.30; // may have to change for ganache\r\n\r\ninterface IVault {\r\n    function payout(address player, uint256 amount) external;\r\n    function lockBet(address player, uint256 amount) external;\r\n}"
 			}
 		},
 		"settings": {
@@ -56,6 +56,24 @@
 									"type": "uint256"
 								}
 							],
+							"name": "lockBet",
+							"outputs": [],
+							"stateMutability": "nonpayable",
+							"type": "function"
+						},
+						{
+							"inputs": [
+								{
+									"internalType": "address",
+									"name": "player",
+									"type": "address"
+								},
+								{
+									"internalType": "uint256",
+									"name": "amount",
+									"type": "uint256"
+								}
+							],
 							"name": "payout",
 							"outputs": [],
 							"stateMutability": "nonpayable",
@@ -89,10 +107,11 @@
 						"gasEstimates": null,
 						"legacyAssembly": null,
 						"methodIdentifiers": {
+							"lockBet(address,uint256)": "ef899ee5",
 							"payout(address,uint256)": "117de2fd"
 						}
 					},
-					"metadata": "{\"compiler\":{\"version\":\"0.8.30+commit.73712a01\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"player\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"payout\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/Interfaces/IVault.sol\":\"IVault\"},\"evmVersion\":\"prague\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/Interfaces/IVault.sol\":{\"keccak256\":\"0xeb857080c26b5b9088ee9da6157397b8a81d995265d55bc9824a04211b0c2d1a\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://fefedd82a77c4eaa105a8a96157698bfb57ae1f95babfd0a92850342e60975c2\",\"dweb:/ipfs/QmWUFxz5eeMDZhPhMmxjERJKwgrErJhGPd7VYX5KHo9Djg\"]}},\"version\":1}",
+					"metadata": "{\"compiler\":{\"version\":\"0.8.30+commit.73712a01\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"player\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"lockBet\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"player\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"payout\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/Interfaces/IVault.sol\":\"IVault\"},\"evmVersion\":\"prague\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/Interfaces/IVault.sol\":{\"keccak256\":\"0x0f807ccdd7d15eaaa3afcd93c4071b3f65757d11533a7ccbef347b42aef10698\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://3e4a6d5e889ec3843bf4f1694c8878de6659742a601bf00db3744a62e9a66bac\",\"dweb:/ipfs/QmWN8dSgqfLaCuAnpMHZ4YE4oC46CNyi8pFuxvH7uzXhi4\"]}},\"version\":1}",
 					"storageLayout": {
 						"storage": [],
 						"types": null
@@ -111,10 +130,10 @@
 					"absolutePath": "contracts/Interfaces/IVault.sol",
 					"exportedSymbols": {
 						"IVault": [
-							9
+							16
 						]
 					},
-					"id": 10,
+					"id": 17,
 					"license": "MIT",
 					"nodeType": "SourceUnit",
 					"nodes": [
@@ -136,9 +155,9 @@
 							"contractDependencies": [],
 							"contractKind": "interface",
 							"fullyImplemented": false,
-							"id": 9,
+							"id": 16,
 							"linearizedBaseContracts": [
-								9
+								16
 							],
 							"name": "IVault",
 							"nameLocation": "105:6:0",
@@ -221,20 +240,103 @@
 										"parameters": [],
 										"src": "175:0:0"
 									},
-									"scope": 9,
+									"scope": 16,
 									"src": "119:57:0",
+									"stateMutability": "nonpayable",
+									"virtual": false,
+									"visibility": "external"
+								},
+								{
+									"functionSelector": "ef899ee5",
+									"id": 15,
+									"implemented": false,
+									"kind": "function",
+									"modifiers": [],
+									"name": "lockBet",
+									"nameLocation": "191:7:0",
+									"nodeType": "FunctionDefinition",
+									"parameters": {
+										"id": 13,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 10,
+												"mutability": "mutable",
+												"name": "player",
+												"nameLocation": "207:6:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 15,
+												"src": "199:14:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_address",
+													"typeString": "address"
+												},
+												"typeName": {
+													"id": 9,
+													"name": "address",
+													"nodeType": "ElementaryTypeName",
+													"src": "199:7:0",
+													"stateMutability": "nonpayable",
+													"typeDescriptions": {
+														"typeIdentifier": "t_address",
+														"typeString": "address"
+													}
+												},
+												"visibility": "internal"
+											},
+											{
+												"constant": false,
+												"id": 12,
+												"mutability": "mutable",
+												"name": "amount",
+												"nameLocation": "223:6:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 15,
+												"src": "215:14:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_uint256",
+													"typeString": "uint256"
+												},
+												"typeName": {
+													"id": 11,
+													"name": "uint256",
+													"nodeType": "ElementaryTypeName",
+													"src": "215:7:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_uint256",
+														"typeString": "uint256"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "198:32:0"
+									},
+									"returnParameters": {
+										"id": 14,
+										"nodeType": "ParameterList",
+										"parameters": [],
+										"src": "239:0:0"
+									},
+									"scope": 16,
+									"src": "182:58:0",
 									"stateMutability": "nonpayable",
 									"virtual": false,
 									"visibility": "external"
 								}
 							],
-							"scope": 10,
-							"src": "95:84:0",
+							"scope": 17,
+							"src": "95:148:0",
 							"usedErrors": [],
 							"usedEvents": []
 						}
 					],
-					"src": "33:146:0"
+					"src": "33:210:0"
 				},
 				"id": 0
 			}

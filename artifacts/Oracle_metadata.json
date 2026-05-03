@@ -4,7 +4,50 @@
 	},
 	"language": "Solidity",
 	"output": {
-		"abi": [],
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "payable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "serverSeed",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "playerSeed",
+						"type": "uint256"
+					}
+				],
+				"name": "generateSeed",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
 		"devdoc": {
 			"kind": "dev",
 			"methods": {},
@@ -32,12 +75,28 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/Oracle.sol": {
-			"keccak256": "0x1a38d67cf47cb55477f702913869a868b92a8c3ada7c3ffd00244f9059c4a1bc",
+		"contracts/Data.sol": {
+			"keccak256": "0x2f0d2fb3faa890fd704ba3a56ce197b34f713c78f1227ebe83a88c01fb88471a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://86bfb9d37c71ef1d712cdbe7e23f047147410da1a535799b265118071cd5973d",
-				"dweb:/ipfs/QmNq7yw5rmtMgdAQw72iZiyDWTStSufHis7XEQevf29ndT"
+				"bzz-raw://c44f5eeac4156935d2d9ef143ca7e9d5c91116f181e566bffc3d3a26169a4c08",
+				"dweb:/ipfs/QmeKkoUQa7hvKrSeQGjNBFoUt6AwhXsirxthxys95pKrzj"
+			]
+		},
+		"contracts/Oracle.sol": {
+			"keccak256": "0x42bebbc37249782cf1c078525bfe22fff72f24907c5d3c325d8f4ba6b9107b8f",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://d8acb63278710d26df94e65f1ecbb953834e331c41f6682340b8f9cff5060be1",
+				"dweb:/ipfs/QmULTVs8ZfetKhRcWsi7agoypWA44gWCZptmKQMyDYfg2z"
+			]
+		},
+		"contracts/interfaces/IOracle.sol": {
+			"keccak256": "0xf60fe3a5be85b80d870a6ea27eed4ae41858b92902bdabd9bdde0b0903f68c53",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://723dc8c18a63c76721de814d27d1d383b7686bf8444868700346c43714dd9f32",
+				"dweb:/ipfs/QmW8bTDzMcJHGGpUccPFftCh4fZMznwzEDptbjmwJrtu43"
 			]
 		}
 	},

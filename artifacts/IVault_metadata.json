@@ -18,6 +18,24 @@
 						"type": "uint256"
 					}
 				],
+				"name": "lockBet",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
 				"name": "payout",
 				"outputs": [],
 				"stateMutability": "nonpayable",
@@ -52,11 +70,11 @@
 	},
 	"sources": {
 		"contracts/Interfaces/IVault.sol": {
-			"keccak256": "0xeb857080c26b5b9088ee9da6157397b8a81d995265d55bc9824a04211b0c2d1a",
+			"keccak256": "0x0f807ccdd7d15eaaa3afcd93c4071b3f65757d11533a7ccbef347b42aef10698",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://fefedd82a77c4eaa105a8a96157698bfb57ae1f95babfd0a92850342e60975c2",
-				"dweb:/ipfs/QmWUFxz5eeMDZhPhMmxjERJKwgrErJhGPd7VYX5KHo9Djg"
+				"bzz-raw://3e4a6d5e889ec3843bf4f1694c8878de6659742a601bf00db3744a62e9a66bac",
+				"dweb:/ipfs/QmWN8dSgqfLaCuAnpMHZ4YE4oC46CNyi8pFuxvH7uzXhi4"
 			]
 		}
 	},

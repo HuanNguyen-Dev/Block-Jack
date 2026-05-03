@@ -7,8 +7,147 @@
 		"abi": [
 			{
 				"inputs": [],
-				"stateMutability": "nonpayable",
+				"stateMutability": "payable",
 				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "Deposit",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "balance",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "LockBet",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "balances",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "deposit",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getContractBalance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					}
+				],
+				"name": "getPlayerBalance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "lockBet",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "locked",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
 			},
 			{
 				"inputs": [],
@@ -22,6 +161,28 @@
 				],
 				"stateMutability": "view",
 				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "payout",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
 			}
 		],
 		"devdoc": {
@@ -52,11 +213,19 @@
 	},
 	"sources": {
 		"contracts/Vault.sol": {
-			"keccak256": "0x1e355bf4e88d556fecd0108fa61284a022f4db9b270df50de3acacc435dbc369",
+			"keccak256": "0x9e77a6f575912bb9f5dc2bcaef0e7a66e652c7ab1114cc162126ced81bb0884a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://0233f6914ec5f8370837996dcb76d4d5e0855adcafedaf07db2c7e03a98ad244",
-				"dweb:/ipfs/QmT5e3VoGrxeTwkYnSwfhQybzieQ9HSPz5wE5XAkeQR87A"
+				"bzz-raw://e096a3347cd2ab434351d41b09d599b49e9897bd66d88654d69467a7f6f10edc",
+				"dweb:/ipfs/QmdAiKWgdDUqFAZgqvKyaZ7sVd9sDVCai2UDzCMzBiZhuP"
+			]
+		},
+		"contracts/interfaces/IVault.sol": {
+			"keccak256": "0x0f807ccdd7d15eaaa3afcd93c4071b3f65757d11533a7ccbef347b42aef10698",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://3e4a6d5e889ec3843bf4f1694c8878de6659742a601bf00db3744a62e9a66bac",
+				"dweb:/ipfs/QmWN8dSgqfLaCuAnpMHZ4YE4oC46CNyi8pFuxvH7uzXhi4"
 			]
 		}
 	},

@@ -224,35 +224,35 @@
 	},
 	"sources": {
 		"contracts/BlackJackTable.sol": {
-			"keccak256": "0x0fdec7dffb94308f45608e241b3ed257fceef886103719f67229d87916d532f3",
+			"keccak256": "0x7ca18f90b712e072eb7315b0a4332559b70a0cfed24ab5ce5ef82e7dc57fa047",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://a87a5162ccc5b94fe25cf102929b7560bc95e5a22643186b4adbbd8aec7037b6",
-				"dweb:/ipfs/QmNugZ1JXngqFjpApLmjx85go5RqYh84PGP76ciPDAzeoD"
+				"bzz-raw://d1fc7da16ad33d90b768700ffb3310aeab27da2a038d4f34e768137885a85fa3",
+				"dweb:/ipfs/QmbymDmj8dpf4FRuv6DVu3cCFp3UD96f2j8N8whmXZc5Pu"
 			]
 		},
 		"contracts/Data.sol": {
-			"keccak256": "0x00fe97aa8cf4f51d7543484121bc2cbcf9c35cf60bd723e52989b64c4db8031c",
+			"keccak256": "0x2f0d2fb3faa890fd704ba3a56ce197b34f713c78f1227ebe83a88c01fb88471a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://8cda81bf541dfeb98d27fa0207d7bf6ff0e275b0e6aee88e498209c5a103fb31",
-				"dweb:/ipfs/QmbKjsf62MDh4xfPCM1BauUVhoudM9vSqE9gGmA9ZAt7yw"
+				"bzz-raw://c44f5eeac4156935d2d9ef143ca7e9d5c91116f181e566bffc3d3a26169a4c08",
+				"dweb:/ipfs/QmeKkoUQa7hvKrSeQGjNBFoUt6AwhXsirxthxys95pKrzj"
 			]
 		},
 		"contracts/interfaces/IOracle.sol": {
-			"keccak256": "0xca16959dd7f3127d3e5da64c9a008d6e481b99e5b2930215a7511901bfd1dae6",
+			"keccak256": "0xf60fe3a5be85b80d870a6ea27eed4ae41858b92902bdabd9bdde0b0903f68c53",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://d3643c7db2e6c13bb7c848afd615cf0bdf3163ef3e1a64dbf82298a009692547",
-				"dweb:/ipfs/QmVeaUtC9W3yU7NDXkjKN2DpjdsNSpaUM27HQqXxg9MWSC"
+				"bzz-raw://723dc8c18a63c76721de814d27d1d383b7686bf8444868700346c43714dd9f32",
+				"dweb:/ipfs/QmW8bTDzMcJHGGpUccPFftCh4fZMznwzEDptbjmwJrtu43"
 			]
 		},
 		"contracts/interfaces/IVault.sol": {
-			"keccak256": "0xeb857080c26b5b9088ee9da6157397b8a81d995265d55bc9824a04211b0c2d1a",
+			"keccak256": "0x0f807ccdd7d15eaaa3afcd93c4071b3f65757d11533a7ccbef347b42aef10698",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://fefedd82a77c4eaa105a8a96157698bfb57ae1f95babfd0a92850342e60975c2",
-				"dweb:/ipfs/QmWUFxz5eeMDZhPhMmxjERJKwgrErJhGPd7VYX5KHo9Djg"
+				"bzz-raw://3e4a6d5e889ec3843bf4f1694c8878de6659742a601bf00db3744a62e9a66bac",
+				"dweb:/ipfs/QmWN8dSgqfLaCuAnpMHZ4YE4oC46CNyi8pFuxvH7uzXhi4"
 			]
 		}
 	},
