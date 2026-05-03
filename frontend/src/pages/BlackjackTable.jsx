@@ -3,13 +3,16 @@ import blackjackTableIMG from '../assets/blackjack-table-pixilart.png'
 import { useEffect, useState } from 'react'
 import { Box, Button, Stack } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import PlaceBetDialogue from '../components/BetInput';
 
 function BlackjackTable() {
     const baseURL = 'https://deckofcardsapi.com/static/img/';
     const backOfCard = 'https://deckofcardsapi.com/static/img/back.png';
     const [cards, setCards] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [hasWagered, setHasWagered] = useState(false);
     const navigate = useNavigate();
+
     useEffect(() => {
         const fetchCards = async () => {
             try {
@@ -38,6 +41,12 @@ function BlackjackTable() {
         fetchCards();
     }, []);
 
+    const handlePlaceBet = (betAmount) => {
+        console.log(`Bet placed: ${betAmount}`);
+        setHasWagered(true);  // Set the state to show the game buttons
+
+        // Update the game token to include the new bet amount here
+    };
 
     return (
         <Box
@@ -64,47 +73,54 @@ function BlackjackTable() {
                 }}>
                 <span>Back</span>
             </button>
-            <Stack direction="row"
-                spacing={2}
-                sx={{
-                    position: 'relative',
-                    zIndex: 10,
-                    bottom: 80,
-                }}>
-                <Button
-                    variant="contained"
-                    color="error"
-                    size="large"
+            {hasWagered ?
+                <Stack direction="row"
+                    spacing={2}
                     sx={{
-                        minWidth: '120px'
-                    }}
-                    onClick={() => console.log('Stand')}>
-                    Stand
-                </Button>
+                        position: 'relative',
+                        zIndex: 10,
+                        bottom: 80,
+                    }}>
+                    <Button
+                        variant="contained"
+                        color="error"
+                        size="large"
+                        sx={{
+                            minWidth: '120px'
+                        }}
+                        onClick={() => console.log('Stand')}>
+                        Stand
+                    </Button>
 
-                <Button
-                    variant="contained"
-                    color="success"
-                    size="large"
-                    sx={{
-                        minWidth: '120px'
-                    }}
-                    onClick={() => console.log('Hit')}>
-                    Hit
-                </Button>
+                    <Button
+                        variant="contained"
+                        color="success"
+                        size="large"
+                        sx={{
+                            minWidth: '120px'
+                        }}
+                        onClick={() => console.log('Hit')}>
+                        Hit
+                    </Button>
 
-                <Button
-                    variant="contained"
-                    color="warning"
-                    size="large"
-                    sx={{
-                        minWidth: '120px'
-                    }}
-                    onClick={() => console.log('Double Down')}>
-                    Double Down
-                </Button>
-            </Stack>
+                    <Button
+                        variant="contained"
+                        color="warning"
+                        size="large"
+                        sx={{
+                            minWidth: '120px'
+                        }}
+                        onClick={() => console.log('Double Down')}>
+                        Double Down
+                    </Button>
+                </Stack>
+                : <PlaceBetDialogue onPlaceBet={handlePlaceBet} />
+
+
+
+            }
         </Box>
+
     )
 }
 export default BlackjackTable;
