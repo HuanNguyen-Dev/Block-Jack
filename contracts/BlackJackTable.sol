@@ -212,11 +212,6 @@ contract BlackJackTable {
             card,
             token.playerHandTotalValue
         );
-        if (token.playerHandTotalValue > 21) {
-            endGame(token, Result.DEALER_WIN, 0);
-        } else if (hasBlackJack(token.playerHandTotalValue)) {
-            endGame(token, Result.PLAYER_WIN, token.bet * 2);
-        }
     }
 
     function stand() external {
