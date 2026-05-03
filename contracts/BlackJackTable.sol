@@ -122,12 +122,14 @@ contract BlackJackTable {
 
     function dealInitialHands(GameToken storage token) internal {
         require(token.isShuffled, "Deck has not been shuffled");
+        // Player draws
         uint8 value = drawCard(token);
         (token.playerHandTotalValue, token.playerAceCount) = addCardToHand(
             value,
             token.playerHandTotalValue,
             token.playerAceCount
         );
+        // Dealer Draws
         value = drawCard(token);
         (token.dealerHandTotalValue, token.dealerAceCount) = addCardToHand(
             value,
@@ -135,12 +137,15 @@ contract BlackJackTable {
             token.dealerAceCount
         );
 
+        // Player Draws
         value = drawCard(token);
         (token.playerHandTotalValue, token.playerAceCount) = addCardToHand(
             value,
             token.playerHandTotalValue,
             token.playerAceCount
         );
+
+        // Dealer Draws
         value = drawCard(token);
         (token.dealerHandTotalValue, token.dealerAceCount) = addCardToHand(
             value,
@@ -148,12 +153,16 @@ contract BlackJackTable {
             token.dealerAceCount
         );
 
+        // Early exits
         if (
             hasBlackJack(token.playerHandTotalValue) &&
             !hasBlackJack(token.dealerHandTotalValue)
         ) {
             endGame(token, Result.PLAYER_WIN, token.bet * 2);
-        } else if (hasBlackJack(token.dealerHandTotalValue)) {
+        }else if (hasBlackJack(token.playerHandTotalValue) 
+                && hasBlackJack(token.dealerHandTotalValue)){
+            endGame(token, Result.PUSH, token.bet);
+        }else if (hasBlackJack(token.dealerHandTotalValue)) {
             endGame(token, Result.DEALER_WIN, 0);
         }
     }
