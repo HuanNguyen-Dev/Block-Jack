@@ -5,6 +5,7 @@ import { Box, Button, Stack } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
 function BlackjackTable() {
+    const baseURL = 'https://deckofcardsapi.com/static/img/';
     const backOfCard = 'https://deckofcardsapi.com/static/img/back.png';
     const [cards, setCards] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -43,7 +44,7 @@ function BlackjackTable() {
             component="section"
             className='blackjack-hero'
             sx={{
-                display: 'flex',
+
                 position: 'relative',
                 flexDirection: 'column',
                 width: '100%',
@@ -63,7 +64,13 @@ function BlackjackTable() {
                 }}>
                 <span>Back</span>
             </button>
-            <Stack direction="row" spacing={2}>
+            <Stack direction="row"
+                spacing={2}
+                sx={{
+                    position: 'relative',
+                    zIndex: 10,
+                    bottom: 80,
+                }}>
                 <Button
                     variant="contained"
                     color="error"
@@ -71,7 +78,7 @@ function BlackjackTable() {
                     sx={{
                         minWidth: '120px'
                     }}
-                    onClick={() => console.log('Staned')}>
+                    onClick={() => console.log('Stand')}>
                     Stand
                 </Button>
 
