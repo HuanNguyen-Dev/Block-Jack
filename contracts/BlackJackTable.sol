@@ -54,6 +54,7 @@ contract BlackJackTable {
         token.playerHandTotalValue = 0;
         token.dealerHandTotalValue = 0;
         token.isCompleted = false;
+        token.bet = 0;
 
         emit GameCreated(token.tokenID, msg.sender);
     }
@@ -72,13 +73,10 @@ contract BlackJackTable {
             revert("Game already in progress");
         }
         token.bet = bet;
-        // token.serverSeed = oracle.randomise(token.tokenID);
-        // token.finalSeed = keccak256(
-        //     abi.encode(token.playerSeed, token.serverSeed)
-        // );
+
         token.finalSeed = oracle.generateSeed(token.serverSeed,token.playerSeed);
 
-        // Shuffle the deck one
+        // Shuffle the deck once
         shuffleDeck(token);
 
         emit BetPlaced(token.tokenID, msg.sender, token.bet, token.finalSeed);
@@ -99,6 +97,8 @@ contract BlackJackTable {
     //     return Card(value, suit);
     // }
 
+
+
     function shuffleDeck(GameToken storage token) internal {
         // Setting out the deck, 0-3 represents AceH, AceD, AceC, AceS,
         // 4-7 represents 2H, 2D, 2C, 2S... etc
@@ -106,11 +106,12 @@ contract BlackJackTable {
         for (uint8 i = 0; i < deckSize; i++) {
             token.deck[i] = i;
         }
+
         // Obtained from https://medium.com/@jannden/how-to-shuffle-an-array-in-solidity-fe08b028287d
         for (uint256 i = 0; i < deckSize; i++) {
             // Generate a random number
             uint256 n = i +
-                ((uint256(keccak256(abi.encode(token.finalSeed, i)))) %
+                ((uint256(token.finalSeed)) %
                     (deckSize - i));
             // Swap the location of the cards
             (token.deck[i], token.deck[n]) = (token.deck[n], token.deck[i]);
