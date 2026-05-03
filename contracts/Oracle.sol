@@ -20,14 +20,14 @@ contract Oracle is IOracle {
     }
     // randomise function only for the owner..?
     // Temporary randomise function, should be off chain ideally
-    function randomise(uint256 seed) internal pure returns (uint256) {
-        return seed;
+    function randomise() internal pure returns (uint256) {
+        return uint256(123456789);
     }
 
     function generateSeed(
-        uint256 serverSeed,
         uint256 playerSeed
     ) external override pure returns (bytes32) {
-        return bytes32(randomise(playerSeed) % randomise(serverSeed));
+        uint256 serverSeed = randomise();
+        return bytes32(playerSeed % serverSeed);
     }
 }

@@ -1,0 +1,920 @@
+{
+	"id": "3e8d6a94bada1f2796a3b751c4a5c36a",
+	"_format": "hh-sol-build-info-1",
+	"solcVersion": "0.8.30",
+	"solcLongVersion": "0.8.30+commit.73712a01",
+	"input": {
+		"language": "Solidity",
+		"sources": {
+			"contracts/Interfaces/IOracle.sol": {
+				"content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.30; // may have to change for ganache\r\nimport \"contracts/Data.sol\";\r\n\r\ninterface IOracle {\r\n    function generateSeed(uint256 playerSeed) external pure returns (bytes32);\r\n}"
+			},
+			"contracts/Data.sol": {
+				"content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.30; // may have to change for ganache\r\n\r\nenum Result {\r\n    NONE,\r\n    PLAYER_WIN,\r\n    DEALER_WIN,\r\n    PUSH\r\n}\r\n\r\nenum State {\r\n    NONE,\r\n    BET,\r\n    DEALER_TURN,\r\n    PLAYER_TURN,\r\n    FINISHED\r\n}\r\n\r\nenum Suit {\r\n    HEARTS,\r\n    DIAMONDS,\r\n    CLUBS,\r\n    SPADES\r\n}\r\n\r\nstruct Card {\r\n    uint8 value;\r\n    Suit suit;\r\n}\r\n\r\n// game token struct\r\nstruct GameToken {\r\n    uint256 tokenID;\r\n    uint256 bet;\r\n    address player;\r\n    uint256 playerSeed;\r\n    uint256 serverSeed;\r\n    bytes32 finalSeed;\r\n    uint8 drawIndex;\r\n    State gameState;\r\n    Result result;\r\n    uint8[104] deck;\r\n    bool isShuffled;\r\n    uint8 playerHandTotalValue;\r\n    uint8 dealerHandTotalValue;\r\n}\r\n"
+			}
+		},
+		"settings": {
+			"optimizer": {
+				"enabled": false,
+				"runs": 200
+			},
+			"outputSelection": {
+				"*": {
+					"": [
+						"ast"
+					],
+					"*": [
+						"abi",
+						"metadata",
+						"devdoc",
+						"userdoc",
+						"storageLayout",
+						"evm.legacyAssembly",
+						"evm.bytecode",
+						"evm.deployedBytecode",
+						"evm.methodIdentifiers",
+						"evm.gasEstimates",
+						"evm.assembly"
+					]
+				}
+			},
+			"remappings": []
+		}
+	},
+	"output": {
+		"contracts": {
+			"contracts/Interfaces/IOracle.sol": {
+				"IOracle": {
+					"abi": [
+						{
+							"inputs": [
+								{
+									"internalType": "uint256",
+									"name": "playerSeed",
+									"type": "uint256"
+								}
+							],
+							"name": "generateSeed",
+							"outputs": [
+								{
+									"internalType": "bytes32",
+									"name": "",
+									"type": "bytes32"
+								}
+							],
+							"stateMutability": "pure",
+							"type": "function"
+						}
+					],
+					"devdoc": {
+						"kind": "dev",
+						"methods": {},
+						"version": 1
+					},
+					"evm": {
+						"assembly": "",
+						"bytecode": {
+							"functionDebugData": {},
+							"generatedSources": [],
+							"linkReferences": {},
+							"object": "",
+							"opcodes": "",
+							"sourceMap": ""
+						},
+						"deployedBytecode": {
+							"functionDebugData": {},
+							"generatedSources": [],
+							"immutableReferences": {},
+							"linkReferences": {},
+							"object": "",
+							"opcodes": "",
+							"sourceMap": ""
+						},
+						"gasEstimates": null,
+						"legacyAssembly": null,
+						"methodIdentifiers": {
+							"generateSeed(uint256)": "424611c3"
+						}
+					},
+					"metadata": "{\"compiler\":{\"version\":\"0.8.30+commit.73712a01\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"playerSeed\",\"type\":\"uint256\"}],\"name\":\"generateSeed\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"pure\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/Interfaces/IOracle.sol\":\"IOracle\"},\"evmVersion\":\"prague\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/Data.sol\":{\"keccak256\":\"0x2f0d2fb3faa890fd704ba3a56ce197b34f713c78f1227ebe83a88c01fb88471a\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://c44f5eeac4156935d2d9ef143ca7e9d5c91116f181e566bffc3d3a26169a4c08\",\"dweb:/ipfs/QmeKkoUQa7hvKrSeQGjNBFoUt6AwhXsirxthxys95pKrzj\"]},\"contracts/Interfaces/IOracle.sol\":{\"keccak256\":\"0xa42ddc2153e61a62325e0d5c2b6dcad8d21f5ec5b2b81b27019108b7decce361\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://bc826196c363250d4cc313b3f744feead3a04f3eee898789469e382aac7b6745\",\"dweb:/ipfs/QmRTZNBiucL7LNGQRC9Qs19Bnf3v4QssKgJmkpg4MM6XP5\"]}},\"version\":1}",
+					"storageLayout": {
+						"storage": [],
+						"types": null
+					},
+					"userdoc": {
+						"kind": "user",
+						"methods": {},
+						"version": 1
+					}
+				}
+			}
+		},
+		"sources": {
+			"contracts/Data.sol": {
+				"ast": {
+					"absolutePath": "contracts/Data.sol",
+					"exportedSymbols": {
+						"Card": [
+							23
+						],
+						"GameToken": [
+							54
+						],
+						"Result": [
+							6
+						],
+						"State": [
+							12
+						],
+						"Suit": [
+							17
+						]
+					},
+					"id": 55,
+					"license": "MIT",
+					"nodeType": "SourceUnit",
+					"nodes": [
+						{
+							"id": 1,
+							"literals": [
+								"solidity",
+								"^",
+								"0.8",
+								".30"
+							],
+							"nodeType": "PragmaDirective",
+							"src": "33:24:0"
+						},
+						{
+							"canonicalName": "Result",
+							"id": 6,
+							"members": [
+								{
+									"id": 2,
+									"name": "NONE",
+									"nameLocation": "114:4:0",
+									"nodeType": "EnumValue",
+									"src": "114:4:0"
+								},
+								{
+									"id": 3,
+									"name": "PLAYER_WIN",
+									"nameLocation": "125:10:0",
+									"nodeType": "EnumValue",
+									"src": "125:10:0"
+								},
+								{
+									"id": 4,
+									"name": "DEALER_WIN",
+									"nameLocation": "142:10:0",
+									"nodeType": "EnumValue",
+									"src": "142:10:0"
+								},
+								{
+									"id": 5,
+									"name": "PUSH",
+									"nameLocation": "159:4:0",
+									"nodeType": "EnumValue",
+									"src": "159:4:0"
+								}
+							],
+							"name": "Result",
+							"nameLocation": "100:6:0",
+							"nodeType": "EnumDefinition",
+							"src": "95:71:0"
+						},
+						{
+							"canonicalName": "State",
+							"id": 12,
+							"members": [
+								{
+									"id": 7,
+									"name": "NONE",
+									"nameLocation": "188:4:0",
+									"nodeType": "EnumValue",
+									"src": "188:4:0"
+								},
+								{
+									"id": 8,
+									"name": "BET",
+									"nameLocation": "199:3:0",
+									"nodeType": "EnumValue",
+									"src": "199:3:0"
+								},
+								{
+									"id": 9,
+									"name": "DEALER_TURN",
+									"nameLocation": "209:11:0",
+									"nodeType": "EnumValue",
+									"src": "209:11:0"
+								},
+								{
+									"id": 10,
+									"name": "PLAYER_TURN",
+									"nameLocation": "227:11:0",
+									"nodeType": "EnumValue",
+									"src": "227:11:0"
+								},
+								{
+									"id": 11,
+									"name": "FINISHED",
+									"nameLocation": "245:8:0",
+									"nodeType": "EnumValue",
+									"src": "245:8:0"
+								}
+							],
+							"name": "State",
+							"nameLocation": "175:5:0",
+							"nodeType": "EnumDefinition",
+							"src": "170:86:0"
+						},
+						{
+							"canonicalName": "Suit",
+							"id": 17,
+							"members": [
+								{
+									"id": 13,
+									"name": "HEARTS",
+									"nameLocation": "277:6:0",
+									"nodeType": "EnumValue",
+									"src": "277:6:0"
+								},
+								{
+									"id": 14,
+									"name": "DIAMONDS",
+									"nameLocation": "290:8:0",
+									"nodeType": "EnumValue",
+									"src": "290:8:0"
+								},
+								{
+									"id": 15,
+									"name": "CLUBS",
+									"nameLocation": "305:5:0",
+									"nodeType": "EnumValue",
+									"src": "305:5:0"
+								},
+								{
+									"id": 16,
+									"name": "SPADES",
+									"nameLocation": "317:6:0",
+									"nodeType": "EnumValue",
+									"src": "317:6:0"
+								}
+							],
+							"name": "Suit",
+							"nameLocation": "265:4:0",
+							"nodeType": "EnumDefinition",
+							"src": "260:66:0"
+						},
+						{
+							"canonicalName": "Card",
+							"id": 23,
+							"members": [
+								{
+									"constant": false,
+									"id": 19,
+									"mutability": "mutable",
+									"name": "value",
+									"nameLocation": "355:5:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 23,
+									"src": "349:11:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_uint8",
+										"typeString": "uint8"
+									},
+									"typeName": {
+										"id": 18,
+										"name": "uint8",
+										"nodeType": "ElementaryTypeName",
+										"src": "349:5:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_uint8",
+											"typeString": "uint8"
+										}
+									},
+									"visibility": "internal"
+								},
+								{
+									"constant": false,
+									"id": 22,
+									"mutability": "mutable",
+									"name": "suit",
+									"nameLocation": "372:4:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 23,
+									"src": "367:9:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_enum$_Suit_$17",
+										"typeString": "enum Suit"
+									},
+									"typeName": {
+										"id": 21,
+										"nodeType": "UserDefinedTypeName",
+										"pathNode": {
+											"id": 20,
+											"name": "Suit",
+											"nameLocations": [
+												"367:4:0"
+											],
+											"nodeType": "IdentifierPath",
+											"referencedDeclaration": 17,
+											"src": "367:4:0"
+										},
+										"referencedDeclaration": 17,
+										"src": "367:4:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_enum$_Suit_$17",
+											"typeString": "enum Suit"
+										}
+									},
+									"visibility": "internal"
+								}
+							],
+							"name": "Card",
+							"nameLocation": "337:4:0",
+							"nodeType": "StructDefinition",
+							"scope": 55,
+							"src": "330:50:0",
+							"visibility": "public"
+						},
+						{
+							"canonicalName": "GameToken",
+							"id": 54,
+							"members": [
+								{
+									"constant": false,
+									"id": 25,
+									"mutability": "mutable",
+									"name": "tokenID",
+									"nameLocation": "438:7:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 54,
+									"src": "430:15:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_uint256",
+										"typeString": "uint256"
+									},
+									"typeName": {
+										"id": 24,
+										"name": "uint256",
+										"nodeType": "ElementaryTypeName",
+										"src": "430:7:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_uint256",
+											"typeString": "uint256"
+										}
+									},
+									"visibility": "internal"
+								},
+								{
+									"constant": false,
+									"id": 27,
+									"mutability": "mutable",
+									"name": "bet",
+									"nameLocation": "460:3:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 54,
+									"src": "452:11:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_uint256",
+										"typeString": "uint256"
+									},
+									"typeName": {
+										"id": 26,
+										"name": "uint256",
+										"nodeType": "ElementaryTypeName",
+										"src": "452:7:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_uint256",
+											"typeString": "uint256"
+										}
+									},
+									"visibility": "internal"
+								},
+								{
+									"constant": false,
+									"id": 29,
+									"mutability": "mutable",
+									"name": "player",
+									"nameLocation": "478:6:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 54,
+									"src": "470:14:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_address",
+										"typeString": "address"
+									},
+									"typeName": {
+										"id": 28,
+										"name": "address",
+										"nodeType": "ElementaryTypeName",
+										"src": "470:7:0",
+										"stateMutability": "nonpayable",
+										"typeDescriptions": {
+											"typeIdentifier": "t_address",
+											"typeString": "address"
+										}
+									},
+									"visibility": "internal"
+								},
+								{
+									"constant": false,
+									"id": 31,
+									"mutability": "mutable",
+									"name": "playerSeed",
+									"nameLocation": "499:10:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 54,
+									"src": "491:18:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_uint256",
+										"typeString": "uint256"
+									},
+									"typeName": {
+										"id": 30,
+										"name": "uint256",
+										"nodeType": "ElementaryTypeName",
+										"src": "491:7:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_uint256",
+											"typeString": "uint256"
+										}
+									},
+									"visibility": "internal"
+								},
+								{
+									"constant": false,
+									"id": 33,
+									"mutability": "mutable",
+									"name": "serverSeed",
+									"nameLocation": "524:10:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 54,
+									"src": "516:18:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_uint256",
+										"typeString": "uint256"
+									},
+									"typeName": {
+										"id": 32,
+										"name": "uint256",
+										"nodeType": "ElementaryTypeName",
+										"src": "516:7:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_uint256",
+											"typeString": "uint256"
+										}
+									},
+									"visibility": "internal"
+								},
+								{
+									"constant": false,
+									"id": 35,
+									"mutability": "mutable",
+									"name": "finalSeed",
+									"nameLocation": "549:9:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 54,
+									"src": "541:17:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_bytes32",
+										"typeString": "bytes32"
+									},
+									"typeName": {
+										"id": 34,
+										"name": "bytes32",
+										"nodeType": "ElementaryTypeName",
+										"src": "541:7:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_bytes32",
+											"typeString": "bytes32"
+										}
+									},
+									"visibility": "internal"
+								},
+								{
+									"constant": false,
+									"id": 37,
+									"mutability": "mutable",
+									"name": "drawIndex",
+									"nameLocation": "571:9:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 54,
+									"src": "565:15:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_uint8",
+										"typeString": "uint8"
+									},
+									"typeName": {
+										"id": 36,
+										"name": "uint8",
+										"nodeType": "ElementaryTypeName",
+										"src": "565:5:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_uint8",
+											"typeString": "uint8"
+										}
+									},
+									"visibility": "internal"
+								},
+								{
+									"constant": false,
+									"id": 40,
+									"mutability": "mutable",
+									"name": "gameState",
+									"nameLocation": "593:9:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 54,
+									"src": "587:15:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_enum$_State_$12",
+										"typeString": "enum State"
+									},
+									"typeName": {
+										"id": 39,
+										"nodeType": "UserDefinedTypeName",
+										"pathNode": {
+											"id": 38,
+											"name": "State",
+											"nameLocations": [
+												"587:5:0"
+											],
+											"nodeType": "IdentifierPath",
+											"referencedDeclaration": 12,
+											"src": "587:5:0"
+										},
+										"referencedDeclaration": 12,
+										"src": "587:5:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_enum$_State_$12",
+											"typeString": "enum State"
+										}
+									},
+									"visibility": "internal"
+								},
+								{
+									"constant": false,
+									"id": 43,
+									"mutability": "mutable",
+									"name": "result",
+									"nameLocation": "616:6:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 54,
+									"src": "609:13:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_enum$_Result_$6",
+										"typeString": "enum Result"
+									},
+									"typeName": {
+										"id": 42,
+										"nodeType": "UserDefinedTypeName",
+										"pathNode": {
+											"id": 41,
+											"name": "Result",
+											"nameLocations": [
+												"609:6:0"
+											],
+											"nodeType": "IdentifierPath",
+											"referencedDeclaration": 6,
+											"src": "609:6:0"
+										},
+										"referencedDeclaration": 6,
+										"src": "609:6:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_enum$_Result_$6",
+											"typeString": "enum Result"
+										}
+									},
+									"visibility": "internal"
+								},
+								{
+									"constant": false,
+									"id": 47,
+									"mutability": "mutable",
+									"name": "deck",
+									"nameLocation": "640:4:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 54,
+									"src": "629:15:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_array$_t_uint8_$104_storage_ptr",
+										"typeString": "uint8[104]"
+									},
+									"typeName": {
+										"baseType": {
+											"id": 44,
+											"name": "uint8",
+											"nodeType": "ElementaryTypeName",
+											"src": "629:5:0",
+											"typeDescriptions": {
+												"typeIdentifier": "t_uint8",
+												"typeString": "uint8"
+											}
+										},
+										"id": 46,
+										"length": {
+											"hexValue": "313034",
+											"id": 45,
+											"isConstant": false,
+											"isLValue": false,
+											"isPure": true,
+											"kind": "number",
+											"lValueRequested": false,
+											"nodeType": "Literal",
+											"src": "635:3:0",
+											"typeDescriptions": {
+												"typeIdentifier": "t_rational_104_by_1",
+												"typeString": "int_const 104"
+											},
+											"value": "104"
+										},
+										"nodeType": "ArrayTypeName",
+										"src": "629:10:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_array$_t_uint8_$104_storage_ptr",
+											"typeString": "uint8[104]"
+										}
+									},
+									"visibility": "internal"
+								},
+								{
+									"constant": false,
+									"id": 49,
+									"mutability": "mutable",
+									"name": "isShuffled",
+									"nameLocation": "656:10:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 54,
+									"src": "651:15:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_bool",
+										"typeString": "bool"
+									},
+									"typeName": {
+										"id": 48,
+										"name": "bool",
+										"nodeType": "ElementaryTypeName",
+										"src": "651:4:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_bool",
+											"typeString": "bool"
+										}
+									},
+									"visibility": "internal"
+								},
+								{
+									"constant": false,
+									"id": 51,
+									"mutability": "mutable",
+									"name": "playerHandTotalValue",
+									"nameLocation": "679:20:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 54,
+									"src": "673:26:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_uint8",
+										"typeString": "uint8"
+									},
+									"typeName": {
+										"id": 50,
+										"name": "uint8",
+										"nodeType": "ElementaryTypeName",
+										"src": "673:5:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_uint8",
+											"typeString": "uint8"
+										}
+									},
+									"visibility": "internal"
+								},
+								{
+									"constant": false,
+									"id": 53,
+									"mutability": "mutable",
+									"name": "dealerHandTotalValue",
+									"nameLocation": "712:20:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 54,
+									"src": "706:26:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_uint8",
+										"typeString": "uint8"
+									},
+									"typeName": {
+										"id": 52,
+										"name": "uint8",
+										"nodeType": "ElementaryTypeName",
+										"src": "706:5:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_uint8",
+											"typeString": "uint8"
+										}
+									},
+									"visibility": "internal"
+								}
+							],
+							"name": "GameToken",
+							"nameLocation": "413:9:0",
+							"nodeType": "StructDefinition",
+							"scope": 55,
+							"src": "406:330:0",
+							"visibility": "public"
+						}
+					],
+					"src": "33:705:0"
+				},
+				"id": 0
+			},
+			"contracts/Interfaces/IOracle.sol": {
+				"ast": {
+					"absolutePath": "contracts/Interfaces/IOracle.sol",
+					"exportedSymbols": {
+						"Card": [
+							23
+						],
+						"GameToken": [
+							54
+						],
+						"IOracle": [
+							65
+						],
+						"Result": [
+							6
+						],
+						"State": [
+							12
+						],
+						"Suit": [
+							17
+						]
+					},
+					"id": 66,
+					"license": "MIT",
+					"nodeType": "SourceUnit",
+					"nodes": [
+						{
+							"id": 56,
+							"literals": [
+								"solidity",
+								"^",
+								"0.8",
+								".30"
+							],
+							"nodeType": "PragmaDirective",
+							"src": "33:24:1"
+						},
+						{
+							"absolutePath": "contracts/Data.sol",
+							"file": "contracts/Data.sol",
+							"id": 57,
+							"nameLocation": "-1:-1:-1",
+							"nodeType": "ImportDirective",
+							"scope": 66,
+							"sourceUnit": 55,
+							"src": "93:28:1",
+							"symbolAliases": [],
+							"unitAlias": ""
+						},
+						{
+							"abstract": false,
+							"baseContracts": [],
+							"canonicalName": "IOracle",
+							"contractDependencies": [],
+							"contractKind": "interface",
+							"fullyImplemented": false,
+							"id": 65,
+							"linearizedBaseContracts": [
+								65
+							],
+							"name": "IOracle",
+							"nameLocation": "135:7:1",
+							"nodeType": "ContractDefinition",
+							"nodes": [
+								{
+									"functionSelector": "424611c3",
+									"id": 64,
+									"implemented": false,
+									"kind": "function",
+									"modifiers": [],
+									"name": "generateSeed",
+									"nameLocation": "159:12:1",
+									"nodeType": "FunctionDefinition",
+									"parameters": {
+										"id": 60,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 59,
+												"mutability": "mutable",
+												"name": "playerSeed",
+												"nameLocation": "180:10:1",
+												"nodeType": "VariableDeclaration",
+												"scope": 64,
+												"src": "172:18:1",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_uint256",
+													"typeString": "uint256"
+												},
+												"typeName": {
+													"id": 58,
+													"name": "uint256",
+													"nodeType": "ElementaryTypeName",
+													"src": "172:7:1",
+													"typeDescriptions": {
+														"typeIdentifier": "t_uint256",
+														"typeString": "uint256"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "171:20:1"
+									},
+									"returnParameters": {
+										"id": 63,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 62,
+												"mutability": "mutable",
+												"name": "",
+												"nameLocation": "-1:-1:-1",
+												"nodeType": "VariableDeclaration",
+												"scope": 64,
+												"src": "215:7:1",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_bytes32",
+													"typeString": "bytes32"
+												},
+												"typeName": {
+													"id": 61,
+													"name": "bytes32",
+													"nodeType": "ElementaryTypeName",
+													"src": "215:7:1",
+													"typeDescriptions": {
+														"typeIdentifier": "t_bytes32",
+														"typeString": "bytes32"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "214:9:1"
+									},
+									"scope": 65,
+									"src": "150:74:1",
+									"stateMutability": "pure",
+									"virtual": false,
+									"visibility": "external"
+								}
+							],
+							"scope": 66,
+							"src": "125:102:1",
+							"usedErrors": [],
+							"usedEvents": []
+						}
+					],
+					"src": "33:194:1"
+				},
+				"id": 1
+			}
+		}
+	}
+}

@@ -224,11 +224,11 @@
 	},
 	"sources": {
 		"contracts/BlackJackTable.sol": {
-			"keccak256": "0x7ca18f90b712e072eb7315b0a4332559b70a0cfed24ab5ce5ef82e7dc57fa047",
+			"keccak256": "0x19863e0d48f1d7e0cc72f0f05ffd046d798214d820177cf77e1cf2a3d2bb9297",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://d1fc7da16ad33d90b768700ffb3310aeab27da2a038d4f34e768137885a85fa3",
-				"dweb:/ipfs/QmbymDmj8dpf4FRuv6DVu3cCFp3UD96f2j8N8whmXZc5Pu"
+				"bzz-raw://52deab48515db47135bb10d523ff2dd677b61d6676eff87ef38237a31dd4488f",
+				"dweb:/ipfs/QmYTtCveJUPCQxcmJ7c5zL7bNH7CXPpW2bgKJBa3tJQ3Pm"
 			]
 		},
 		"contracts/Data.sol": {
@@ -240,11 +240,11 @@
 			]
 		},
 		"contracts/interfaces/IOracle.sol": {
-			"keccak256": "0xf60fe3a5be85b80d870a6ea27eed4ae41858b92902bdabd9bdde0b0903f68c53",
+			"keccak256": "0xa42ddc2153e61a62325e0d5c2b6dcad8d21f5ec5b2b81b27019108b7decce361",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://723dc8c18a63c76721de814d27d1d383b7686bf8444868700346c43714dd9f32",
-				"dweb:/ipfs/QmW8bTDzMcJHGGpUccPFftCh4fZMznwzEDptbjmwJrtu43"
+				"bzz-raw://bc826196c363250d4cc313b3f744feead3a04f3eee898789469e382aac7b6745",
+				"dweb:/ipfs/QmRTZNBiucL7LNGQRC9Qs19Bnf3v4QssKgJmkpg4MM6XP5"
 			]
 		},
 		"contracts/interfaces/IVault.sol": {

@@ -74,7 +74,6 @@ contract BlackJackTable {
         token.bet = bet;
 
         token.finalSeed = oracle.generateSeed(
-            token.serverSeed,
             token.playerSeed
         );
 
@@ -228,7 +227,8 @@ contract BlackJackTable {
         _hitPlayer(token);
 
         // handle blackjack
-        handleBlackJackEvents(token);
+        bool ended = handleBlackJackEvents(token);
+        if (ended) return;
     }
 
     function _hitPlayer(GameToken storage token) internal {

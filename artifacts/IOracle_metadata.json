@@ -9,11 +9,6 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
-						"name": "serverSeed",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
 						"name": "playerSeed",
 						"type": "uint256"
 					}
@@ -27,25 +22,6 @@
 					}
 				],
 				"stateMutability": "pure",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "seed",
-						"type": "uint256"
-					}
-				],
-				"name": "randomise",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
@@ -77,19 +53,19 @@
 	},
 	"sources": {
 		"contracts/Data.sol": {
-			"keccak256": "0x5f22eb5f6d37f3889e6789081f6ffdf3cb8719a8618b975bf206b7acee1b7122",
+			"keccak256": "0x2f0d2fb3faa890fd704ba3a56ce197b34f713c78f1227ebe83a88c01fb88471a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://fc85eb0465967011b97fa23d38d5ae027ed682206abcdd95d19b740fb64cb1a2",
-				"dweb:/ipfs/QmNxa9rty65zgrGmSxQXLvhgkaisqKPMXTe57cfftCRSjt"
+				"bzz-raw://c44f5eeac4156935d2d9ef143ca7e9d5c91116f181e566bffc3d3a26169a4c08",
+				"dweb:/ipfs/QmeKkoUQa7hvKrSeQGjNBFoUt6AwhXsirxthxys95pKrzj"
 			]
 		},
 		"contracts/Interfaces/IOracle.sol": {
-			"keccak256": "0xca16959dd7f3127d3e5da64c9a008d6e481b99e5b2930215a7511901bfd1dae6",
+			"keccak256": "0xa42ddc2153e61a62325e0d5c2b6dcad8d21f5ec5b2b81b27019108b7decce361",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://d3643c7db2e6c13bb7c848afd615cf0bdf3163ef3e1a64dbf82298a009692547",
-				"dweb:/ipfs/QmVeaUtC9W3yU7NDXkjKN2DpjdsNSpaUM27HQqXxg9MWSC"
+				"bzz-raw://bc826196c363250d4cc313b3f744feead3a04f3eee898789469e382aac7b6745",
+				"dweb:/ipfs/QmRTZNBiucL7LNGQRC9Qs19Bnf3v4QssKgJmkpg4MM6XP5"
 			]
 		}
 	},
