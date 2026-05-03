@@ -124,33 +124,29 @@ contract BlackJackTable {
         require(token.isShuffled, "Deck has not been shuffled");
         // Player draws
         uint8 value = drawCard(token);
-        (token.playerHandTotalValue, token.playerAceCount) = addCardToHand(
+        (token.playerHandTotalValue) = addCardToHand(
             value,
-            token.playerHandTotalValue,
-            token.playerAceCount
+            token.playerHandTotalValue
         );
         // Dealer Draws
         value = drawCard(token);
-        (token.dealerHandTotalValue, token.dealerAceCount) = addCardToHand(
+        (token.dealerHandTotalValue) = addCardToHand(
             value,
-            token.dealerHandTotalValue,
-            token.dealerAceCount
+            token.dealerHandTotalValue
         );
 
         // Player Draws
         value = drawCard(token);
-        (token.playerHandTotalValue, token.playerAceCount) = addCardToHand(
+        (token.playerHandTotalValue) = addCardToHand(
             value,
-            token.playerHandTotalValue,
-            token.playerAceCount
+            token.playerHandTotalValue
         );
 
         // Dealer Draws
         value = drawCard(token);
-        (token.dealerHandTotalValue, token.dealerAceCount) = addCardToHand(
+        (token.dealerHandTotalValue) = addCardToHand(
             value,
-            token.dealerHandTotalValue,
-            token.dealerAceCount
+            token.dealerHandTotalValue
         );
 
         // Early exits
@@ -171,25 +167,26 @@ contract BlackJackTable {
         return currentTotal == 21;
     }
 
+    function isAce(uint8 card) internal pure returns (bool){
+        return (card == 1 || card == 11);
+    }
+
     function addCardToHand(
         uint8 card,
-        uint8 currentTotal,
-        uint8 aceCount
-    ) internal pure returns (uint8, uint8) {
-        // Initial ace will always be an 11 (card == 1 means ace)
-        if (card == 1) {
-            currentTotal += 11;
-            aceCount += 1;
+        uint8 currentTotal
+    ) internal pure returns (uint8) {
+        // Handling multiple aces
+        uint8 newTotal = card + currentTotal;
+        if (isAce(card)) {
+            if (newTotal > 21){
+                currentTotal += 1;
+            }else{
+                currentTotal = newTotal;
+            }
         } else {
-            currentTotal += card;
+            currentTotal = newTotal;
         }
-
-        // Keep converting the aces into 1's in case its over 21
-        while (currentTotal > 21 && aceCount > 0) {
-            currentTotal -= 10;
-            aceCount -= 1;
-        }
-        return (currentTotal, aceCount);
+        return (currentTotal);
     }
 
     function drawCard(GameToken storage token) internal returns (uint8) {
@@ -211,10 +208,9 @@ contract BlackJackTable {
         require(!token.isCompleted, "Game has already finished");
 
         uint8 card = drawCard(token);
-        (token.playerHandTotalValue, token.playerAceCount) = addCardToHand(
+        (token.playerHandTotalValue) = addCardToHand(
             card,
-            token.playerHandTotalValue,
-            token.playerAceCount
+            token.playerHandTotalValue
         );
         if (token.playerHandTotalValue > 21) {
             endGame(token, Result.DEALER_WIN, 0);
@@ -230,10 +226,9 @@ contract BlackJackTable {
         uint8 card;
         while (token.dealerHandTotalValue < 17) {
             card = drawCard(token);
-            (token.dealerHandTotalValue, token.dealerAceCount) = addCardToHand(
+            (token.dealerHandTotalValue) = addCardToHand(
                 card,
-                token.dealerHandTotalValue,
-                token.dealerAceCount
+                token.dealerHandTotalValue
             );
         }
 
