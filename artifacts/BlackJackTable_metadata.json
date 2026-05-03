@@ -124,7 +124,14 @@
 			},
 			{
 				"inputs": [],
-				"name": "hit",
+				"name": "dealInitialHands",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "hitPlayer",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -217,19 +224,19 @@
 	},
 	"sources": {
 		"contracts/BlackJackTable.sol": {
-			"keccak256": "0x17977086e798555eacd79651252ef5713a25aaa9028b94f2f0f58ed835ed6ba6",
+			"keccak256": "0x0fdec7dffb94308f45608e241b3ed257fceef886103719f67229d87916d532f3",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://e1e4e5f4c7a0b1aa1114a1066548dec38a78946f933d439b8475c7f0973e3cc8",
-				"dweb:/ipfs/QmdTiSRT3hnsEcBvX9gU7qhzALPgp315eycNLP1vS1HNjh"
+				"bzz-raw://a87a5162ccc5b94fe25cf102929b7560bc95e5a22643186b4adbbd8aec7037b6",
+				"dweb:/ipfs/QmNugZ1JXngqFjpApLmjx85go5RqYh84PGP76ciPDAzeoD"
 			]
 		},
 		"contracts/Data.sol": {
-			"keccak256": "0x5f22eb5f6d37f3889e6789081f6ffdf3cb8719a8618b975bf206b7acee1b7122",
+			"keccak256": "0x00fe97aa8cf4f51d7543484121bc2cbcf9c35cf60bd723e52989b64c4db8031c",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://fc85eb0465967011b97fa23d38d5ae027ed682206abcdd95d19b740fb64cb1a2",
-				"dweb:/ipfs/QmNxa9rty65zgrGmSxQXLvhgkaisqKPMXTe57cfftCRSjt"
+				"bzz-raw://8cda81bf541dfeb98d27fa0207d7bf6ff0e275b0e6aee88e498209c5a103fb31",
+				"dweb:/ipfs/QmbKjsf62MDh4xfPCM1BauUVhoudM9vSqE9gGmA9ZAt7yw"
 			]
 		},
 		"contracts/interfaces/IOracle.sol": {

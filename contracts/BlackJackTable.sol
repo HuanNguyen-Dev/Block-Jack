@@ -49,11 +49,10 @@ contract BlackJackTable {
         token.player = msg.sender;
         token.playerSeed = _playerSeed;
         token.drawIndex = 0;
-        token.isActive = true;
         token.isShuffled = false;
+        token.gameState = State.BET;
         token.playerHandTotalValue = 0;
         token.dealerHandTotalValue = 0;
-        token.isCompleted = false;
         token.bet = 0;
 
         emit GameCreated(token.tokenID, msg.sender);
@@ -69,12 +68,16 @@ contract BlackJackTable {
 
         require(token.bet == 0, "Bet already placed");
 
-        if (token.isActive || token.drawIndex > 0) {
-            revert("Game already in progress");
-        }
+        // needed?
+        require(token.gameState == State.BET, "Token has not been assigned");
         token.bet = bet;
 
-        token.finalSeed = oracle.generateSeed(token.serverSeed,token.playerSeed);
+        token.finalSeed = oracle.generateSeed(
+            token.serverSeed,
+            token.playerSeed
+        );
+
+        token.gameState = State.DEALER_TURN;
 
         // Shuffle the deck once
         shuffleDeck(token);
@@ -82,24 +85,12 @@ contract BlackJackTable {
         emit BetPlaced(token.tokenID, msg.sender, token.bet, token.finalSeed);
     }
 
-    // function rawToCard(uint8 raw) internal pure returns (Card memory){
-    //     // Card value ranges from 1-13
-    //     uint8 rank = (raw % 13) + 1;
-
-    //     uint8 value;
-    //     if (rank > 10){
-    //         value= 10;
-    //     }else{
-    //         value = rank;
-    //     }
-    //     // Suits are 1 - 4 in order of hearts, diamonds clubs spades
-    //     Suit suit = Suit(raw % 4);
-    //     return Card(value, suit);
-    // }
-
-
-
     function shuffleDeck(GameToken storage token) internal {
+        require(
+            token.gameState == State.DEALER_TURN,
+            "Only the dealer can shuffle"
+        );
+        require(token.isShuffled == false, "Deck has already been shuffled");
         // Setting out the deck, 0-3 represents AceH, AceD, AceC, AceS,
         // 4-7 represents 2H, 2D, 2C, 2S... etc
         // This is a two shoe deck
@@ -110,9 +101,7 @@ contract BlackJackTable {
         // Obtained from https://medium.com/@jannden/how-to-shuffle-an-array-in-solidity-fe08b028287d
         for (uint256 i = 0; i < deckSize; i++) {
             // Generate a random number
-            uint256 n = i +
-                ((uint256(token.finalSeed)) %
-                    (deckSize - i));
+            uint256 n = i + ((uint256(token.finalSeed)) % (deckSize - i));
             // Swap the location of the cards
             (token.deck[i], token.deck[n]) = (token.deck[n], token.deck[i]);
         }
@@ -120,54 +109,78 @@ contract BlackJackTable {
         token.isShuffled = true;
     }
 
-    function dealInitialHands(GameToken storage token) internal {
-        require(token.isShuffled, "Deck has not been shuffled");
-        // Player draws
-        uint8 value = drawCard(token);
-        (token.playerHandTotalValue) = addCardToHand(
-            value,
-            token.playerHandTotalValue
-        );
-        // Dealer Draws
-        value = drawCard(token);
-        (token.dealerHandTotalValue) = addCardToHand(
-            value,
-            token.dealerHandTotalValue
-        );
+    function handleBlackJackEvents(
+        GameToken storage token
+    ) internal returns (bool) {
+        if (token.playerHandTotalValue > 21) {
+            endGame(token, Result.DEALER_WIN, 0);
+            return true;
+        }
 
-        // Player Draws
-        value = drawCard(token);
-        (token.playerHandTotalValue) = addCardToHand(
-            value,
-            token.playerHandTotalValue
-        );
+        if (token.dealerHandTotalValue > 21) {
+            endGame(token, Result.PLAYER_WIN, token.bet * 2);
+            return true;
+        }
 
-        // Dealer Draws
-        value = drawCard(token);
-        (token.dealerHandTotalValue) = addCardToHand(
-            value,
-            token.dealerHandTotalValue
-        );
-
-        // Early exits
         if (
             hasBlackJack(token.playerHandTotalValue) &&
             !hasBlackJack(token.dealerHandTotalValue)
         ) {
             endGame(token, Result.PLAYER_WIN, token.bet * 2);
-        }else if (hasBlackJack(token.playerHandTotalValue) 
-                && hasBlackJack(token.dealerHandTotalValue)){
-            endGame(token, Result.PUSH, token.bet);
-        }else if (hasBlackJack(token.dealerHandTotalValue)) {
-            endGame(token, Result.DEALER_WIN, 0);
+            return true;
         }
+
+        if (
+            hasBlackJack(token.playerHandTotalValue) &&
+            hasBlackJack(token.dealerHandTotalValue)
+        ) {
+            endGame(token, Result.PUSH, token.bet);
+            return true;
+        }
+
+        if (hasBlackJack(token.dealerHandTotalValue)) {
+            endGame(token, Result.DEALER_WIN, 0);
+            return true;
+        }
+
+        return false;
+    }
+
+    function dealInitialHands() external {
+        uint256 gameID = activeGame[msg.sender];
+        GameToken storage token = games[gameID];
+        require(token.isShuffled, "Deck has not been shuffled");
+        require(
+            token.gameState == State.DEALER_TURN,
+            "Only the dealer can deal hands"
+        );
+
+        _dealInitialHands(token);
+    }
+
+    function _dealInitialHands(GameToken storage token) internal {
+        // Player draws
+        _hitPlayer(token);
+        // Dealer Draws
+        _hitDealer(token);
+
+        // Player Draws
+        _hitPlayer(token);
+
+        // Dealer Draws
+        _hitDealer(token);
+
+        // Early exits
+        if (handleBlackJackEvents(token)) return;
+
+        token.gameState = State.PLAYER_TURN;
     }
 
     function hasBlackJack(uint8 currentTotal) internal pure returns (bool) {
         return currentTotal == 21;
     }
 
-    function isAce(uint8 card) internal pure returns (bool){
+    function isAce(uint8 card) internal pure returns (bool) {
         return (card == 1 || card == 11);
     }
 
@@ -178,9 +191,9 @@ contract BlackJackTable {
         // Handling multiple aces
         uint8 newTotal = card + currentTotal;
         if (isAce(card)) {
-            if (newTotal > 21){
+            if (newTotal > 21) {
                 currentTotal += 1;
-            }else{
+            } else {
                 currentTotal = newTotal;
             }
         } else {
@@ -201,42 +214,52 @@ contract BlackJackTable {
         return value;
     }
 
-    function hit() external {
+    function hitPlayer() external {
         uint256 gameID = activeGame[msg.sender];
         GameToken storage token = games[gameID];
-        require(token.isActive, "No game is in progress");
-        require(!token.isCompleted, "Game has already finished");
+        require(token.gameState != State.FINISHED, "Game has already finished");
+        require(
+            token.gameState == State.PLAYER_TURN,
+            "It is not the players turn"
+        );
+        require(token.playerHandTotalValue < 21, "Cannot hit");
 
+        _hitPlayer(token);
+
+        // handle blackjack
+        handleBlackJackEvents(token);
+    }
+
+    function _hitPlayer(GameToken storage token) internal {
         uint8 card = drawCard(token);
-        (token.playerHandTotalValue) = addCardToHand(
+        token.playerHandTotalValue = addCardToHand(
             card,
             token.playerHandTotalValue
+        );
+    }
+
+    function _hitDealer(GameToken storage token) internal {
+        require(token.gameState == State.DEALER_TURN);
+        uint8 card = drawCard(token);
+        token.dealerHandTotalValue = addCardToHand(
+            card,
+            token.dealerHandTotalValue
         );
     }
 
     function stand() external {
         uint256 gameID = activeGame[msg.sender];
         GameToken storage token = games[gameID];
-        require(token.isActive, "No game has been started");
-        uint8 card;
+        require(
+            token.gameState == State.PLAYER_TURN,
+            "No game has been started"
+        );
+        token.gameState = State.DEALER_TURN;
         while (token.dealerHandTotalValue < 17) {
-            card = drawCard(token);
-            (token.dealerHandTotalValue) = addCardToHand(
-                card,
-                token.dealerHandTotalValue
-            );
+            _hitDealer(token);
         }
 
-        if (token.dealerHandTotalValue > 21) {
-            endGame(token, Result.PLAYER_WIN, token.bet * 2);
-        } else if (
-            token.dealerHandTotalValue > token.playerHandTotalValue ||
-            hasBlackJack(token.dealerHandTotalValue)
-        ) {
-            endGame(token, Result.DEALER_WIN, 0);
-        } else if (token.dealerHandTotalValue == token.playerHandTotalValue) {
-            endGame(token, Result.PUSH, token.bet);
-        }
+        handleBlackJackEvents(token);
     }
 
     function endGame(
@@ -245,8 +268,7 @@ contract BlackJackTable {
         uint256 payout
     ) internal {
         token.result = result;
-        token.isCompleted = true;
-        token.isActive = false;
+        token.gameState = State.FINISHED;
         if (payout > 0) {
             vault.payout(token.player, payout);
         }
