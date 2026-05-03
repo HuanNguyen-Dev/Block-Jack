@@ -4,7 +4,45 @@
 	},
 	"language": "Solidity",
 	"output": {
-		"abi": [],
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "payable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "playerSeed",
+						"type": "uint256"
+					}
+				],
+				"name": "generateSeed",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
 		"devdoc": {
 			"kind": "dev",
 			"methods": {},
@@ -32,12 +70,28 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/Oracle.sol": {
-			"keccak256": "0x1a38d67cf47cb55477f702913869a868b92a8c3ada7c3ffd00244f9059c4a1bc",
+		"contracts/Data.sol": {
+			"keccak256": "0x2f0d2fb3faa890fd704ba3a56ce197b34f713c78f1227ebe83a88c01fb88471a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://86bfb9d37c71ef1d712cdbe7e23f047147410da1a535799b265118071cd5973d",
-				"dweb:/ipfs/QmNq7yw5rmtMgdAQw72iZiyDWTStSufHis7XEQevf29ndT"
+				"bzz-raw://c44f5eeac4156935d2d9ef143ca7e9d5c91116f181e566bffc3d3a26169a4c08",
+				"dweb:/ipfs/QmeKkoUQa7hvKrSeQGjNBFoUt6AwhXsirxthxys95pKrzj"
+			]
+		},
+		"contracts/Oracle.sol": {
+			"keccak256": "0xed9984b6b5ebb49775cf28e8d8bd02546435e37ca19e889c39c0af772b1bc657",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://c9bbb76d3e59b39150ba600a96f9de84ee7996baebe78846813aa21bcdea6a2d",
+				"dweb:/ipfs/Qma8herdKF4PD3dx2hc5Fr1BekmCbYYGjxaZa8oj9hDtYx"
+			]
+		},
+		"contracts/interfaces/IOracle.sol": {
+			"keccak256": "0xa42ddc2153e61a62325e0d5c2b6dcad8d21f5ec5b2b81b27019108b7decce361",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://bc826196c363250d4cc313b3f744feead3a04f3eee898789469e382aac7b6745",
+				"dweb:/ipfs/QmRTZNBiucL7LNGQRC9Qs19Bnf3v4QssKgJmkpg4MM6XP5"
 			]
 		}
 	},

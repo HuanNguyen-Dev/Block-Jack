@@ -49,10 +49,29 @@
 		},
 		"gasEstimates": null,
 		"methodIdentifiers": {
+			"lockBet(address,uint256)": "ef899ee5",
 			"payout(address,uint256)": "117de2fd"
 		}
 	},
 	"abi": [
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "player",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "amount",
+					"type": "uint256"
+				}
+			],
+			"name": "lockBet",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
 		{
 			"inputs": [
 				{
