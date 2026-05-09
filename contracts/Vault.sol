@@ -58,7 +58,7 @@ contract Vault is IVault {
     // withdraw function takes amount
 
         function withdraw(uint256 amount) public {
-        require(amount > 0, "Enter withdrawal amount");
+        require(amount > 0, "Please enter withdrawal amount");
         require(balances[msg.sender] >= amount, "Insufficient balance");
 
         balances[msg.sender] -= amount;
