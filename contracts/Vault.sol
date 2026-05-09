@@ -13,6 +13,10 @@ contract Vault is IVault {
     // add logging e.g events for deposit, withdraw, payout
     event Deposit(address user, uint256 amount);
     event LockBet(address player, uint256 balance, uint256 amount);
+    event Payout(address indexed player, uint256 amount);
+    event Withdraw(address indexed player, uint256 amount);
+
+
     // modifier for only the owner
     address public owner;
     modifier onlyOwner() {
@@ -51,11 +55,32 @@ contract Vault is IVault {
         locked[player] += amount;
         emit LockBet(player, balances[player], amount);
     }
-    // withdraw function takes amoutn
+    // withdraw function takes amount
+
+        function withdraw(uint256 amount) public {
+        require(amount > 0, "Enter withdrawal amount");
+        require(balances[msg.sender] >= amount, "Insufficient balance");
+
+        balances[msg.sender] -= amount;
+
+        (bool success, ) = msg.sender.call{value: amount}("");
+        require(success, "Withdrawal failed");
+
+        emit Withdraw(msg.sender, amount);
+    }
 
     // payout functrion (only owner) - takes player and amount
-    function payout(address player, uint256 amount) external override {
+    function payout(address player, uint256 betAmount) public onlyOwner {
+        require(betAmount > 0, "Bet amount must be more than 0");
+        require(address(this).balance >= betAmount * 2, "House has insufficient funds");
+        require(balances[player] >= betAmount, "No active bet found");
 
+        balances[player] -= betAmount;
+
+        (bool success, ) = player.call{value: betAmount * 2}("");
+        require(success, "Payout failed");
+
+        emit Payout(player, betAmount * 2);
     }
     // receive() payable due to deposit being a payable function
     receive() external payable {
