@@ -279,8 +279,8 @@ contract BlackJackTable {
     ) internal {
         token.result = result;
         token.gameState = State.FINISHED;
-        activeGame[msg.sender] = 0;
-        if (payout > 0 && token.result == Result.PLAYER_WIN) {
+        activeGame[token.player] = 0;
+        if (payout > 0 && (token.result == Result.PLAYER_WIN || token.result == Result.PUSH) ) {
             vault.payout(token.player, payout, token.result);
         }
         else if(token.result == Result.DEALER_WIN){

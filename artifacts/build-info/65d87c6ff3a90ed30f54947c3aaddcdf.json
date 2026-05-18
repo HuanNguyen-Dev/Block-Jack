@@ -1,5 +1,5 @@
 {
-	"id": "e86c7e21aa250d5f48dd4e964066ed83",
+	"id": "65d87c6ff3a90ed30f54947c3aaddcdf",
 	"_format": "hh-sol-build-info-1",
 	"solcVersion": "0.8.30",
 	"solcLongVersion": "0.8.30+commit.73712a01",
@@ -7,7 +7,7 @@
 		"language": "Solidity",
 		"sources": {
 			"contracts/Data.sol": {
-				"content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.30; // may have to change for ganache\r\n\r\nenum Result {\r\n    NONE,\r\n    PLAYER_WIN,\r\n    DEALER_WIN,\r\n    PUSH\r\n}\r\n\r\nenum State {\r\n    NONE,\r\n    BET,\r\n    DEALER_TURN,\r\n    PLAYER_TURN,\r\n    FINISHED\r\n}\r\n\r\nenum Suit {\r\n    HEARTS,\r\n    DIAMONDS,\r\n    CLUBS,\r\n    SPADES\r\n}\r\n\r\nstruct Card {\r\n    uint8 value;\r\n    Suit suit;\r\n}\r\n\r\n// game token struct\r\nstruct GameToken {\r\n    uint256 tokenID;\r\n    uint256 bet;\r\n    address player;\r\n    uint256 playerSeed;\r\n    uint256 serverSeed;\r\n    uint256 finalSeed;\r\n    uint8 drawIndex;\r\n    State gameState;\r\n    Result result;\r\n    uint8[104] deck;\r\n    bool isShuffled;\r\n    uint8 playerHandTotalValue;\r\n    uint8 dealerHandTotalValue;\r\n}\r\n"
+				"content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.30; // may have to change for ganache\r\n\r\nenum Result {\r\n    NONE,\r\n    PLAYER_WIN,\r\n    DEALER_WIN,\r\n    PUSH\r\n}\r\n\r\nenum State {\r\n    NONE,\r\n    BET,\r\n    DEALER_TURN,\r\n    PLAYER_TURN,\r\n    FINISHED\r\n}\r\n\r\nenum Suit {\r\n    HEARTS,\r\n    DIAMONDS,\r\n    CLUBS,\r\n    SPADES\r\n}\r\n\r\nstruct Card {\r\n    uint8 value;\r\n    Suit suit;\r\n}\r\n\r\n// game token struct\r\nstruct GameToken {\r\n    uint256 tokenID;\r\n    uint256 bet;\r\n    address player;\r\n    uint256 playerSeed;\r\n    uint256 serverSeed;\r\n    uint256 finalSeed;\r\n    uint8 drawIndex;\r\n    State gameState;\r\n    Result result;\r\n    uint8[104] deck;\r\n    bool isShuffled;\r\n    uint8 playerHandTotalValue;\r\n    uint8 dealerHandTotalValue;\r\n    bool dealerIsSoft;\r\n    bool playerIsSoft;\r\n}\r\n"
 			}
 		},
 		"settings": {
@@ -48,7 +48,7 @@
 							23
 						],
 						"GameToken": [
-							54
+							58
 						],
 						"Result": [
 							6
@@ -60,7 +60,7 @@
 							17
 						]
 					},
-					"id": 55,
+					"id": 59,
 					"license": "MIT",
 					"nodeType": "SourceUnit",
 					"nodes": [
@@ -268,13 +268,13 @@
 							"name": "Card",
 							"nameLocation": "337:4:0",
 							"nodeType": "StructDefinition",
-							"scope": 55,
+							"scope": 59,
 							"src": "330:50:0",
 							"visibility": "public"
 						},
 						{
 							"canonicalName": "GameToken",
-							"id": 54,
+							"id": 58,
 							"members": [
 								{
 									"constant": false,
@@ -283,7 +283,7 @@
 									"name": "tokenID",
 									"nameLocation": "438:7:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 54,
+									"scope": 58,
 									"src": "430:15:0",
 									"stateVariable": false,
 									"storageLocation": "default",
@@ -310,7 +310,7 @@
 									"name": "bet",
 									"nameLocation": "460:3:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 54,
+									"scope": 58,
 									"src": "452:11:0",
 									"stateVariable": false,
 									"storageLocation": "default",
@@ -337,7 +337,7 @@
 									"name": "player",
 									"nameLocation": "478:6:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 54,
+									"scope": 58,
 									"src": "470:14:0",
 									"stateVariable": false,
 									"storageLocation": "default",
@@ -365,7 +365,7 @@
 									"name": "playerSeed",
 									"nameLocation": "499:10:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 54,
+									"scope": 58,
 									"src": "491:18:0",
 									"stateVariable": false,
 									"storageLocation": "default",
@@ -392,7 +392,7 @@
 									"name": "serverSeed",
 									"nameLocation": "524:10:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 54,
+									"scope": 58,
 									"src": "516:18:0",
 									"stateVariable": false,
 									"storageLocation": "default",
@@ -419,7 +419,7 @@
 									"name": "finalSeed",
 									"nameLocation": "549:9:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 54,
+									"scope": 58,
 									"src": "541:17:0",
 									"stateVariable": false,
 									"storageLocation": "default",
@@ -446,7 +446,7 @@
 									"name": "drawIndex",
 									"nameLocation": "571:9:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 54,
+									"scope": 58,
 									"src": "565:15:0",
 									"stateVariable": false,
 									"storageLocation": "default",
@@ -473,7 +473,7 @@
 									"name": "gameState",
 									"nameLocation": "593:9:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 54,
+									"scope": 58,
 									"src": "587:15:0",
 									"stateVariable": false,
 									"storageLocation": "default",
@@ -510,7 +510,7 @@
 									"name": "result",
 									"nameLocation": "616:6:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 54,
+									"scope": 58,
 									"src": "609:13:0",
 									"stateVariable": false,
 									"storageLocation": "default",
@@ -547,7 +547,7 @@
 									"name": "deck",
 									"nameLocation": "640:4:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 54,
+									"scope": 58,
 									"src": "629:15:0",
 									"stateVariable": false,
 									"storageLocation": "default",
@@ -599,7 +599,7 @@
 									"name": "isShuffled",
 									"nameLocation": "656:10:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 54,
+									"scope": 58,
 									"src": "651:15:0",
 									"stateVariable": false,
 									"storageLocation": "default",
@@ -626,7 +626,7 @@
 									"name": "playerHandTotalValue",
 									"nameLocation": "679:20:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 54,
+									"scope": 58,
 									"src": "673:26:0",
 									"stateVariable": false,
 									"storageLocation": "default",
@@ -653,7 +653,7 @@
 									"name": "dealerHandTotalValue",
 									"nameLocation": "712:20:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 54,
+									"scope": 58,
 									"src": "706:26:0",
 									"stateVariable": false,
 									"storageLocation": "default",
@@ -672,17 +672,71 @@
 										}
 									},
 									"visibility": "internal"
+								},
+								{
+									"constant": false,
+									"id": 55,
+									"mutability": "mutable",
+									"name": "dealerIsSoft",
+									"nameLocation": "744:12:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 58,
+									"src": "739:17:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_bool",
+										"typeString": "bool"
+									},
+									"typeName": {
+										"id": 54,
+										"name": "bool",
+										"nodeType": "ElementaryTypeName",
+										"src": "739:4:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_bool",
+											"typeString": "bool"
+										}
+									},
+									"visibility": "internal"
+								},
+								{
+									"constant": false,
+									"id": 57,
+									"mutability": "mutable",
+									"name": "playerIsSoft",
+									"nameLocation": "768:12:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 58,
+									"src": "763:17:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_bool",
+										"typeString": "bool"
+									},
+									"typeName": {
+										"id": 56,
+										"name": "bool",
+										"nodeType": "ElementaryTypeName",
+										"src": "763:4:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_bool",
+											"typeString": "bool"
+										}
+									},
+									"visibility": "internal"
 								}
 							],
 							"name": "GameToken",
 							"nameLocation": "413:9:0",
 							"nodeType": "StructDefinition",
-							"scope": 55,
-							"src": "406:330:0",
+							"scope": 59,
+							"src": "406:378:0",
 							"visibility": "public"
 						}
 					],
-					"src": "33:705:0"
+					"src": "33:753:0"
 				},
 				"id": 0
 			}
