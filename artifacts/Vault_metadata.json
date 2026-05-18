@@ -87,6 +87,12 @@
 						"internalType": "uint256",
 						"name": "amount",
 						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "enum Result",
+						"name": "result",
+						"type": "uint8"
 					}
 				],
 				"name": "Payout",
@@ -248,6 +254,11 @@
 						"internalType": "uint256",
 						"name": "betAmount",
 						"type": "uint256"
+					},
+					{
+						"internalType": "enum Result",
+						"name": "result",
+						"type": "uint8"
 					}
 				],
 				"name": "payout",
@@ -300,20 +311,28 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/Vault.sol": {
-			"keccak256": "0x365be4ad7681860f72120780ab623937c2110da58080cd2ac800c24a18a25065",
+		"contracts/Data.sol": {
+			"keccak256": "0x52293825bfdccb07a6eba6969a9250d0618b5d4e25ecdb1c588f2d6102ba2034",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://0e5fc4803cfadc668f160caa5a767d1b646722b985a8813d477ae638e41054e5",
-				"dweb:/ipfs/QmZEnRRNc73FzBXJCXGMCyTHmV5Zmgvnw6Hwody8jrwe5s"
+				"bzz-raw://5dff2b6befb011893a3921f57c47a6f83e25dee76fa54a9e7a6d735297156f48",
+				"dweb:/ipfs/QmUgCoLq77RdEiJyKUqpFNGF78gVsASpjrbFrcoinVS4R8"
+			]
+		},
+		"contracts/Vault.sol": {
+			"keccak256": "0x116d71ccde923429190053439f95121abdafbe364304ad306aeccf4468d77732",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7bce311702c4016ce9291e6650cae99ab35cfe8bce6c93b35ceb3377dde50abc",
+				"dweb:/ipfs/QmYr2gT5u5y6DAsjoDp471Z1qEFymz3vtPk5cQkSXUmoJQ"
 			]
 		},
 		"contracts/interfaces/IVault.sol": {
-			"keccak256": "0x404daec546a6bfa8659d32c87b3eb2e0c847614e30427042284d95fd333aae64",
+			"keccak256": "0x7e1746e7ddd6e2cc82bcc20d5343a022bff6a2f842e0b4d4c5ac5794cffb879f",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://67476113d9e0490a0c85f7a1098ee76e44b88893e05ce687742078bd6ec7ab32",
-				"dweb:/ipfs/QmdnKYvgbY63PjmxMTaokvjCksFnPguoHkXZninc3c3QB7"
+				"bzz-raw://c4e3145bb3e6d79e9044b71548cb523fd72d482fc8f77c109ac8ef06353ebd60",
+				"dweb:/ipfs/QmScB338uYSUWMmUxURGZA9gaifJomn5M2mUkTTtf5Uddk"
 			]
 		}
 	},

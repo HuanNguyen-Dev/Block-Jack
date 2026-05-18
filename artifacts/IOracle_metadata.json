@@ -16,12 +16,12 @@
 				"name": "generateSeed",
 				"outputs": [
 					{
-						"internalType": "bytes32",
+						"internalType": "uint256",
 						"name": "",
-						"type": "bytes32"
+						"type": "uint256"
 					}
 				],
-				"stateMutability": "pure",
+				"stateMutability": "view",
 				"type": "function"
 			}
 		],
@@ -61,11 +61,11 @@
 			]
 		},
 		"contracts/Interfaces/IOracle.sol": {
-			"keccak256": "0xa42ddc2153e61a62325e0d5c2b6dcad8d21f5ec5b2b81b27019108b7decce361",
+			"keccak256": "0x3356c325f80b6d525a9115c5c443f7905e8be2079a58c12377cc0171cb562f95",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://bc826196c363250d4cc313b3f744feead3a04f3eee898789469e382aac7b6745",
-				"dweb:/ipfs/QmRTZNBiucL7LNGQRC9Qs19Bnf3v4QssKgJmkpg4MM6XP5"
+				"bzz-raw://c0853b92387dc573139c3933540c76c21b0f123eabeabd49db45350bde4a225c",
+				"dweb:/ipfs/Qmb2LwbTcxNN9QUJKqGLiDSD4xwfUpUJbQfby5Swx5eEXW"
 			]
 		}
 	},

@@ -52,7 +52,7 @@
 			"deposit()": "d0e30db0",
 			"lockBet(address,uint256)": "ef899ee5",
 			"loseBet(address,uint256)": "2526bb70",
-			"payout(address,uint256)": "117de2fd"
+			"payout(address,uint256,uint8)": "ee4c5df6"
 		}
 	},
 	"abi": [
@@ -60,7 +60,7 @@
 			"inputs": [],
 			"name": "deposit",
 			"outputs": [],
-			"stateMutability": "nonpayable",
+			"stateMutability": "payable",
 			"type": "function"
 		},
 		{
@@ -110,6 +110,11 @@
 					"internalType": "uint256",
 					"name": "amount",
 					"type": "uint256"
+				},
+				{
+					"internalType": "enum Result",
+					"name": "result",
+					"type": "uint8"
 				}
 			],
 			"name": "payout",

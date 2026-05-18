@@ -9,7 +9,7 @@
 				"inputs": [],
 				"name": "deposit",
 				"outputs": [],
-				"stateMutability": "nonpayable",
+				"stateMutability": "payable",
 				"type": "function"
 			},
 			{
@@ -59,6 +59,11 @@
 						"internalType": "uint256",
 						"name": "amount",
 						"type": "uint256"
+					},
+					{
+						"internalType": "enum Result",
+						"name": "result",
+						"type": "uint8"
 					}
 				],
 				"name": "payout",
@@ -94,12 +99,20 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/Interfaces/IVault.sol": {
-			"keccak256": "0x784bd2967d4eb4b96e8c57c9b4e9c7342b8511aeab6b506df2bace19659ae19f",
+		"contracts/Data.sol": {
+			"keccak256": "0x52293825bfdccb07a6eba6969a9250d0618b5d4e25ecdb1c588f2d6102ba2034",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://89ffe5ad1f73a606d4a151950e23d090aae2dd7c89439b05d8c0fbc2b273073b",
-				"dweb:/ipfs/QmNNUdLapcob2KvGw38Sb4e7Bi3WgBZKJv7Y3BVkXsGrY3"
+				"bzz-raw://5dff2b6befb011893a3921f57c47a6f83e25dee76fa54a9e7a6d735297156f48",
+				"dweb:/ipfs/QmUgCoLq77RdEiJyKUqpFNGF78gVsASpjrbFrcoinVS4R8"
+			]
+		},
+		"contracts/Interfaces/IVault.sol": {
+			"keccak256": "0x7e1746e7ddd6e2cc82bcc20d5343a022bff6a2f842e0b4d4c5ac5794cffb879f",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://c4e3145bb3e6d79e9044b71548cb523fd72d482fc8f77c109ac8ef06353ebd60",
+				"dweb:/ipfs/QmScB338uYSUWMmUxURGZA9gaifJomn5M2mUkTTtf5Uddk"
 			]
 		}
 	},

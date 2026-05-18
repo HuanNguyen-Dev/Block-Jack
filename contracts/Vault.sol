@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.30; // may have to change for ganache
 import "./interfaces/IVault.sol";
+import "contracts/Data.sol";
 
 contract Vault is IVault {
     // owner
@@ -13,7 +14,7 @@ contract Vault is IVault {
     // add logging e.g events for deposit, withdraw, payout
     event Deposit(address user, uint256 amount);
     event LockBet(address player, uint256 balance, uint256 amount);
-    event Payout(address indexed player, uint256 amount);
+    event Payout(address indexed player, uint256 amount, Result result);
     event Withdraw(address indexed player, uint256 amount);
     event LoseBet(address indexed player, uint256 amount);
 
@@ -71,17 +72,20 @@ contract Vault is IVault {
     }
 
     // payout functrion (only owner) - takes player and amount
-    function payout(address player, uint256 betAmount) public override onlyOwner {
+    function payout(address player, uint256 betAmount, Result result) public override onlyOwner {
         require(betAmount > 0, "Bet amount must be more than 0");
-        require(address(this).balance >= betAmount * 2, "House has insufficient funds");
+  
+        require(address(this).balance >= betAmount * 2 && result == Result.PLAYER_WIN, "House has insufficient funds");
+         require(address(this).balance >= betAmount && result == Result.PUSH, "House has insufficient funds");
         require(locked[player] >= betAmount, "No active bet found");
 
         locked[player] -= betAmount;
-
-        (bool success, ) = player.call{value: betAmount * 2}("");
+        bool success = false;
+        if (result == Result.PLAYER_WIN) (success, ) = player.call{value: betAmount * 2}("");
+        else if (result == Result.PUSH)(success, ) = player.call{value: betAmount}("");
         require(success, "Payout failed");
 
-        emit Payout(player, betAmount * 2);
+        emit Payout(player, betAmount, result);
     }
     // receive() payable due to deposit being a payable function
     receive() external payable {
