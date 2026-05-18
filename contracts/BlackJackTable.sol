@@ -145,6 +145,21 @@ contract BlackJackTable {
             return true;
         }
 
+        if (token.playerHandTotalValue > token.dealerHandTotalValue){
+            endGame(token, Result.PLAYER_WIN, token.bet * 2);
+            return true;
+        }
+
+        if (token.dealerHandTotalValue > token.playerHandTotalValue){
+            endGame(token, Result.DEALER_WIN, token.bet);
+            return true;
+        }
+
+        if (token.dealerHandTotalValue == token.playerHandTotalValue){
+            endGame(token, Result.PUSH, token.bet);
+            return true;
+        }
+
         return false;
     }
 
