@@ -55,6 +55,44 @@
 				"type": "event"
 			},
 			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "Payout",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "Withdraw",
+				"type": "event"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -171,11 +209,24 @@
 					},
 					{
 						"internalType": "uint256",
-						"name": "amount",
+						"name": "betAmount",
 						"type": "uint256"
 					}
 				],
 				"name": "payout",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "withdraw",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -213,11 +264,11 @@
 	},
 	"sources": {
 		"contracts/Vault.sol": {
-			"keccak256": "0x9e77a6f575912bb9f5dc2bcaef0e7a66e652c7ab1114cc162126ced81bb0884a",
+			"keccak256": "0x05a94c1e9b5a0c8d7bbf3361538413a90a3b024822ad4f76110d1c5f9eacb6ef",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://e096a3347cd2ab434351d41b09d599b49e9897bd66d88654d69467a7f6f10edc",
-				"dweb:/ipfs/QmdAiKWgdDUqFAZgqvKyaZ7sVd9sDVCai2UDzCMzBiZhuP"
+				"bzz-raw://938438cf6866ae59718cc81d327ac0019c74bc4168eff55ac19a365fe7be6674",
+				"dweb:/ipfs/QmZ5FuLYw4pteF9XFv9qLwdBvgLbUDhs2VQkRkbmDZfyBq"
 			]
 		},
 		"contracts/interfaces/IVault.sol": {

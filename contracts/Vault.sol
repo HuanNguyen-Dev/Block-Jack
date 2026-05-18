@@ -70,12 +70,12 @@ contract Vault is IVault {
     }
 
     // payout functrion (only owner) - takes player and amount
-    function payout(address player, uint256 betAmount) public onlyOwner {
+    function payout(address player, uint256 betAmount) public override onlyOwner {
         require(betAmount > 0, "Bet amount must be more than 0");
         require(address(this).balance >= betAmount * 2, "House has insufficient funds");
-        require(balances[player] >= betAmount, "No active bet found");
+        require(locked[player] >= betAmount, "No active bet found");
 
-        balances[player] -= betAmount;
+        locked[player] -= betAmount;
 
         (bool success, ) = player.call{value: betAmount * 2}("");
         require(success, "Payout failed");
