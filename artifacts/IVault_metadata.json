@@ -6,6 +6,13 @@
 	"output": {
 		"abi": [
 			{
+				"inputs": [],
+				"name": "deposit",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -19,6 +26,24 @@
 					}
 				],
 				"name": "lockBet",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "loseBet",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -70,11 +95,11 @@
 	},
 	"sources": {
 		"contracts/Interfaces/IVault.sol": {
-			"keccak256": "0x0f807ccdd7d15eaaa3afcd93c4071b3f65757d11533a7ccbef347b42aef10698",
+			"keccak256": "0x784bd2967d4eb4b96e8c57c9b4e9c7342b8511aeab6b506df2bace19659ae19f",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://3e4a6d5e889ec3843bf4f1694c8878de6659742a601bf00db3744a62e9a66bac",
-				"dweb:/ipfs/QmWN8dSgqfLaCuAnpMHZ4YE4oC46CNyi8pFuxvH7uzXhi4"
+				"bzz-raw://89ffe5ad1f73a606d4a151950e23d090aae2dd7c89439b05d8c0fbc2b273073b",
+				"dweb:/ipfs/QmNNUdLapcob2KvGw38Sb4e7Bi3WgBZKJv7Y3BVkXsGrY3"
 			]
 		}
 	},

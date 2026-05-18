@@ -15,6 +15,7 @@ contract Vault is IVault {
     event LockBet(address player, uint256 balance, uint256 amount);
     event Payout(address indexed player, uint256 amount);
     event Withdraw(address indexed player, uint256 amount);
+    event LoseBet(address indexed player, uint256 amount);
 
 
     // modifier for only the owner
@@ -31,7 +32,7 @@ contract Vault is IVault {
     }
 
     // deposit function extern payable
-    function deposit() external payable {
+    function deposit() external override payable {
         require(msg.value > 0, "Deposit amount must be > 0");
         balances[msg.sender] += msg.value;
 
@@ -85,5 +86,14 @@ contract Vault is IVault {
     // receive() payable due to deposit being a payable function
     receive() external payable {
         revert("Use deposit()");
+    }
+
+    function loseBet(address player, uint256 betAmount) public override onlyOwner {
+        require(locked[player] >= betAmount, "No active locked bet found");
+
+        // Deduct from players locked stake; house keeps eth in contract
+        locked[player] -= betAmount;
+
+        emit LoseBet(player, betAmount);
     }
 }

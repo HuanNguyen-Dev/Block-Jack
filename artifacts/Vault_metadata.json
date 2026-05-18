@@ -70,6 +70,25 @@
 						"type": "uint256"
 					}
 				],
+				"name": "LoseBet",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
 				"name": "Payout",
 				"type": "event"
 			},
@@ -188,6 +207,24 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "betAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "loseBet",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "owner",
 				"outputs": [
@@ -264,19 +301,19 @@
 	},
 	"sources": {
 		"contracts/Vault.sol": {
-			"keccak256": "0x05a94c1e9b5a0c8d7bbf3361538413a90a3b024822ad4f76110d1c5f9eacb6ef",
+			"keccak256": "0x365be4ad7681860f72120780ab623937c2110da58080cd2ac800c24a18a25065",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://938438cf6866ae59718cc81d327ac0019c74bc4168eff55ac19a365fe7be6674",
-				"dweb:/ipfs/QmZ5FuLYw4pteF9XFv9qLwdBvgLbUDhs2VQkRkbmDZfyBq"
+				"bzz-raw://0e5fc4803cfadc668f160caa5a767d1b646722b985a8813d477ae638e41054e5",
+				"dweb:/ipfs/QmZEnRRNc73FzBXJCXGMCyTHmV5Zmgvnw6Hwody8jrwe5s"
 			]
 		},
 		"contracts/interfaces/IVault.sol": {
-			"keccak256": "0x0f807ccdd7d15eaaa3afcd93c4071b3f65757d11533a7ccbef347b42aef10698",
+			"keccak256": "0x404daec546a6bfa8659d32c87b3eb2e0c847614e30427042284d95fd333aae64",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://3e4a6d5e889ec3843bf4f1694c8878de6659742a601bf00db3744a62e9a66bac",
-				"dweb:/ipfs/QmWN8dSgqfLaCuAnpMHZ4YE4oC46CNyi8pFuxvH7uzXhi4"
+				"bzz-raw://67476113d9e0490a0c85f7a1098ee76e44b88893e05ce687742078bd6ec7ab32",
+				"dweb:/ipfs/QmdnKYvgbY63PjmxMTaokvjCksFnPguoHkXZninc3c3QB7"
 			]
 		}
 	},
