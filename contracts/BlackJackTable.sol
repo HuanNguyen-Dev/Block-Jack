@@ -32,7 +32,7 @@ contract BlackJackTable {
         uint256 tokenID,
         address player,
         uint256 bet,
-        bytes32 finalSeed
+        uint256 finalSeed
     );
     event CardDrawn(address player, uint8 card);
     event GameEnded(address player, Result result);
@@ -271,8 +271,11 @@ contract BlackJackTable {
         token.result = result;
         token.gameState = State.FINISHED;
         activeGame[msg.sender] = 0;
-        if (payout > 0) {
-            vault.payout(token.player, payout);
+        if (payout > 0 && token.result == Result.PLAYER_WIN) {
+            vault.payout(token.player, payout, token.result);
+        }
+        else if(token.result == Result.DEALER_WIN){
+            vault.loseBet(token.player, payout);
         }
         delete activeGame[token.player];
         token.bet = 0;

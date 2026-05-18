@@ -1,16 +1,16 @@
 {
-	"id": "3e8d6a94bada1f2796a3b751c4a5c36a",
+	"id": "c805067fc66780ae5f4530ebd031134e",
 	"_format": "hh-sol-build-info-1",
 	"solcVersion": "0.8.30",
 	"solcLongVersion": "0.8.30+commit.73712a01",
 	"input": {
 		"language": "Solidity",
 		"sources": {
-			"contracts/Interfaces/IOracle.sol": {
-				"content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.30; // may have to change for ganache\r\nimport \"contracts/Data.sol\";\r\n\r\ninterface IOracle {\r\n    function generateSeed(uint256 playerSeed) external pure returns (bytes32);\r\n}"
+			"contracts/Interfaces/IVault.sol": {
+				"content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.30; // may have to change for ganache\r\nimport \"contracts/Data.sol\";\r\ninterface IVault {\r\n    function payout(address player, uint256 amount, Result result) external;\r\n    function lockBet(address player, uint256 amount) external;\r\n    function loseBet(address player, uint256 amount) external;\r\n    function deposit() external payable;\r\n}"
 			},
 			"contracts/Data.sol": {
-				"content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.30; // may have to change for ganache\r\n\r\nenum Result {\r\n    NONE,\r\n    PLAYER_WIN,\r\n    DEALER_WIN,\r\n    PUSH\r\n}\r\n\r\nenum State {\r\n    NONE,\r\n    BET,\r\n    DEALER_TURN,\r\n    PLAYER_TURN,\r\n    FINISHED\r\n}\r\n\r\nenum Suit {\r\n    HEARTS,\r\n    DIAMONDS,\r\n    CLUBS,\r\n    SPADES\r\n}\r\n\r\nstruct Card {\r\n    uint8 value;\r\n    Suit suit;\r\n}\r\n\r\n// game token struct\r\nstruct GameToken {\r\n    uint256 tokenID;\r\n    uint256 bet;\r\n    address player;\r\n    uint256 playerSeed;\r\n    uint256 serverSeed;\r\n    bytes32 finalSeed;\r\n    uint8 drawIndex;\r\n    State gameState;\r\n    Result result;\r\n    uint8[104] deck;\r\n    bool isShuffled;\r\n    uint8 playerHandTotalValue;\r\n    uint8 dealerHandTotalValue;\r\n}\r\n"
+				"content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.30; // may have to change for ganache\r\n\r\nenum Result {\r\n    NONE,\r\n    PLAYER_WIN,\r\n    DEALER_WIN,\r\n    PUSH\r\n}\r\n\r\nenum State {\r\n    NONE,\r\n    BET,\r\n    DEALER_TURN,\r\n    PLAYER_TURN,\r\n    FINISHED\r\n}\r\n\r\nenum Suit {\r\n    HEARTS,\r\n    DIAMONDS,\r\n    CLUBS,\r\n    SPADES\r\n}\r\n\r\nstruct Card {\r\n    uint8 value;\r\n    Suit suit;\r\n}\r\n\r\n// game token struct\r\nstruct GameToken {\r\n    uint256 tokenID;\r\n    uint256 bet;\r\n    address player;\r\n    uint256 playerSeed;\r\n    uint256 serverSeed;\r\n    uint256 finalSeed;\r\n    uint8 drawIndex;\r\n    State gameState;\r\n    Result result;\r\n    uint8[104] deck;\r\n    bool isShuffled;\r\n    uint8 playerHandTotalValue;\r\n    uint8 dealerHandTotalValue;\r\n}\r\n"
 			}
 		},
 		"settings": {
@@ -43,26 +43,73 @@
 	},
 	"output": {
 		"contracts": {
-			"contracts/Interfaces/IOracle.sol": {
-				"IOracle": {
+			"contracts/Interfaces/IVault.sol": {
+				"IVault": {
 					"abi": [
+						{
+							"inputs": [],
+							"name": "deposit",
+							"outputs": [],
+							"stateMutability": "payable",
+							"type": "function"
+						},
 						{
 							"inputs": [
 								{
+									"internalType": "address",
+									"name": "player",
+									"type": "address"
+								},
+								{
 									"internalType": "uint256",
-									"name": "playerSeed",
+									"name": "amount",
 									"type": "uint256"
 								}
 							],
-							"name": "generateSeed",
-							"outputs": [
+							"name": "lockBet",
+							"outputs": [],
+							"stateMutability": "nonpayable",
+							"type": "function"
+						},
+						{
+							"inputs": [
 								{
-									"internalType": "bytes32",
-									"name": "",
-									"type": "bytes32"
+									"internalType": "address",
+									"name": "player",
+									"type": "address"
+								},
+								{
+									"internalType": "uint256",
+									"name": "amount",
+									"type": "uint256"
 								}
 							],
-							"stateMutability": "pure",
+							"name": "loseBet",
+							"outputs": [],
+							"stateMutability": "nonpayable",
+							"type": "function"
+						},
+						{
+							"inputs": [
+								{
+									"internalType": "address",
+									"name": "player",
+									"type": "address"
+								},
+								{
+									"internalType": "uint256",
+									"name": "amount",
+									"type": "uint256"
+								},
+								{
+									"internalType": "enum Result",
+									"name": "result",
+									"type": "uint8"
+								}
+							],
+							"name": "payout",
+							"outputs": [],
+							"stateMutability": "nonpayable",
 							"type": "function"
 						}
 					],
@@ -93,10 +140,13 @@
 						"gasEstimates": null,
 						"legacyAssembly": null,
 						"methodIdentifiers": {
-							"generateSeed(uint256)": "424611c3"
+							"deposit()": "d0e30db0",
+							"lockBet(address,uint256)": "ef899ee5",
+							"loseBet(address,uint256)": "2526bb70",
+							"payout(address,uint256,uint8)": "ee4c5df6"
 						}
 					},
-					"metadata": "{\"compiler\":{\"version\":\"0.8.30+commit.73712a01\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"playerSeed\",\"type\":\"uint256\"}],\"name\":\"generateSeed\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"pure\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/Interfaces/IOracle.sol\":\"IOracle\"},\"evmVersion\":\"prague\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/Data.sol\":{\"keccak256\":\"0x2f0d2fb3faa890fd704ba3a56ce197b34f713c78f1227ebe83a88c01fb88471a\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://c44f5eeac4156935d2d9ef143ca7e9d5c91116f181e566bffc3d3a26169a4c08\",\"dweb:/ipfs/QmeKkoUQa7hvKrSeQGjNBFoUt6AwhXsirxthxys95pKrzj\"]},\"contracts/Interfaces/IOracle.sol\":{\"keccak256\":\"0xa42ddc2153e61a62325e0d5c2b6dcad8d21f5ec5b2b81b27019108b7decce361\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://bc826196c363250d4cc313b3f744feead3a04f3eee898789469e382aac7b6745\",\"dweb:/ipfs/QmRTZNBiucL7LNGQRC9Qs19Bnf3v4QssKgJmkpg4MM6XP5\"]}},\"version\":1}",
+					"metadata": "{\"compiler\":{\"version\":\"0.8.30+commit.73712a01\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"player\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"lockBet\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"player\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"loseBet\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"player\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"enum Result\",\"name\":\"result\",\"type\":\"uint8\"}],\"name\":\"payout\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/Interfaces/IVault.sol\":\"IVault\"},\"evmVersion\":\"prague\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/Data.sol\":{\"keccak256\":\"0x52293825bfdccb07a6eba6969a9250d0618b5d4e25ecdb1c588f2d6102ba2034\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5dff2b6befb011893a3921f57c47a6f83e25dee76fa54a9e7a6d735297156f48\",\"dweb:/ipfs/QmUgCoLq77RdEiJyKUqpFNGF78gVsASpjrbFrcoinVS4R8\"]},\"contracts/Interfaces/IVault.sol\":{\"keccak256\":\"0x7e1746e7ddd6e2cc82bcc20d5343a022bff6a2f842e0b4d4c5ac5794cffb879f\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://c4e3145bb3e6d79e9044b71548cb523fd72d482fc8f77c109ac8ef06353ebd60\",\"dweb:/ipfs/QmScB338uYSUWMmUxURGZA9gaifJomn5M2mUkTTtf5Uddk\"]}},\"version\":1}",
 					"storageLayout": {
 						"storage": [],
 						"types": null
@@ -494,17 +544,17 @@
 									"stateVariable": false,
 									"storageLocation": "default",
 									"typeDescriptions": {
-										"typeIdentifier": "t_bytes32",
-										"typeString": "bytes32"
+										"typeIdentifier": "t_uint256",
+										"typeString": "uint256"
 									},
 									"typeName": {
 										"id": 34,
-										"name": "bytes32",
+										"name": "uint256",
 										"nodeType": "ElementaryTypeName",
 										"src": "541:7:0",
 										"typeDescriptions": {
-											"typeIdentifier": "t_bytes32",
-											"typeString": "bytes32"
+											"typeIdentifier": "t_uint256",
+											"typeString": "uint256"
 										}
 									},
 									"visibility": "internal"
@@ -756,9 +806,9 @@
 				},
 				"id": 0
 			},
-			"contracts/Interfaces/IOracle.sol": {
+			"contracts/Interfaces/IVault.sol": {
 				"ast": {
-					"absolutePath": "contracts/Interfaces/IOracle.sol",
+					"absolutePath": "contracts/Interfaces/IVault.sol",
 					"exportedSymbols": {
 						"Card": [
 							23
@@ -766,8 +816,8 @@
 						"GameToken": [
 							54
 						],
-						"IOracle": [
-							65
+						"IVault": [
+							85
 						],
 						"Result": [
 							6
@@ -779,7 +829,7 @@
 							17
 						]
 					},
-					"id": 66,
+					"id": 86,
 					"license": "MIT",
 					"nodeType": "SourceUnit",
 					"nodes": [
@@ -800,7 +850,7 @@
 							"id": 57,
 							"nameLocation": "-1:-1:-1",
 							"nodeType": "ImportDirective",
-							"scope": 66,
+							"scope": 86,
 							"sourceUnit": 55,
 							"src": "93:28:1",
 							"symbolAliases": [],
@@ -809,40 +859,68 @@
 						{
 							"abstract": false,
 							"baseContracts": [],
-							"canonicalName": "IOracle",
+							"canonicalName": "IVault",
 							"contractDependencies": [],
 							"contractKind": "interface",
 							"fullyImplemented": false,
-							"id": 65,
+							"id": 85,
 							"linearizedBaseContracts": [
-								65
+								85
 							],
-							"name": "IOracle",
-							"nameLocation": "135:7:1",
+							"name": "IVault",
+							"nameLocation": "133:6:1",
 							"nodeType": "ContractDefinition",
 							"nodes": [
 								{
-									"functionSelector": "424611c3",
-									"id": 64,
+									"functionSelector": "ee4c5df6",
+									"id": 67,
 									"implemented": false,
 									"kind": "function",
 									"modifiers": [],
-									"name": "generateSeed",
-									"nameLocation": "159:12:1",
+									"name": "payout",
+									"nameLocation": "156:6:1",
 									"nodeType": "FunctionDefinition",
 									"parameters": {
-										"id": 60,
+										"id": 65,
 										"nodeType": "ParameterList",
 										"parameters": [
 											{
 												"constant": false,
 												"id": 59,
 												"mutability": "mutable",
-												"name": "playerSeed",
-												"nameLocation": "180:10:1",
+												"name": "player",
+												"nameLocation": "171:6:1",
 												"nodeType": "VariableDeclaration",
-												"scope": 64,
-												"src": "172:18:1",
+												"scope": 67,
+												"src": "163:14:1",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_address",
+													"typeString": "address"
+												},
+												"typeName": {
+													"id": 58,
+													"name": "address",
+													"nodeType": "ElementaryTypeName",
+													"src": "163:7:1",
+													"stateMutability": "nonpayable",
+													"typeDescriptions": {
+														"typeIdentifier": "t_address",
+														"typeString": "address"
+													}
+												},
+												"visibility": "internal"
+											},
+											{
+												"constant": false,
+												"id": 61,
+												"mutability": "mutable",
+												"name": "amount",
+												"nameLocation": "187:6:1",
+												"nodeType": "VariableDeclaration",
+												"scope": 67,
+												"src": "179:14:1",
 												"stateVariable": false,
 												"storageLocation": "default",
 												"typeDescriptions": {
@@ -850,10 +928,130 @@
 													"typeString": "uint256"
 												},
 												"typeName": {
-													"id": 58,
+													"id": 60,
 													"name": "uint256",
 													"nodeType": "ElementaryTypeName",
-													"src": "172:7:1",
+													"src": "179:7:1",
+													"typeDescriptions": {
+														"typeIdentifier": "t_uint256",
+														"typeString": "uint256"
+													}
+												},
+												"visibility": "internal"
+											},
+											{
+												"constant": false,
+												"id": 64,
+												"mutability": "mutable",
+												"name": "result",
+												"nameLocation": "202:6:1",
+												"nodeType": "VariableDeclaration",
+												"scope": 67,
+												"src": "195:13:1",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_enum$_Result_$6",
+													"typeString": "enum Result"
+												},
+												"typeName": {
+													"id": 63,
+													"nodeType": "UserDefinedTypeName",
+													"pathNode": {
+														"id": 62,
+														"name": "Result",
+														"nameLocations": [
+															"195:6:1"
+														],
+														"nodeType": "IdentifierPath",
+														"referencedDeclaration": 6,
+														"src": "195:6:1"
+													},
+													"referencedDeclaration": 6,
+													"src": "195:6:1",
+													"typeDescriptions": {
+														"typeIdentifier": "t_enum$_Result_$6",
+														"typeString": "enum Result"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "162:47:1"
+									},
+									"returnParameters": {
+										"id": 66,
+										"nodeType": "ParameterList",
+										"parameters": [],
+										"src": "218:0:1"
+									},
+									"scope": 85,
+									"src": "147:72:1",
+									"stateMutability": "nonpayable",
+									"virtual": false,
+									"visibility": "external"
+								},
+								{
+									"functionSelector": "ef899ee5",
+									"id": 74,
+									"implemented": false,
+									"kind": "function",
+									"modifiers": [],
+									"name": "lockBet",
+									"nameLocation": "234:7:1",
+									"nodeType": "FunctionDefinition",
+									"parameters": {
+										"id": 72,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 69,
+												"mutability": "mutable",
+												"name": "player",
+												"nameLocation": "250:6:1",
+												"nodeType": "VariableDeclaration",
+												"scope": 74,
+												"src": "242:14:1",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_address",
+													"typeString": "address"
+												},
+												"typeName": {
+													"id": 68,
+													"name": "address",
+													"nodeType": "ElementaryTypeName",
+													"src": "242:7:1",
+													"stateMutability": "nonpayable",
+													"typeDescriptions": {
+														"typeIdentifier": "t_address",
+														"typeString": "address"
+													}
+												},
+												"visibility": "internal"
+											},
+											{
+												"constant": false,
+												"id": 71,
+												"mutability": "mutable",
+												"name": "amount",
+												"nameLocation": "266:6:1",
+												"nodeType": "VariableDeclaration",
+												"scope": 74,
+												"src": "258:14:1",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_uint256",
+													"typeString": "uint256"
+												},
+												"typeName": {
+													"id": 70,
+													"name": "uint256",
+													"nodeType": "ElementaryTypeName",
+													"src": "258:7:1",
 													"typeDescriptions": {
 														"typeIdentifier": "t_uint256",
 														"typeString": "uint256"
@@ -862,56 +1060,138 @@
 												"visibility": "internal"
 											}
 										],
-										"src": "171:20:1"
+										"src": "241:32:1"
 									},
 									"returnParameters": {
-										"id": 63,
+										"id": 73,
+										"nodeType": "ParameterList",
+										"parameters": [],
+										"src": "282:0:1"
+									},
+									"scope": 85,
+									"src": "225:58:1",
+									"stateMutability": "nonpayable",
+									"virtual": false,
+									"visibility": "external"
+								},
+								{
+									"functionSelector": "2526bb70",
+									"id": 81,
+									"implemented": false,
+									"kind": "function",
+									"modifiers": [],
+									"name": "loseBet",
+									"nameLocation": "298:7:1",
+									"nodeType": "FunctionDefinition",
+									"parameters": {
+										"id": 79,
 										"nodeType": "ParameterList",
 										"parameters": [
 											{
 												"constant": false,
-												"id": 62,
+												"id": 76,
 												"mutability": "mutable",
-												"name": "",
-												"nameLocation": "-1:-1:-1",
+												"name": "player",
+												"nameLocation": "314:6:1",
 												"nodeType": "VariableDeclaration",
-												"scope": 64,
-												"src": "215:7:1",
+												"scope": 81,
+												"src": "306:14:1",
 												"stateVariable": false,
 												"storageLocation": "default",
 												"typeDescriptions": {
-													"typeIdentifier": "t_bytes32",
-													"typeString": "bytes32"
+													"typeIdentifier": "t_address",
+													"typeString": "address"
 												},
 												"typeName": {
-													"id": 61,
-													"name": "bytes32",
+													"id": 75,
+													"name": "address",
 													"nodeType": "ElementaryTypeName",
-													"src": "215:7:1",
+													"src": "306:7:1",
+													"stateMutability": "nonpayable",
 													"typeDescriptions": {
-														"typeIdentifier": "t_bytes32",
-														"typeString": "bytes32"
+														"typeIdentifier": "t_address",
+														"typeString": "address"
+													}
+												},
+												"visibility": "internal"
+											},
+											{
+												"constant": false,
+												"id": 78,
+												"mutability": "mutable",
+												"name": "amount",
+												"nameLocation": "330:6:1",
+												"nodeType": "VariableDeclaration",
+												"scope": 81,
+												"src": "322:14:1",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_uint256",
+													"typeString": "uint256"
+												},
+												"typeName": {
+													"id": 77,
+													"name": "uint256",
+													"nodeType": "ElementaryTypeName",
+													"src": "322:7:1",
+													"typeDescriptions": {
+														"typeIdentifier": "t_uint256",
+														"typeString": "uint256"
 													}
 												},
 												"visibility": "internal"
 											}
 										],
-										"src": "214:9:1"
+										"src": "305:32:1"
 									},
-									"scope": 65,
-									"src": "150:74:1",
-									"stateMutability": "pure",
+									"returnParameters": {
+										"id": 80,
+										"nodeType": "ParameterList",
+										"parameters": [],
+										"src": "346:0:1"
+									},
+									"scope": 85,
+									"src": "289:58:1",
+									"stateMutability": "nonpayable",
+									"virtual": false,
+									"visibility": "external"
+								},
+								{
+									"functionSelector": "d0e30db0",
+									"id": 84,
+									"implemented": false,
+									"kind": "function",
+									"modifiers": [],
+									"name": "deposit",
+									"nameLocation": "362:7:1",
+									"nodeType": "FunctionDefinition",
+									"parameters": {
+										"id": 82,
+										"nodeType": "ParameterList",
+										"parameters": [],
+										"src": "369:2:1"
+									},
+									"returnParameters": {
+										"id": 83,
+										"nodeType": "ParameterList",
+										"parameters": [],
+										"src": "388:0:1"
+									},
+									"scope": 85,
+									"src": "353:36:1",
+									"stateMutability": "payable",
 									"virtual": false,
 									"visibility": "external"
 								}
 							],
-							"scope": 66,
-							"src": "125:102:1",
+							"scope": 86,
+							"src": "123:269:1",
 							"usedErrors": [],
 							"usedEvents": []
 						}
 					],
-					"src": "33:194:1"
+					"src": "33:359:1"
 				},
 				"id": 1
 			}

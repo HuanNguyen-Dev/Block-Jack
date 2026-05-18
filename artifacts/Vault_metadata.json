@@ -55,6 +55,69 @@
 				"type": "event"
 			},
 			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "LoseBet",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "enum Result",
+						"name": "result",
+						"type": "uint8"
+					}
+				],
+				"name": "Payout",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "Withdraw",
+				"type": "event"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -150,6 +213,24 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "betAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "loseBet",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "owner",
 				"outputs": [
@@ -171,11 +252,29 @@
 					},
 					{
 						"internalType": "uint256",
+						"name": "betAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "enum Result",
+						"name": "result",
+						"type": "uint8"
+					}
+				],
+				"name": "payout",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
 						"name": "amount",
 						"type": "uint256"
 					}
 				],
-				"name": "payout",
+				"name": "withdraw",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -212,20 +311,28 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/Vault.sol": {
-			"keccak256": "0x9e77a6f575912bb9f5dc2bcaef0e7a66e652c7ab1114cc162126ced81bb0884a",
+		"contracts/Data.sol": {
+			"keccak256": "0x52293825bfdccb07a6eba6969a9250d0618b5d4e25ecdb1c588f2d6102ba2034",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://e096a3347cd2ab434351d41b09d599b49e9897bd66d88654d69467a7f6f10edc",
-				"dweb:/ipfs/QmdAiKWgdDUqFAZgqvKyaZ7sVd9sDVCai2UDzCMzBiZhuP"
+				"bzz-raw://5dff2b6befb011893a3921f57c47a6f83e25dee76fa54a9e7a6d735297156f48",
+				"dweb:/ipfs/QmUgCoLq77RdEiJyKUqpFNGF78gVsASpjrbFrcoinVS4R8"
+			]
+		},
+		"contracts/Vault.sol": {
+			"keccak256": "0x116d71ccde923429190053439f95121abdafbe364304ad306aeccf4468d77732",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7bce311702c4016ce9291e6650cae99ab35cfe8bce6c93b35ceb3377dde50abc",
+				"dweb:/ipfs/QmYr2gT5u5y6DAsjoDp471Z1qEFymz3vtPk5cQkSXUmoJQ"
 			]
 		},
 		"contracts/interfaces/IVault.sol": {
-			"keccak256": "0x0f807ccdd7d15eaaa3afcd93c4071b3f65757d11533a7ccbef347b42aef10698",
+			"keccak256": "0x7e1746e7ddd6e2cc82bcc20d5343a022bff6a2f842e0b4d4c5ac5794cffb879f",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://3e4a6d5e889ec3843bf4f1694c8878de6659742a601bf00db3744a62e9a66bac",
-				"dweb:/ipfs/QmWN8dSgqfLaCuAnpMHZ4YE4oC46CNyi8pFuxvH7uzXhi4"
+				"bzz-raw://c4e3145bb3e6d79e9044b71548cb523fd72d482fc8f77c109ac8ef06353ebd60",
+				"dweb:/ipfs/QmScB338uYSUWMmUxURGZA9gaifJomn5M2mUkTTtf5Uddk"
 			]
 		}
 	},

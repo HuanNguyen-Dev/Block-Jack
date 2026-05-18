@@ -6,6 +6,13 @@
 	"output": {
 		"abi": [
 			{
+				"inputs": [],
+				"name": "deposit",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -34,6 +41,29 @@
 						"internalType": "uint256",
 						"name": "amount",
 						"type": "uint256"
+					}
+				],
+				"name": "loseBet",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "enum Result",
+						"name": "result",
+						"type": "uint8"
 					}
 				],
 				"name": "payout",
@@ -69,12 +99,20 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/Interfaces/IVault.sol": {
-			"keccak256": "0x0f807ccdd7d15eaaa3afcd93c4071b3f65757d11533a7ccbef347b42aef10698",
+		"contracts/Data.sol": {
+			"keccak256": "0x52293825bfdccb07a6eba6969a9250d0618b5d4e25ecdb1c588f2d6102ba2034",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://3e4a6d5e889ec3843bf4f1694c8878de6659742a601bf00db3744a62e9a66bac",
-				"dweb:/ipfs/QmWN8dSgqfLaCuAnpMHZ4YE4oC46CNyi8pFuxvH7uzXhi4"
+				"bzz-raw://5dff2b6befb011893a3921f57c47a6f83e25dee76fa54a9e7a6d735297156f48",
+				"dweb:/ipfs/QmUgCoLq77RdEiJyKUqpFNGF78gVsASpjrbFrcoinVS4R8"
+			]
+		},
+		"contracts/Interfaces/IVault.sol": {
+			"keccak256": "0x7e1746e7ddd6e2cc82bcc20d5343a022bff6a2f842e0b4d4c5ac5794cffb879f",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://c4e3145bb3e6d79e9044b71548cb523fd72d482fc8f77c109ac8ef06353ebd60",
+				"dweb:/ipfs/QmScB338uYSUWMmUxURGZA9gaifJomn5M2mUkTTtf5Uddk"
 			]
 		}
 	},

@@ -1,5 +1,5 @@
 {
-	"id": "cc1a05896e4c5c330478078d6312ddea",
+	"id": "e86c7e21aa250d5f48dd4e964066ed83",
 	"_format": "hh-sol-build-info-1",
 	"solcVersion": "0.8.30",
 	"solcLongVersion": "0.8.30+commit.73712a01",
@@ -7,7 +7,7 @@
 		"language": "Solidity",
 		"sources": {
 			"contracts/Data.sol": {
-				"content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.30; // may have to change for ganache\n\nenum Result {\n    NONE,\n    PLAYER_WIN,\n    DEALER_WIN,\n    PUSH\n}\n\nenum State {\n    NONE,\n    ASSIGN,\n    BET,\n    DEALER_TURN,\n    PLAYER_TURN,\n    FINISHED\n}\n\nenum Suit {\n    HEARTS,\n    DIAMONDS,\n    CLUBS,\n    SPADES\n}\n\nstruct Card {\n    uint8 value;\n    Suit suit;\n}\n\n// game token struct\nstruct GameToken {\n    uint256 tokenID;\n    uint256 bet;\n    address player;\n    uint256 playerSeed;\n    uint256 serverSeed;\n    bytes32 finalSeed;\n    uint8 drawIndex;\n    State gameState;\n    Result result;\n    uint8[104] deck;\n    bool isShuffled;\n    uint8 playerHandTotalValue;\n    uint8 dealerHandTotalValue;\n}\n"
+				"content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.30; // may have to change for ganache\r\n\r\nenum Result {\r\n    NONE,\r\n    PLAYER_WIN,\r\n    DEALER_WIN,\r\n    PUSH\r\n}\r\n\r\nenum State {\r\n    NONE,\r\n    BET,\r\n    DEALER_TURN,\r\n    PLAYER_TURN,\r\n    FINISHED\r\n}\r\n\r\nenum Suit {\r\n    HEARTS,\r\n    DIAMONDS,\r\n    CLUBS,\r\n    SPADES\r\n}\r\n\r\nstruct Card {\r\n    uint8 value;\r\n    Suit suit;\r\n}\r\n\r\n// game token struct\r\nstruct GameToken {\r\n    uint256 tokenID;\r\n    uint256 bet;\r\n    address player;\r\n    uint256 playerSeed;\r\n    uint256 serverSeed;\r\n    uint256 finalSeed;\r\n    uint8 drawIndex;\r\n    State gameState;\r\n    Result result;\r\n    uint8[104] deck;\r\n    bool isShuffled;\r\n    uint8 playerHandTotalValue;\r\n    uint8 dealerHandTotalValue;\r\n}\r\n"
 			}
 		},
 		"settings": {
@@ -45,22 +45,22 @@
 					"absolutePath": "contracts/Data.sol",
 					"exportedSymbols": {
 						"Card": [
-							24
+							23
 						],
 						"GameToken": [
-							55
+							54
 						],
 						"Result": [
 							6
 						],
 						"State": [
-							13
+							12
 						],
 						"Suit": [
-							18
+							17
 						]
 					},
-					"id": 56,
+					"id": 55,
 					"license": "MIT",
 					"nodeType": "SourceUnit",
 					"nodes": [
@@ -73,7 +73,7 @@
 								".30"
 							],
 							"nodeType": "PragmaDirective",
-							"src": "32:24:0"
+							"src": "33:24:0"
 						},
 						{
 							"canonicalName": "Result",
@@ -82,140 +82,133 @@
 								{
 									"id": 2,
 									"name": "NONE",
-									"nameLocation": "110:4:0",
+									"nameLocation": "114:4:0",
 									"nodeType": "EnumValue",
-									"src": "110:4:0"
+									"src": "114:4:0"
 								},
 								{
 									"id": 3,
 									"name": "PLAYER_WIN",
-									"nameLocation": "120:10:0",
+									"nameLocation": "125:10:0",
 									"nodeType": "EnumValue",
-									"src": "120:10:0"
+									"src": "125:10:0"
 								},
 								{
 									"id": 4,
 									"name": "DEALER_WIN",
-									"nameLocation": "136:10:0",
+									"nameLocation": "142:10:0",
 									"nodeType": "EnumValue",
-									"src": "136:10:0"
+									"src": "142:10:0"
 								},
 								{
 									"id": 5,
 									"name": "PUSH",
-									"nameLocation": "152:4:0",
+									"nameLocation": "159:4:0",
 									"nodeType": "EnumValue",
-									"src": "152:4:0"
+									"src": "159:4:0"
 								}
 							],
 							"name": "Result",
-							"nameLocation": "97:6:0",
+							"nameLocation": "100:6:0",
 							"nodeType": "EnumDefinition",
-							"src": "92:66:0"
+							"src": "95:71:0"
 						},
 						{
 							"canonicalName": "State",
-							"id": 13,
+							"id": 12,
 							"members": [
 								{
 									"id": 7,
 									"name": "NONE",
-									"nameLocation": "177:4:0",
+									"nameLocation": "188:4:0",
 									"nodeType": "EnumValue",
-									"src": "177:4:0"
+									"src": "188:4:0"
 								},
 								{
 									"id": 8,
-									"name": "ASSIGN",
-									"nameLocation": "187:6:0",
-									"nodeType": "EnumValue",
-									"src": "187:6:0"
-								},
-								{
-									"id": 9,
 									"name": "BET",
 									"nameLocation": "199:3:0",
 									"nodeType": "EnumValue",
 									"src": "199:3:0"
 								},
 								{
-									"id": 10,
+									"id": 9,
 									"name": "DEALER_TURN",
-									"nameLocation": "208:11:0",
+									"nameLocation": "209:11:0",
 									"nodeType": "EnumValue",
-									"src": "208:11:0"
+									"src": "209:11:0"
+								},
+								{
+									"id": 10,
+									"name": "PLAYER_TURN",
+									"nameLocation": "227:11:0",
+									"nodeType": "EnumValue",
+									"src": "227:11:0"
 								},
 								{
 									"id": 11,
-									"name": "PLAYER_TURN",
-									"nameLocation": "225:11:0",
-									"nodeType": "EnumValue",
-									"src": "225:11:0"
-								},
-								{
-									"id": 12,
 									"name": "FINISHED",
-									"nameLocation": "242:8:0",
+									"nameLocation": "245:8:0",
 									"nodeType": "EnumValue",
-									"src": "242:8:0"
+									"src": "245:8:0"
 								}
 							],
 							"name": "State",
-							"nameLocation": "165:5:0",
+							"nameLocation": "175:5:0",
 							"nodeType": "EnumDefinition",
-							"src": "160:92:0"
+							"src": "170:86:0"
 						},
 						{
 							"canonicalName": "Suit",
-							"id": 18,
+							"id": 17,
 							"members": [
 								{
-									"id": 14,
+									"id": 13,
 									"name": "HEARTS",
-									"nameLocation": "270:6:0",
+									"nameLocation": "277:6:0",
 									"nodeType": "EnumValue",
-									"src": "270:6:0"
+									"src": "277:6:0"
+								},
+								{
+									"id": 14,
+									"name": "DIAMONDS",
+									"nameLocation": "290:8:0",
+									"nodeType": "EnumValue",
+									"src": "290:8:0"
 								},
 								{
 									"id": 15,
-									"name": "DIAMONDS",
-									"nameLocation": "282:8:0",
+									"name": "CLUBS",
+									"nameLocation": "305:5:0",
 									"nodeType": "EnumValue",
-									"src": "282:8:0"
+									"src": "305:5:0"
 								},
 								{
 									"id": 16,
-									"name": "CLUBS",
-									"nameLocation": "296:5:0",
-									"nodeType": "EnumValue",
-									"src": "296:5:0"
-								},
-								{
-									"id": 17,
 									"name": "SPADES",
-									"nameLocation": "307:6:0",
+									"nameLocation": "317:6:0",
 									"nodeType": "EnumValue",
-									"src": "307:6:0"
+									"src": "317:6:0"
 								}
 							],
 							"name": "Suit",
-							"nameLocation": "259:4:0",
+							"nameLocation": "265:4:0",
 							"nodeType": "EnumDefinition",
-							"src": "254:61:0"
+							"src": "260:66:0"
 						},
 						{
 							"canonicalName": "Card",
-							"id": 24,
+							"id": 23,
 							"members": [
 								{
 									"constant": false,
-									"id": 20,
+									"id": 19,
 									"mutability": "mutable",
 									"name": "value",
-									"nameLocation": "341:5:0",
+									"nameLocation": "355:5:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 24,
-									"src": "335:11:0",
+									"scope": 23,
+									"src": "349:11:0",
 									"stateVariable": false,
 									"storageLocation": "default",
 									"typeDescriptions": {
@@ -223,10 +216,10 @@
 										"typeString": "uint8"
 									},
 									"typeName": {
-										"id": 19,
+										"id": 18,
 										"name": "uint8",
 										"nodeType": "ElementaryTypeName",
-										"src": "335:5:0",
+										"src": "349:5:0",
 										"typeDescriptions": {
 											"typeIdentifier": "t_uint8",
 											"typeString": "uint8"
@@ -236,36 +229,36 @@
 								},
 								{
 									"constant": false,
-									"id": 23,
+									"id": 22,
 									"mutability": "mutable",
 									"name": "suit",
-									"nameLocation": "357:4:0",
+									"nameLocation": "372:4:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 24,
-									"src": "352:9:0",
+									"scope": 23,
+									"src": "367:9:0",
 									"stateVariable": false,
 									"storageLocation": "default",
 									"typeDescriptions": {
-										"typeIdentifier": "t_enum$_Suit_$18",
+										"typeIdentifier": "t_enum$_Suit_$17",
 										"typeString": "enum Suit"
 									},
 									"typeName": {
-										"id": 22,
+										"id": 21,
 										"nodeType": "UserDefinedTypeName",
 										"pathNode": {
-											"id": 21,
+											"id": 20,
 											"name": "Suit",
 											"nameLocations": [
-												"352:4:0"
+												"367:4:0"
 											],
 											"nodeType": "IdentifierPath",
-											"referencedDeclaration": 18,
-											"src": "352:4:0"
+											"referencedDeclaration": 17,
+											"src": "367:4:0"
 										},
-										"referencedDeclaration": 18,
-										"src": "352:4:0",
+										"referencedDeclaration": 17,
+										"src": "367:4:0",
 										"typeDescriptions": {
-											"typeIdentifier": "t_enum$_Suit_$18",
+											"typeIdentifier": "t_enum$_Suit_$17",
 											"typeString": "enum Suit"
 										}
 									},
@@ -273,25 +266,25 @@
 								}
 							],
 							"name": "Card",
-							"nameLocation": "324:4:0",
+							"nameLocation": "337:4:0",
 							"nodeType": "StructDefinition",
-							"scope": 56,
-							"src": "317:47:0",
+							"scope": 55,
+							"src": "330:50:0",
 							"visibility": "public"
 						},
 						{
 							"canonicalName": "GameToken",
-							"id": 55,
+							"id": 54,
 							"members": [
 								{
 									"constant": false,
-									"id": 26,
+									"id": 25,
 									"mutability": "mutable",
 									"name": "tokenID",
-									"nameLocation": "418:7:0",
+									"nameLocation": "438:7:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 55,
-									"src": "410:15:0",
+									"scope": 54,
+									"src": "430:15:0",
 									"stateVariable": false,
 									"storageLocation": "default",
 									"typeDescriptions": {
@@ -299,10 +292,10 @@
 										"typeString": "uint256"
 									},
 									"typeName": {
-										"id": 25,
+										"id": 24,
 										"name": "uint256",
 										"nodeType": "ElementaryTypeName",
-										"src": "410:7:0",
+										"src": "430:7:0",
 										"typeDescriptions": {
 											"typeIdentifier": "t_uint256",
 											"typeString": "uint256"
@@ -312,13 +305,13 @@
 								},
 								{
 									"constant": false,
-									"id": 28,
+									"id": 27,
 									"mutability": "mutable",
 									"name": "bet",
-									"nameLocation": "439:3:0",
+									"nameLocation": "460:3:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 55,
-									"src": "431:11:0",
+									"scope": 54,
+									"src": "452:11:0",
 									"stateVariable": false,
 									"storageLocation": "default",
 									"typeDescriptions": {
@@ -326,10 +319,10 @@
 										"typeString": "uint256"
 									},
 									"typeName": {
-										"id": 27,
+										"id": 26,
 										"name": "uint256",
 										"nodeType": "ElementaryTypeName",
-										"src": "431:7:0",
+										"src": "452:7:0",
 										"typeDescriptions": {
 											"typeIdentifier": "t_uint256",
 											"typeString": "uint256"
@@ -339,13 +332,13 @@
 								},
 								{
 									"constant": false,
-									"id": 30,
+									"id": 29,
 									"mutability": "mutable",
 									"name": "player",
-									"nameLocation": "456:6:0",
+									"nameLocation": "478:6:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 55,
-									"src": "448:14:0",
+									"scope": 54,
+									"src": "470:14:0",
 									"stateVariable": false,
 									"storageLocation": "default",
 									"typeDescriptions": {
@@ -353,10 +346,10 @@
 										"typeString": "address"
 									},
 									"typeName": {
-										"id": 29,
+										"id": 28,
 										"name": "address",
 										"nodeType": "ElementaryTypeName",
-										"src": "448:7:0",
+										"src": "470:7:0",
 										"stateMutability": "nonpayable",
 										"typeDescriptions": {
 											"typeIdentifier": "t_address",
@@ -367,13 +360,13 @@
 								},
 								{
 									"constant": false,
-									"id": 32,
+									"id": 31,
 									"mutability": "mutable",
 									"name": "playerSeed",
-									"nameLocation": "476:10:0",
+									"nameLocation": "499:10:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 55,
-									"src": "468:18:0",
+									"scope": 54,
+									"src": "491:18:0",
 									"stateVariable": false,
 									"storageLocation": "default",
 									"typeDescriptions": {
@@ -381,10 +374,10 @@
 										"typeString": "uint256"
 									},
 									"typeName": {
-										"id": 31,
+										"id": 30,
 										"name": "uint256",
 										"nodeType": "ElementaryTypeName",
-										"src": "468:7:0",
+										"src": "491:7:0",
 										"typeDescriptions": {
 											"typeIdentifier": "t_uint256",
 											"typeString": "uint256"
@@ -394,13 +387,13 @@
 								},
 								{
 									"constant": false,
-									"id": 34,
+									"id": 33,
 									"mutability": "mutable",
 									"name": "serverSeed",
-									"nameLocation": "500:10:0",
+									"nameLocation": "524:10:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 55,
-									"src": "492:18:0",
+									"scope": 54,
+									"src": "516:18:0",
 									"stateVariable": false,
 									"storageLocation": "default",
 									"typeDescriptions": {
@@ -408,53 +401,53 @@
 										"typeString": "uint256"
 									},
 									"typeName": {
-										"id": 33,
+										"id": 32,
 										"name": "uint256",
-										"nodeType": "ElementaryTypeName",
-										"src": "492:7:0",
-										"typeDescriptions": {
-											"typeIdentifier": "t_uint256",
-											"typeString": "uint256"
-										}
-									},
-									"visibility": "internal"
-								},
-								{
-									"constant": false,
-									"id": 36,
-									"mutability": "mutable",
-									"name": "finalSeed",
-									"nameLocation": "524:9:0",
-									"nodeType": "VariableDeclaration",
-									"scope": 55,
-									"src": "516:17:0",
-									"stateVariable": false,
-									"storageLocation": "default",
-									"typeDescriptions": {
-										"typeIdentifier": "t_bytes32",
-										"typeString": "bytes32"
-									},
-									"typeName": {
-										"id": 35,
-										"name": "bytes32",
 										"nodeType": "ElementaryTypeName",
 										"src": "516:7:0",
 										"typeDescriptions": {
-											"typeIdentifier": "t_bytes32",
-											"typeString": "bytes32"
+											"typeIdentifier": "t_uint256",
+											"typeString": "uint256"
 										}
 									},
 									"visibility": "internal"
 								},
 								{
 									"constant": false,
-									"id": 38,
+									"id": 35,
+									"mutability": "mutable",
+									"name": "finalSeed",
+									"nameLocation": "549:9:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 54,
+									"src": "541:17:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_uint256",
+										"typeString": "uint256"
+									},
+									"typeName": {
+										"id": 34,
+										"name": "uint256",
+										"nodeType": "ElementaryTypeName",
+										"src": "541:7:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_uint256",
+											"typeString": "uint256"
+										}
+									},
+									"visibility": "internal"
+								},
+								{
+									"constant": false,
+									"id": 37,
 									"mutability": "mutable",
 									"name": "drawIndex",
-									"nameLocation": "545:9:0",
+									"nameLocation": "571:9:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 55,
-									"src": "539:15:0",
+									"scope": 54,
+									"src": "565:15:0",
 									"stateVariable": false,
 									"storageLocation": "default",
 									"typeDescriptions": {
@@ -462,10 +455,10 @@
 										"typeString": "uint8"
 									},
 									"typeName": {
-										"id": 37,
+										"id": 36,
 										"name": "uint8",
 										"nodeType": "ElementaryTypeName",
-										"src": "539:5:0",
+										"src": "565:5:0",
 										"typeDescriptions": {
 											"typeIdentifier": "t_uint8",
 											"typeString": "uint8"
@@ -475,36 +468,36 @@
 								},
 								{
 									"constant": false,
-									"id": 41,
+									"id": 40,
 									"mutability": "mutable",
 									"name": "gameState",
-									"nameLocation": "566:9:0",
+									"nameLocation": "593:9:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 55,
-									"src": "560:15:0",
+									"scope": 54,
+									"src": "587:15:0",
 									"stateVariable": false,
 									"storageLocation": "default",
 									"typeDescriptions": {
-										"typeIdentifier": "t_enum$_State_$13",
+										"typeIdentifier": "t_enum$_State_$12",
 										"typeString": "enum State"
 									},
 									"typeName": {
-										"id": 40,
+										"id": 39,
 										"nodeType": "UserDefinedTypeName",
 										"pathNode": {
-											"id": 39,
+											"id": 38,
 											"name": "State",
 											"nameLocations": [
-												"560:5:0"
+												"587:5:0"
 											],
 											"nodeType": "IdentifierPath",
-											"referencedDeclaration": 13,
-											"src": "560:5:0"
+											"referencedDeclaration": 12,
+											"src": "587:5:0"
 										},
-										"referencedDeclaration": 13,
-										"src": "560:5:0",
+										"referencedDeclaration": 12,
+										"src": "587:5:0",
 										"typeDescriptions": {
-											"typeIdentifier": "t_enum$_State_$13",
+											"typeIdentifier": "t_enum$_State_$12",
 											"typeString": "enum State"
 										}
 									},
@@ -512,13 +505,13 @@
 								},
 								{
 									"constant": false,
-									"id": 44,
+									"id": 43,
 									"mutability": "mutable",
 									"name": "result",
-									"nameLocation": "588:6:0",
+									"nameLocation": "616:6:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 55,
-									"src": "581:13:0",
+									"scope": 54,
+									"src": "609:13:0",
 									"stateVariable": false,
 									"storageLocation": "default",
 									"typeDescriptions": {
@@ -526,20 +519,20 @@
 										"typeString": "enum Result"
 									},
 									"typeName": {
-										"id": 43,
+										"id": 42,
 										"nodeType": "UserDefinedTypeName",
 										"pathNode": {
-											"id": 42,
+											"id": 41,
 											"name": "Result",
 											"nameLocations": [
-												"581:6:0"
+												"609:6:0"
 											],
 											"nodeType": "IdentifierPath",
 											"referencedDeclaration": 6,
-											"src": "581:6:0"
+											"src": "609:6:0"
 										},
 										"referencedDeclaration": 6,
-										"src": "581:6:0",
+										"src": "609:6:0",
 										"typeDescriptions": {
 											"typeIdentifier": "t_enum$_Result_$6",
 											"typeString": "enum Result"
@@ -549,13 +542,13 @@
 								},
 								{
 									"constant": false,
-									"id": 48,
+									"id": 47,
 									"mutability": "mutable",
 									"name": "deck",
-									"nameLocation": "611:4:0",
+									"nameLocation": "640:4:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 55,
-									"src": "600:15:0",
+									"scope": 54,
+									"src": "629:15:0",
 									"stateVariable": false,
 									"storageLocation": "default",
 									"typeDescriptions": {
@@ -564,26 +557,26 @@
 									},
 									"typeName": {
 										"baseType": {
-											"id": 45,
+											"id": 44,
 											"name": "uint8",
 											"nodeType": "ElementaryTypeName",
-											"src": "600:5:0",
+											"src": "629:5:0",
 											"typeDescriptions": {
 												"typeIdentifier": "t_uint8",
 												"typeString": "uint8"
 											}
 										},
-										"id": 47,
+										"id": 46,
 										"length": {
 											"hexValue": "313034",
-											"id": 46,
+											"id": 45,
 											"isConstant": false,
 											"isLValue": false,
 											"isPure": true,
 											"kind": "number",
 											"lValueRequested": false,
 											"nodeType": "Literal",
-											"src": "606:3:0",
+											"src": "635:3:0",
 											"typeDescriptions": {
 												"typeIdentifier": "t_rational_104_by_1",
 												"typeString": "int_const 104"
@@ -591,7 +584,7 @@
 											"value": "104"
 										},
 										"nodeType": "ArrayTypeName",
-										"src": "600:10:0",
+										"src": "629:10:0",
 										"typeDescriptions": {
 											"typeIdentifier": "t_array$_t_uint8_$104_storage_ptr",
 											"typeString": "uint8[104]"
@@ -601,13 +594,13 @@
 								},
 								{
 									"constant": false,
-									"id": 50,
+									"id": 49,
 									"mutability": "mutable",
 									"name": "isShuffled",
-									"nameLocation": "626:10:0",
+									"nameLocation": "656:10:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 55,
-									"src": "621:15:0",
+									"scope": 54,
+									"src": "651:15:0",
 									"stateVariable": false,
 									"storageLocation": "default",
 									"typeDescriptions": {
@@ -615,10 +608,10 @@
 										"typeString": "bool"
 									},
 									"typeName": {
-										"id": 49,
+										"id": 48,
 										"name": "bool",
 										"nodeType": "ElementaryTypeName",
-										"src": "621:4:0",
+										"src": "651:4:0",
 										"typeDescriptions": {
 											"typeIdentifier": "t_bool",
 											"typeString": "bool"
@@ -628,13 +621,13 @@
 								},
 								{
 									"constant": false,
-									"id": 52,
+									"id": 51,
 									"mutability": "mutable",
 									"name": "playerHandTotalValue",
-									"nameLocation": "648:20:0",
+									"nameLocation": "679:20:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 55,
-									"src": "642:26:0",
+									"scope": 54,
+									"src": "673:26:0",
 									"stateVariable": false,
 									"storageLocation": "default",
 									"typeDescriptions": {
@@ -642,10 +635,10 @@
 										"typeString": "uint8"
 									},
 									"typeName": {
-										"id": 51,
+										"id": 50,
 										"name": "uint8",
 										"nodeType": "ElementaryTypeName",
-										"src": "642:5:0",
+										"src": "673:5:0",
 										"typeDescriptions": {
 											"typeIdentifier": "t_uint8",
 											"typeString": "uint8"
@@ -655,13 +648,13 @@
 								},
 								{
 									"constant": false,
-									"id": 54,
+									"id": 53,
 									"mutability": "mutable",
 									"name": "dealerHandTotalValue",
-									"nameLocation": "680:20:0",
+									"nameLocation": "712:20:0",
 									"nodeType": "VariableDeclaration",
-									"scope": 55,
-									"src": "674:26:0",
+									"scope": 54,
+									"src": "706:26:0",
 									"stateVariable": false,
 									"storageLocation": "default",
 									"typeDescriptions": {
@@ -669,10 +662,10 @@
 										"typeString": "uint8"
 									},
 									"typeName": {
-										"id": 53,
+										"id": 52,
 										"name": "uint8",
 										"nodeType": "ElementaryTypeName",
-										"src": "674:5:0",
+										"src": "706:5:0",
 										"typeDescriptions": {
 											"typeIdentifier": "t_uint8",
 											"typeString": "uint8"
@@ -682,14 +675,14 @@
 								}
 							],
 							"name": "GameToken",
-							"nameLocation": "394:9:0",
+							"nameLocation": "413:9:0",
 							"nodeType": "StructDefinition",
-							"scope": 56,
-							"src": "387:316:0",
+							"scope": 55,
+							"src": "406:330:0",
 							"visibility": "public"
 						}
 					],
-					"src": "32:672:0"
+					"src": "33:705:0"
 				},
 				"id": 0
 			}

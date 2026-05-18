@@ -49,11 +49,20 @@
 		},
 		"gasEstimates": null,
 		"methodIdentifiers": {
+			"deposit()": "d0e30db0",
 			"lockBet(address,uint256)": "ef899ee5",
-			"payout(address,uint256)": "117de2fd"
+			"loseBet(address,uint256)": "2526bb70",
+			"payout(address,uint256,uint8)": "ee4c5df6"
 		}
 	},
 	"abi": [
+		{
+			"inputs": [],
+			"name": "deposit",
+			"outputs": [],
+			"stateMutability": "payable",
+			"type": "function"
+		},
 		{
 			"inputs": [
 				{
@@ -83,6 +92,29 @@
 					"internalType": "uint256",
 					"name": "amount",
 					"type": "uint256"
+				}
+			],
+			"name": "loseBet",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "player",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "amount",
+					"type": "uint256"
+				},
+				{
+					"internalType": "enum Result",
+					"name": "result",
+					"type": "uint8"
 				}
 			],
 			"name": "payout",
