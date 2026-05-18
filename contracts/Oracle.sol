@@ -18,16 +18,15 @@ contract Oracle is IOracle {
         // payable constructor can receive ether
         owner = payable(msg.sender);
     }
-    // randomise function only for the owner..?
-    // Temporary randomise function, should be off chain ideally
-    function randomise() internal pure returns (uint256) {
-        return uint256(123456789);
+    // Obtained from: https://stackoverflow.com/questions/48848948/how-to-generate-a-random-number-in-solidity
+    function randomise() internal view returns (uint256) {
+        return uint(keccak256(abi.encodePacked(block.prevrandao, block.timestamp)));
     }
 
     function generateSeed(
         uint256 playerSeed
-    ) external override pure returns (bytes32) {
+    ) external override view returns (uint) {
         uint256 serverSeed = randomise();
-        return bytes32(playerSeed % serverSeed);
+        return uint(keccak256(abi.encodePacked(playerSeed, serverSeed)));
     }
 }

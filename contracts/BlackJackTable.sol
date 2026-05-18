@@ -32,7 +32,7 @@ contract BlackJackTable {
         uint256 tokenID,
         address player,
         uint256 bet,
-        bytes32 finalSeed
+        uint256 finalSeed
     );
     event CardDrawn(address player, uint8 card);
     event GameEnded(address player, Result result);

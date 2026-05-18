@@ -35,7 +35,7 @@ struct GameToken {
     address player;
     uint256 playerSeed;
     uint256 serverSeed;
-    bytes32 finalSeed;
+    uint256 finalSeed;
     uint8 drawIndex;
     State gameState;
     Result result;
