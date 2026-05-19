@@ -64,10 +64,12 @@ export default function PlaceBetDialogue({ onPlaceBet }) {
                 }}
 
             >
-                <DialogTitle>Enter in GWEI</DialogTitle>
+                <DialogTitle>Enter in Ether</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         Please enter your bet amount here. The limits are 100 gwei to 0.001 ether.
+                        Minimum: 0.0000001 ETH
+                        Maximum: 0.001 ETH
                     </DialogContentText>
                     <form onSubmit={handleSubmit} id="place-bet">
                         <TextField

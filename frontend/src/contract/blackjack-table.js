@@ -1,6 +1,6 @@
 import { Contract } from "ethers";
 import { getProvider } from "./provider";
-import abi from "./abi/BlackJackTable.json";
+import abi from "./abi/blackjack.json";
 import { BLACKJACK_ADDRESS } from "./config";
 
 export async function getBlackjackContract() {

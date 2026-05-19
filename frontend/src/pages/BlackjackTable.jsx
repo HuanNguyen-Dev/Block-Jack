@@ -12,6 +12,7 @@ function BlackjackTable() {
     const [cards, setCards] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const [hasWagered, setHasWagered] = useState(false);
+    const [hasAssignedToken, setHasAssignedToken] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -48,10 +49,11 @@ function BlackjackTable() {
 
             // Example seed
             const playerSeed = Date.now();
-
             // 1. assign token
-            const tx1 = await contract.assignToken(playerSeed);
-            await tx1.wait();
+            if (!hasAssignedToken) {
+                const tx1 = await contract.assignToken(playerSeed);
+                await tx1.wait();
+            }
 
             // convert ETH -> wei
             const weiBet = BigInt(
