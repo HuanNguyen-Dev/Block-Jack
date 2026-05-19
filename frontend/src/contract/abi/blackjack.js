@@ -1,4 +1,3 @@
-// interact with blackjack contract
 [
   {
     "inputs": [
