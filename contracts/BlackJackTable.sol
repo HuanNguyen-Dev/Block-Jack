@@ -264,6 +264,7 @@ contract BlackJackTable {
         require(token.playerHandTotalValue < 21, "Cannot hit");
 
         // handle blackjack
+        _hitPlayer(token);
         bool ended = handleBlackJackEvents(token);
         if (ended) return;
     }

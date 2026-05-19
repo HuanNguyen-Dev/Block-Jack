@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { Box, Button, Stack } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import PlaceBetDialogue from '../components/BetInput';
+import { getBlackjackContract } from '../contract/blackjack-table';
 
 function BlackjackTable() {
     const baseURL = 'https://deckofcardsapi.com/static/img/';
@@ -41,11 +42,36 @@ function BlackjackTable() {
         fetchCards();
     }, []);
 
-    const handlePlaceBet = (betAmount) => {
-        console.log(`Bet placed: ${betAmount}`);
-        setHasWagered(true);  // Set the state to show the game buttons
+    const handlePlaceBet = async (betAmount) => {
+        try {
+            const contract = await getBlackjackContract();
 
-        // Update the game token to include the new bet amount here
+            // Example seed
+            const playerSeed = Date.now();
+
+            // 1. assign token
+            const tx1 = await contract.assignToken(playerSeed);
+            await tx1.wait();
+
+            // convert ETH -> wei
+            const weiBet = BigInt(
+                Number(betAmount) * 1e18
+            );
+
+            // 2. place bet
+            const tx2 = await contract.placeBets(
+                weiBet
+            );
+
+            await tx2.wait();
+
+            console.log("Bet placed!");
+
+            setHasWagered(true);
+
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     return (
@@ -88,7 +114,14 @@ function BlackjackTable() {
                         sx={{
                             minWidth: '120px'
                         }}
-                        onClick={() => console.log('Stand')}>
+                        onClick={async () => {
+                            const contract =
+                                await getBlackjackContract();
+
+                            const tx = await contract.stand();
+
+                            await tx.wait();
+                        }}>
                         Stand
                     </Button>
 
@@ -99,7 +132,14 @@ function BlackjackTable() {
                         sx={{
                             minWidth: '120px'
                         }}
-                        onClick={() => console.log('Hit')}>
+                        onClick={async () => {
+                            const contract =
+                                await getBlackjackContract();
+
+                            const tx = await contract.hitPlayer();
+
+                            await tx.wait();
+                        }}>
                         Hit
                     </Button>
 

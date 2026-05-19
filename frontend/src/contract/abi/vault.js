@@ -1,0 +1,476 @@
+// interact with vault contract
+[
+  {
+    "inputs": [],
+    "name": "deposit",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "player",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "lockBet",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "stateMutability": "payable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Deposit",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "player",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "balance",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "LockBet",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "player",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "betAmount",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "tokenID",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "bet",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "player",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "playerSeed",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "serverSeed",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "finalSeed",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "drawIndex",
+            "type": "uint8"
+          },
+          {
+            "internalType": "enum State",
+            "name": "gameState",
+            "type": "uint8"
+          },
+          {
+            "internalType": "enum Result",
+            "name": "result",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes",
+            "name": "deck",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bool",
+            "name": "isShuffled",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerHandTotalValue",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dealerHandTotalValue",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerAceCount",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dealerAceCount",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8[]",
+            "name": "playerHand",
+            "type": "uint8[]"
+          }
+        ],
+        "internalType": "struct GameToken",
+        "name": "token",
+        "type": "tuple"
+      }
+    ],
+    "name": "loseBet",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "player",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "LoseBet",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "player",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "betAmount",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "tokenID",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "bet",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "player",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "playerSeed",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "serverSeed",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "finalSeed",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "drawIndex",
+            "type": "uint8"
+          },
+          {
+            "internalType": "enum State",
+            "name": "gameState",
+            "type": "uint8"
+          },
+          {
+            "internalType": "enum Result",
+            "name": "result",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes",
+            "name": "deck",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bool",
+            "name": "isShuffled",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerHandTotalValue",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dealerHandTotalValue",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerAceCount",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dealerAceCount",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8[]",
+            "name": "playerHand",
+            "type": "uint8[]"
+          }
+        ],
+        "internalType": "struct GameToken",
+        "name": "token",
+        "type": "tuple"
+      }
+    ],
+    "name": "payout",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "player",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "enum Result",
+        "name": "result",
+        "type": "uint8"
+      }
+    ],
+    "name": "Payout",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "player",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Withdraw",
+    "type": "event"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "balances",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getContractBalance",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getHouseBalance",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "player",
+        "type": "address"
+      }
+    ],
+    "name": "getPlayerBalance",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "houseBalance",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "locked",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
