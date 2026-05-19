@@ -5,6 +5,7 @@ import "contracts/Data.sol";
 
 contract Vault is IVault {
     // owner
+    uint256 public houseBalance;
     // for each address assign a uint256 (bal)
     mapping(address => uint256) public balances;
 
@@ -17,7 +18,6 @@ contract Vault is IVault {
     event Payout(address indexed player, uint256 amount, Result result);
     event Withdraw(address indexed player, uint256 amount);
     event LoseBet(address indexed player, uint256 amount);
-
 
     // modifier for only the owner
     address public owner;
@@ -33,11 +33,16 @@ contract Vault is IVault {
     }
 
     // deposit function extern payable
-    function deposit() external override payable {
+    function deposit() external payable override {
         require(msg.value > 0, "Deposit amount must be > 0");
         balances[msg.sender] += msg.value;
 
+        houseBalance += msg.value;
         emit Deposit(msg.sender, msg.value);
+    }
+
+    function getHouseBalance() public view returns (uint256){
+        return houseBalance;
     }
 
     function getContractBalance() public view returns (uint256) {
@@ -51,7 +56,6 @@ contract Vault is IVault {
     // lock the users bet
     function lockBet(address player, uint256 amount) external override {
         require(balances[player] >= amount, "Insufficient balance");
-        require(player != address(0), "ZERO PLAYER");
 
         balances[player] -= amount;
         locked[player] += amount;
@@ -59,11 +63,13 @@ contract Vault is IVault {
     }
     // withdraw function takes amount
 
-        function withdraw(uint256 amount) public {
+    function withdraw(uint256 amount) public {
         require(amount > 0, "Please enter withdrawal amount");
         require(balances[msg.sender] >= amount, "Insufficient balance");
+        require(houseBalance >= amount, "House insolvent");
 
         balances[msg.sender] -= amount;
+        houseBalance -= amount;
 
         (bool success, ) = msg.sender.call{value: amount}("");
         require(success, "Withdrawal failed");
@@ -72,32 +78,57 @@ contract Vault is IVault {
     }
 
     // payout functrion (only owner) - takes player and amount
-    function payout(address player, uint256 betAmount, Result result) public override onlyOwner {
+    function payout(
+        address player,
+        uint256 betAmount,
+        GameToken memory token
+    ) public override {
         require(betAmount > 0, "Bet amount must be more than 0");
-  
-        require(address(this).balance >= betAmount * 2 && result == Result.PLAYER_WIN, "House has insufficient funds");
-         require(address(this).balance >= betAmount && result == Result.PUSH, "House has insufficient funds");
         require(locked[player] >= betAmount, "No active bet found");
 
         locked[player] -= betAmount;
-        bool success = false;
-        if (result == Result.PLAYER_WIN) (success, ) = player.call{value: betAmount * 2}("");
-        else if (result == Result.PUSH)(success, ) = player.call{value: betAmount}("");
-        require(success, "Payout failed");
+        // Player win
+        if (token.result == Result.PLAYER_WIN) {
+            uint256 payoutAmount = betAmount * 2;
+            require(
+                houseBalance >= payoutAmount,
+                "House has insufficient funds"
+            );
 
-        emit Payout(player, betAmount, result);
+            houseBalance -= payoutAmount;
+
+            (bool success, ) = player.call{value: payoutAmount}("");
+            require(success, "Payout failed");
+        } // Player push
+        else if (token.result == Result.PUSH) {
+            require(
+                houseBalance >= betAmount,
+                "House has insufficient funds"
+            );
+
+            houseBalance -= betAmount;
+
+            (bool success, ) = player.call{value: betAmount}("");
+            require(success, "Payout failed");
+        }
+
+        emit Payout(player, betAmount, token.result);
     }
     // receive() payable due to deposit being a payable function
     receive() external payable {
         revert("Use deposit()");
     }
 
-    function loseBet(address player, uint256 betAmount) public override onlyOwner {
+    function loseBet(
+        address player,
+        uint256 betAmount,
+        GameToken memory token
+    ) public override {
         require(locked[player] >= betAmount, "No active locked bet found");
-
+        require(token.result == Result.DEALER_WIN, "Player has not lost");
         // Deduct from players locked stake; house keeps eth in contract
         locked[player] -= betAmount;
-
+        // House already owns ETH implicitly
         emit LoseBet(player, betAmount);
     }
 }

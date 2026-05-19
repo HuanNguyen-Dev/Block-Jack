@@ -34,9 +34,18 @@ contract BlackJackTable {
         uint256 bet,
         uint256 finalSeed
     );
-    event CardDrawn(address player, uint8 card);
+    event HandleTableEvents(GameToken token);
+    event CardDrawn(address player, uint256 originalSeed, uint8 value,uint8[104]deck);
+    event Shuffle(bytes tokenDeck, uint8[104] deck);
     event GameEnded(address player, Result result);
+    event InitialHand(uint8 dealer, uint8 player);
     // Modifiers
+
+    function getPlayerHand() public view returns ( uint8[] memory){
+        uint256 gameID = activeGame[msg.sender];
+        GameToken storage token = games[gameID];
+        return token.playerHand;
+    }
 
     function assignToken(uint256 _playerSeed) external {
         require(activeGame[msg.sender] == 0, "Game already in progress");
@@ -54,8 +63,7 @@ contract BlackJackTable {
         token.playerHandTotalValue = 0;
         token.dealerHandTotalValue = 0;
         token.bet = 0;
-        token.playerIsSoft = false;
-        token.dealerIsSoft = false;
+
 
         emit GameCreated(token.tokenID, msg.sender);
     }
@@ -87,7 +95,9 @@ contract BlackJackTable {
         emit BetPlaced(token.tokenID, msg.sender, token.bet, token.finalSeed);
     }
 
-    function shuffleDeck(GameToken storage token) internal {
+
+
+    function shuffleDeck(GameToken storage token) internal{
         require(
             token.gameState == State.DEALER_TURN,
             "Only the dealer can shuffle"
@@ -96,8 +106,9 @@ contract BlackJackTable {
         // Setting out the deck, 0-3 represents AceH, AceD, AceC, AceS,
         // 4-7 represents 2H, 2D, 2C, 2S... etc
         // This is a two shoe deck
+        uint8[104] memory deck;
         for (uint8 i = 0; i < deckSize; i++) {
-            token.deck[i] = i;
+            deck[i] = i;
         }
 
         // Obtained from https://medium.com/@jannden/how-to-shuffle-an-array-in-solidity-fe08b028287d
@@ -105,10 +116,31 @@ contract BlackJackTable {
             // Generate a random number
             uint256 n = i + ((uint256(token.finalSeed)) % (deckSize - i));
             // Swap the location of the cards
-            (token.deck[i], token.deck[n]) = (token.deck[n], token.deck[i]);
+            (deck[i],deck[n]) = (deck[n], deck[i]);
+        }
+        token.deck = abi.encode(deck, token.finalSeed);
+        token.isShuffled = true;
+        emit Shuffle(token.deck, deck);
+    }
+
+    function settleFinalHands(GameToken storage token) internal returns (bool) {
+        if (token.playerHandTotalValue > token.dealerHandTotalValue){
+            endGame(token, Result.PLAYER_WIN, token.bet * 2);
+            return true;
         }
 
-        token.isShuffled = true;
+        if (token.dealerHandTotalValue > token.playerHandTotalValue){
+            endGame(token, Result.DEALER_WIN, token.bet);
+            return true;
+        }
+
+        if (token.dealerHandTotalValue == token.playerHandTotalValue){
+            endGame(token, Result.PUSH, token.bet);
+            return true;
+        }
+
+        if (!handleBlackJackEvents(token)) return false;
+        return false;
     }
 
     function handleBlackJackEvents(
@@ -145,21 +177,8 @@ contract BlackJackTable {
             return true;
         }
 
-        if (token.playerHandTotalValue > token.dealerHandTotalValue){
-            endGame(token, Result.PLAYER_WIN, token.bet * 2);
-            return true;
-        }
 
-        if (token.dealerHandTotalValue > token.playerHandTotalValue){
-            endGame(token, Result.DEALER_WIN, token.bet);
-            return true;
-        }
-
-        if (token.dealerHandTotalValue == token.playerHandTotalValue){
-            endGame(token, Result.PUSH, token.bet);
-            return true;
-        }
-
+        emit HandleTableEvents(token);
         return false;
     }
 
@@ -188,6 +207,7 @@ contract BlackJackTable {
         // _hitDealer(token);
 
         // Early exits
+        emit InitialHand(token.dealerHandTotalValue, token.playerHandTotalValue);
         if (handleBlackJackEvents(token)) return;
 
         token.gameState = State.PLAYER_TURN;
@@ -204,35 +224,32 @@ contract BlackJackTable {
     function addCardToHand(
         uint8 card,
         uint8 currentTotal,
-        bool isSoft
-    ) internal pure returns (uint8, bool) {
-        // Handling multiple aces
-        uint8 newTotal = card + currentTotal;
+        uint8 aceCount
+    ) internal pure returns (uint8, uint8) {
+        // Handling multiple aces - treat ace as an 11 first
         if (isAce(card)) {
-            if (currentTotal + 11 <= 21) {
-                return (currentTotal + 11, true);
-            } else if( newTotal >21 && isSoft){
-                return (newTotal - 10, false);
-            }
-            else{
-                return (currentTotal +1, isSoft);
-            }
-        } 
-        if (newTotal > 21 && isSoft){
-            return (newTotal - 10, false);
+            currentTotal += 11;
+            aceCount += 1;
+        } else{
+            currentTotal += card;
         }
-        return (newTotal, isSoft);
+        while(currentTotal > 21 && aceCount > 0){
+            currentTotal -= 10;
+            aceCount--;
+        }
+        return (currentTotal, aceCount);
     }
 
     function drawCard(GameToken storage token) internal returns (uint8) {
         require(token.isShuffled, "Deck has not been shuffled");
-        uint8 raw = token.deck[token.drawIndex];
+        (uint8[104] memory deck, uint256 originalSeed) = abi.decode(token.deck, (uint8[104], uint256));
+        uint8 raw = deck[token.drawIndex];
         // Map 13 cards
         uint8 value = (raw % 13) + 1;
         if (value > 10 ) value = 10;
         token.drawIndex++;
         // Emit raw value so we retain information on suits
-        emit CardDrawn(token.player, raw);
+        emit CardDrawn(token.player, originalSeed, value, deck);
         return value;
     }
 
@@ -246,29 +263,29 @@ contract BlackJackTable {
         );
         require(token.playerHandTotalValue < 21, "Cannot hit");
 
-        _hitPlayer(token);
-
         // handle blackjack
         bool ended = handleBlackJackEvents(token);
         if (ended) return;
     }
 
-    function _hitPlayer(GameToken storage token) internal {
+    function _hitPlayer(GameToken storage token) internal  returns (uint8){
         uint8 card = drawCard(token);
-        (token.playerHandTotalValue,token.playerIsSoft) = addCardToHand(
+        (token.playerHandTotalValue,token.playerAceCount) = addCardToHand(
             card,
             token.playerHandTotalValue,
-            token.playerIsSoft
+            token.playerAceCount
         );
+        token.playerHand.push(card);
+        return card;
     }
 
     function _hitDealer(GameToken storage token) internal {
         require(token.gameState == State.DEALER_TURN);
         uint8 card = drawCard(token);
-        (token.dealerHandTotalValue, token.dealerIsSoft) = addCardToHand(
+        (token.dealerHandTotalValue, token.dealerAceCount) = addCardToHand(
             card,
             token.dealerHandTotalValue,
-            token.dealerIsSoft
+            token.dealerAceCount
         );
     }
 
@@ -283,23 +300,21 @@ contract BlackJackTable {
         while (token.dealerHandTotalValue < 17) {
             _hitDealer(token);
         }
-
-        handleBlackJackEvents(token);
+        settleFinalHands(token);
     }
 
     function endGame(
         GameToken storage token,
         Result result,
-        uint256 payout
+        uint256 amount
     ) internal {
         token.result = result;
         token.gameState = State.FINISHED;
-        activeGame[token.player] = 0;
-        if (payout > 0 && (token.result == Result.PLAYER_WIN || token.result == Result.PUSH) ) {
-            vault.payout(token.player, payout, token.result);
+        if (amount > 0 && (token.result == Result.PLAYER_WIN || token.result == Result.PUSH) ) {
+            vault.payout(token.player, amount, token);
         }
         else if(token.result == Result.DEALER_WIN){
-            vault.loseBet(token.player, payout);
+            vault.loseBet(token.player, amount,token);
         }
         delete activeGame[token.player];
         token.bet = 0;
