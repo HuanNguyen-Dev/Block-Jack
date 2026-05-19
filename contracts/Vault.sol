@@ -72,29 +72,29 @@ contract Vault is IVault {
     }
 
     // payout functrion (only owner) - takes player and amount
-    function payout(address player, uint256 betAmount, Result result) public override onlyOwner {
+    function payout(address player, uint256 betAmount, GameToken memory token) public override{
         require(betAmount > 0, "Bet amount must be more than 0");
   
-        require(address(this).balance >= betAmount * 2 && result == Result.PLAYER_WIN, "House has insufficient funds");
-         require(address(this).balance >= betAmount && result == Result.PUSH, "House has insufficient funds");
+        require(balances[owner] >= betAmount * 2 && token.result == Result.PLAYER_WIN, "House has insufficient funds");
+         require(balances[owner] >= betAmount && token.result == Result.PUSH, "House has insufficient funds");
         require(locked[player] >= betAmount, "No active bet found");
 
         locked[player] -= betAmount;
         bool success = false;
-        if (result == Result.PLAYER_WIN) (success, ) = player.call{value: betAmount * 2}("");
-        else if (result == Result.PUSH)(success, ) = player.call{value: betAmount}("");
+        if (token.result == Result.PLAYER_WIN) (success, ) = player.call{value: betAmount * 2}("");
+        else if (token.result == Result.PUSH)(success, ) = player.call{value: betAmount}("");
         require(success, "Payout failed");
 
-        emit Payout(player, betAmount, result);
+        emit Payout(player, betAmount, token.result);
     }
     // receive() payable due to deposit being a payable function
     receive() external payable {
         revert("Use deposit()");
     }
 
-    function loseBet(address player, uint256 betAmount) public override onlyOwner {
+    function loseBet(address player, uint256 betAmount, GameToken memory token) public override {
         require(locked[player] >= betAmount, "No active locked bet found");
-
+        require(token.result == Result.DEALER_WIN, "Player has not lost");
         // Deduct from players locked stake; house keeps eth in contract
         locked[player] -= betAmount;
 

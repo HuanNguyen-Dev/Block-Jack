@@ -3,5 +3,5 @@ pragma solidity ^0.8.30; // may have to change for ganache
 import "contracts/Data.sol";
 
 interface IOracle {
-    function generateSeed(uint256 playerSeed) external view returns (uint);
+    function generateSeed(uint256 playerSeed) external view returns ( uint256 );
 }

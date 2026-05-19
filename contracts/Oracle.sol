@@ -20,13 +20,13 @@ contract Oracle is IOracle {
     }
     // Obtained from: https://stackoverflow.com/questions/48848948/how-to-generate-a-random-number-in-solidity
     function randomise() internal view returns (uint256) {
-        return uint(keccak256(abi.encodePacked(block.prevrandao, block.timestamp)));
+        return uint256(keccak256(abi.encodePacked(block.prevrandao, block.timestamp)));
     }
 
     function generateSeed(
         uint256 playerSeed
-    ) external override view returns (uint) {
+    ) external override view returns (uint256) {
         uint256 serverSeed = randomise();
-        return uint(keccak256(abi.encodePacked(playerSeed, serverSeed)));
+        return uint256(keccak256(abi.encodePacked(playerSeed, serverSeed)));
     }
 }
