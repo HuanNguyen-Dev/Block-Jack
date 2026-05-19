@@ -5,6 +5,8 @@ import { Box, Button, Stack } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import PlaceBetDialogue from '../components/BetInput';
 import { getBlackjackContract } from '../contract/blackjack-table';
+import { getVaultContract } from '../contract/vault';
+import { parseEther } from "ethers";
 
 function BlackjackTable() {
     const baseURL = 'https://deckofcardsapi.com/static/img/';
@@ -12,7 +14,11 @@ function BlackjackTable() {
     const [cards, setCards] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const [hasWagered, setHasWagered] = useState(false);
-    const [hasAssignedToken, setHasAssignedToken] = useState(false);
+    const [gameId, setGameId] = useState(0n);
+    const [vaultBalance, setVaultBalance] = useState(0n);
+    const [needsDeposit, setNeedsDeposit] = useState(false);
+    const [depositAmount, setDepositAmount] = useState("");
+    const [address, setAddress] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -43,22 +49,104 @@ function BlackjackTable() {
         fetchCards();
     }, []);
 
+
+    useEffect(() => {
+        const checkBalance = async () => {
+            try {
+                const vault = await getVaultContract();
+                const contract = await getBlackjackContract();
+
+                const player = await contract.runner.getAddress();
+
+                // assumes Vault has: balances[address]
+                const balance = await vault.balances(player);
+
+                setVaultBalance(balance);
+
+            } catch (err) {
+                console.error("Balance check failed:", err);
+            }
+        };
+
+        checkBalance();
+    }, []);
+
+    useEffect(() => {
+        const loadAddress = async () => {
+            try {
+                const contract = await getBlackjackContract();
+                const player = await contract.runner.getAddress();
+
+                setAddress(player);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        loadAddress();
+    }, []);
+
+
+    useEffect(() => {
+        if (!address) return;
+        checkGame();
+    }, [address]);
+    const handleDeposit = async (amountEth) => {
+        try {
+            const vault = await getVaultContract();
+
+            const tx = await vault.deposit({
+                value: parseEther(amountEth.toString())
+            });
+
+            setDepositAmount(amountEth);
+            await tx.wait();
+
+            setNeedsDeposit(false);
+            await checkBalance();
+            console.log("Deposit successful");
+
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const checkBalance = async () => {
+        try {
+            const vault = await getVaultContract();
+            const contract = await getBlackjackContract();
+
+            const player = await contract.runner.getAddress();
+
+            const balance = await vault.balances(player);
+
+            setVaultBalance(balance);
+
+            setNeedsDeposit(balance === 0n);
+        } catch (err) {
+            console.error("Balance check failed:", err);
+        }
+    };
+
     const handlePlaceBet = async (betAmount) => {
         try {
             const contract = await getBlackjackContract();
 
+            if (needsDeposit) {
+                console.log("User must deposit first");
+                return;
+            }
             // Example seed
             const playerSeed = Date.now();
             // 1. assign token
-            if (!hasAssignedToken) {
+            if (gameId === 0n) {
                 const tx1 = await contract.assignToken(playerSeed);
                 await tx1.wait();
+                await checkGame();
             }
 
             // convert ETH -> wei
-            const weiBet = BigInt(
-                Number(betAmount) * 1e18
-            );
+            const weiBet = parseEther(betAmount.toString());
 
             // 2. place bet
             const tx2 = await contract.placeBets(
@@ -66,17 +154,26 @@ function BlackjackTable() {
             );
 
             await tx2.wait();
-
+            await checkGame();
             console.log("Bet placed!");
-
-            setHasWagered(true);
+            setHasWagered(gameId !== 0n);
 
         } catch (err) {
             console.error(err);
         }
     };
 
+    const checkGame = async () => {
+        const contract = await getBlackjackContract();
+        const player = await contract.runner.getAddress();
+
+        const id = await contract.activeGame(player);
+
+        setGameId(BigInt(id));
+    };
+
     return (
+
         <Box
             component="section"
             className='blackjack-hero'
@@ -101,62 +198,70 @@ function BlackjackTable() {
                 }}>
                 <span>Back</span>
             </button>
-            {hasWagered ?
-                <Stack direction="row"
-                    spacing={2}
-                    sx={{
-                        position: 'relative',
-                        zIndex: 10,
-                        bottom: 80,
-                    }}>
-                    <Button
-                        variant="contained"
-                        color="error"
-                        size="large"
-                        sx={{
-                            minWidth: '120px'
-                        }}
-                        onClick={async () => {
-                            const contract =
-                                await getBlackjackContract();
+            {
+                needsDeposit ? (
+                    <Stack>
+                        <Button onClick={() => handleDeposit("0.01")}>
+                            Deposit to Vault
+                        </Button>
+                    </Stack>
+                ) :
+                    hasWagered ?
+                        <Stack direction="row"
+                            spacing={2}
+                            sx={{
+                                position: 'relative',
+                                zIndex: 10,
+                                bottom: 80,
+                            }}>
+                            <Button
+                                variant="contained"
+                                color="error"
+                                size="large"
+                                sx={{
+                                    minWidth: '120px'
+                                }}
+                                onClick={async () => {
+                                    const contract =
+                                        await getBlackjackContract();
 
-                            const tx = await contract.stand();
+                                    const tx = await contract.stand();
 
-                            await tx.wait();
-                        }}>
-                        Stand
-                    </Button>
+                                    await tx.wait();
+                                }}>
+                                Stand
+                            </Button>
 
-                    <Button
-                        variant="contained"
-                        color="success"
-                        size="large"
-                        sx={{
-                            minWidth: '120px'
-                        }}
-                        onClick={async () => {
-                            const contract =
-                                await getBlackjackContract();
+                            <Button
+                                variant="contained"
+                                color="success"
+                                size="large"
+                                sx={{
+                                    minWidth: '120px'
+                                }}
+                                onClick={async () => {
+                                    const contract =
+                                        await getBlackjackContract();
 
-                            const tx = await contract.hitPlayer();
+                                    const tx = await contract.hitPlayer();
 
-                            await tx.wait();
-                        }}>
-                        Hit
-                    </Button>
+                                    await tx.wait();
+                                }}>
+                                Hit
+                            </Button>
 
-                    <Button
-                        variant="contained"
-                        color="warning"
-                        size="large"
-                        sx={{
-                            minWidth: '120px'
-                        }}
-                        onClick={() => console.log('Double Down')}>
-                        Double Down
-                    </Button>
-                </Stack>
-                : <PlaceBetDialogue onPlaceBet={handlePlaceBet} />
+                            <Button
+                                variant="contained"
+                                color="warning"
+                                size="large"
+                                sx={{
+                                    minWidth: '120px'
+                                }}
+                                onClick={() => console.log('Double Down')}>
+                                Double Down
+                            </Button>
+                        </Stack>
+                        : <PlaceBetDialogue onPlaceBet={handlePlaceBet} />
 
 
 

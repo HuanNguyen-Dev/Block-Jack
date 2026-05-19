@@ -47,6 +47,10 @@ contract BlackJackTable {
         return token.playerHand;
     }
 
+    function hasActiveGame(address player) external view returns (bool) {
+        return activeGame[player] != 0;
+    }
+
     function assignToken(uint256 _playerSeed) external {
         require(activeGame[msg.sender] == 0, "Game already in progress");
         uint256 gameID = nextGameID++;
@@ -317,8 +321,8 @@ contract BlackJackTable {
         else if(token.result == Result.DEALER_WIN){
             vault.loseBet(token.player, amount,token);
         }
-        delete activeGame[token.player];
         token.bet = 0;
+        delete activeGame[token.player];
         emit GameEnded(token.player, result);
     }
 }
