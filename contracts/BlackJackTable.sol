@@ -57,8 +57,7 @@ contract BlackJackTable {
         token.playerHandTotalValue = 0;
         token.dealerHandTotalValue = 0;
         token.bet = 0;
-        token.playerIsSoft = false;
-        token.dealerIsSoft = false;
+
 
         emit GameCreated(token.tokenID, msg.sender);
     }
@@ -135,6 +134,7 @@ contract BlackJackTable {
         }
 
         if (!handleBlackJackEvents(token)) return false;
+        return false;
     }
 
     function handleBlackJackEvents(
@@ -218,24 +218,20 @@ contract BlackJackTable {
     function addCardToHand(
         uint8 card,
         uint8 currentTotal,
-        bool isSoft
-    ) internal pure returns (uint8, bool) {
-        // Handling multiple aces
-        uint8 newTotal = card + currentTotal;
+        uint8 aceCount
+    ) internal pure returns (uint8, uint8) {
+        // Handling multiple aces - treat ace as an 11 first
         if (isAce(card)) {
-            if (currentTotal + 11 <= 21) {
-                return (currentTotal + 11, true);
-            } else if( newTotal >21 && isSoft){
-                return (newTotal - 10, false);
-            }
-            else{
-                return (currentTotal +1, isSoft);
-            }
-        } 
-        if (newTotal > 21 && isSoft){
-            return (newTotal - 10, false);
+            currentTotal += 11;
+            aceCount += 1;
+        } else{
+            currentTotal += card;
         }
-        return (newTotal, isSoft);
+        while(currentTotal > 21 && aceCount > 0){
+            currentTotal -= 10;
+            aceCount--;
+        }
+        return (currentTotal, aceCount);
     }
 
     function drawCard(GameToken storage token) internal returns (uint8) {
@@ -270,10 +266,10 @@ contract BlackJackTable {
 
     function _hitPlayer(GameToken storage token) internal  returns (uint8){
         uint8 card = drawCard(token);
-        (token.playerHandTotalValue,token.playerIsSoft) = addCardToHand(
+        (token.playerHandTotalValue,token.playerAceCount) = addCardToHand(
             card,
             token.playerHandTotalValue,
-            token.playerIsSoft
+            token.playerAceCount
         );
         return card;
     }
@@ -281,10 +277,10 @@ contract BlackJackTable {
     function _hitDealer(GameToken storage token) internal {
         require(token.gameState == State.DEALER_TURN);
         uint8 card = drawCard(token);
-        (token.dealerHandTotalValue, token.dealerIsSoft) = addCardToHand(
+        (token.dealerHandTotalValue, token.dealerAceCount) = addCardToHand(
             card,
             token.dealerHandTotalValue,
-            token.dealerIsSoft
+            token.dealerAceCount
         );
     }
 
@@ -305,16 +301,15 @@ contract BlackJackTable {
     function endGame(
         GameToken storage token,
         Result result,
-        uint256 payout
+        uint256 amount
     ) internal {
         token.result = result;
         token.gameState = State.FINISHED;
-        activeGame[token.player] = 0;
-        if (payout > 0 && (token.result == Result.PLAYER_WIN || token.result == Result.PUSH) ) {
-            vault.payout(token.player, payout, token);
+        if (amount > 0 && (token.result == Result.PLAYER_WIN || token.result == Result.PUSH) ) {
+            vault.payout(token.player, amount, token);
         }
         else if(token.result == Result.DEALER_WIN){
-            vault.loseBet(token.player, payout,token);
+            vault.loseBet(token.player, amount,token);
         }
         delete activeGame[token.player];
         token.bet = 0;

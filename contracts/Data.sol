@@ -43,7 +43,7 @@ struct GameToken {
     bool isShuffled;
     uint8 playerHandTotalValue;
     uint8 dealerHandTotalValue;
-    bool dealerIsSoft;
-    bool playerIsSoft;
-    uint8[32] playerHand;
+    uint8 playerAceCount;
+    uint8 dealerAceCount;
+    uint8[] playerHand;
 }
