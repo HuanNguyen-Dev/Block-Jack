@@ -35,11 +35,17 @@ contract BlackJackTable {
         uint256 finalSeed
     );
     event HandleTableEvents(GameToken token);
-    event CardDrawn(address player, uint256 originalSeed, uint8[104]deck);
+    event CardDrawn(address player, uint256 originalSeed, uint8 value,uint8[104]deck);
     event Shuffle(bytes tokenDeck, uint8[104] deck);
     event GameEnded(address player, Result result);
     event InitialHand(uint8 dealer, uint8 player);
     // Modifiers
+
+    function getPlayerHand() public view returns ( uint8[] memory){
+        uint256 gameID = activeGame[msg.sender];
+        GameToken storage token = games[gameID];
+        return token.playerHand;
+    }
 
     function assignToken(uint256 _playerSeed) external {
         require(activeGame[msg.sender] == 0, "Game already in progress");
@@ -243,7 +249,7 @@ contract BlackJackTable {
         if (value > 10 ) value = 10;
         token.drawIndex++;
         // Emit raw value so we retain information on suits
-        emit CardDrawn(token.player, originalSeed, deck);
+        emit CardDrawn(token.player, originalSeed, value, deck);
         return value;
     }
 
@@ -257,8 +263,6 @@ contract BlackJackTable {
         );
         require(token.playerHandTotalValue < 21, "Cannot hit");
 
-        uint8 card = _hitPlayer(token);
-        token.playerHand.push(card);
         // handle blackjack
         bool ended = handleBlackJackEvents(token);
         if (ended) return;
@@ -271,6 +275,7 @@ contract BlackJackTable {
             token.playerHandTotalValue,
             token.playerAceCount
         );
+        token.playerHand.push(card);
         return card;
     }
 
