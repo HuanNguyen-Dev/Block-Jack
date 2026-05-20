@@ -7,6 +7,7 @@ import Alert from '@mui/material/Alert';
 import { getVaultContract } from '../contract/vault';
 import WithdrawButton from '../components/Withdraw';
 import { formatEther } from "ethers";
+import { parseTxError } from '../utils';
 
 function Home() {
     const [cards, setCards] = useState([]);
@@ -18,16 +19,6 @@ function Home() {
     const [balance, setBalance] = useState("0");
     const [address, setAddress] = useState("");
     const navigate = useNavigate();
-
-    const cleanError = (msg) => {
-        if (!msg) return "Transaction failed";
-
-        if (msg.includes("withdrawal amount")) return "Enter a valid amount";
-        if (msg.includes("Insufficient balance")) return "Not enough balance";
-        if (msg.includes("House insolvent")) return "Casino has insufficient liquidity";
-
-        return msg;
-    };
 
     const withdraw = async (amountInWei) => {
         try {
@@ -43,15 +34,7 @@ function Home() {
             return receipt;
         } catch (err) {
             console.error("Withdraw failed:", err);
-
-            const reason =
-                err?.reason ||
-                err?.shortMessage ||
-                err?.data?.message ||
-                err?.error?.message ||
-                err?.message;
-
-            setErrorMsg(cleanError(reason));
+            setErrorMsg(parseTxError(err));
             setOpenError(true);
 
             return;

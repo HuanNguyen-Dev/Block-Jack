@@ -8,6 +8,9 @@ import PlaceDepositDialogue from '../components/DepositInput';
 import { getBlackjackContract } from '../contract/blackjack-table';
 import { getVaultContract } from '../contract/vault';
 import { parseEther } from "ethers";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import { parseTxError } from '../utils';
 
 function BlackjackTable() {
     const baseURL = 'https://deckofcardsapi.com/static/img/';
@@ -17,9 +20,11 @@ function BlackjackTable() {
     const [hasWagered, setHasWagered] = useState(false);
     const [hasGame, setHasGame] = useState(false);
     const [vaultBalance, setVaultBalance] = useState(0n);
-    const [needsDeposit, setNeedsDeposit] = useState(false);
+    const [needsDeposit, setNeedsDeposit] = useState(null);
     const [depositAmount, setDepositAmount] = useState("");
     const [address, setAddress] = useState("");
+    const [errorMsg, setErrorMsg] = useState("");
+    const [openError, setOpenError] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -50,12 +55,6 @@ function BlackjackTable() {
         fetchCards();
     }, []);
 
-
-    useEffect(() => {
-
-        checkBalance();
-    }, []);
-
     useEffect(() => {
         const loadAddress = async () => {
             try {
@@ -65,6 +64,10 @@ function BlackjackTable() {
                 setAddress(player);
             } catch (err) {
                 console.error(err);
+                setErrorMsg(parseTxError(err));
+                setOpenError(true);
+
+                return;
             }
         };
 
@@ -75,6 +78,7 @@ function BlackjackTable() {
     useEffect(() => {
         if (!address) return;
         checkGame();
+        checkBalance();
     }, [address]);
 
     const handleDeposit = async (amountEth) => {
@@ -94,6 +98,9 @@ function BlackjackTable() {
 
         } catch (err) {
             console.error(err);
+
+            setErrorMsg(parseTxError(err));
+            setOpenError(true);
         }
     };
 
@@ -110,6 +117,9 @@ function BlackjackTable() {
             setNeedsDeposit(BigInt(balance.toString()) === 0n);
         } catch (err) {
             console.error("Balance check failed:", err);
+
+            setErrorMsg(parseTxError(err));
+            setOpenError(true);
         }
     };
 
@@ -145,6 +155,9 @@ function BlackjackTable() {
 
         } catch (err) {
             console.error(err);
+
+            setErrorMsg(parseTxError(err));
+            setOpenError(true);
         }
     };
 
@@ -158,96 +171,108 @@ function BlackjackTable() {
     };
 
     return (
+        <>
+            <Box
+                component="section"
+                className='blackjack-hero'
+                sx={{
 
-        <Box
-            component="section"
-            className='blackjack-hero'
-            sx={{
+                    position: 'relative',
+                    flexDirection: 'column',
+                    width: '100%',
+                    height: '100%'
+                }}
+            >
                 
-                position: 'relative',
-                flexDirection: 'column',
-                width: '100%',
-                height: '100%'
-            }}
-        >
-            {/* <h1 className="table-title">Blackjack Table</h1> */}
-            <img src={blackjackTableIMG} alt="Blackjack Table" className="table-image" />
+                {/* <h1 className="table-title">Blackjack Table</h1> */}
+                <img src={blackjackTableIMG} alt="Blackjack Table" className="table-image" />
 
-            <button className='play-button'
-                onClick={() => navigate('/')}
-                style={{
-                    position: 'absolute',
-                    top: 10,
-                    left: 10,
-                    padding: '10px 20px',
-                }}>
-                <span>Back</span>
-            </button>
-            {
-                needsDeposit ? (
-                      <PlaceDepositDialogue onPlaceDeposit={handleDeposit} />
-                ) :
-                    hasWagered ?
-                        <Stack direction="row"
-                            spacing={2}
-                            sx={{
-                                position: 'relative',
-                                zIndex: 10,
-                                bottom: 80,
-                            }}>
-                            <Button
-                                variant="contained"
-                                color="error"
-                                size="large"
+                <button className='play-button'
+                    onClick={() => navigate('/')}
+                    style={{
+                        position: 'absolute',
+                        top: 10,
+                        left: 10,
+                        padding: '10px 20px',
+                    }}>
+                    <span>Back</span>
+                </button>
+                {
+                    
+                    needsDeposit ? (
+                        <PlaceDepositDialogue onPlaceDeposit={handleDeposit} />
+                    ) :
+                        hasWagered ?
+                            <Stack direction="row"
+                                spacing={2}
                                 sx={{
-                                    minWidth: '120px'
-                                }}
-                                onClick={async () => {
-                                    const contract =
-                                        await getBlackjackContract();
-
-                                    const tx = await contract.stand();
-
-                                    await tx.wait();
+                                    position: 'relative',
+                                    zIndex: 10,
+                                    bottom: 80,
                                 }}>
-                                Stand
-                            </Button>
+                                <Button
+                                    variant="contained"
+                                    color="error"
+                                    size="large"
+                                    sx={{
+                                        minWidth: '120px'
+                                    }}
+                                    onClick={async () => {
+                                        const contract =
+                                            await getBlackjackContract();
 
-                            <Button
-                                variant="contained"
-                                color="success"
-                                size="large"
-                                sx={{
-                                    minWidth: '120px'
-                                }}
-                                onClick={async () => {
-                                    const contract =
-                                        await getBlackjackContract();
+                                        const tx = await contract.stand();
 
-                                    const tx = await contract.hitPlayer();
+                                        await tx.wait();
+                                    }}>
+                                    Stand
+                                </Button>
 
-                                    await tx.wait();
-                                }}>
-                                Hit
-                            </Button>
+                                <Button
+                                    variant="contained"
+                                    color="success"
+                                    size="large"
+                                    sx={{
+                                        minWidth: '120px'
+                                    }}
+                                    onClick={async () => {
+                                        const contract =
+                                            await getBlackjackContract();
 
-                            <Button
-                                variant="contained"
-                                color="warning"
-                                size="large"
-                                sx={{
-                                    minWidth: '120px'
-                                }}
-                                onClick={() => console.log('Double Down')}>
-                                Double Down
-                            </Button>
-                        </Stack>
-                        : <PlaceBetDialogue onPlaceBet={handlePlaceBet} />
+                                        const tx = await contract.hitPlayer();
+
+                                        await tx.wait();
+                                    }}>
+                                    Hit
+                                </Button>
+
+                                <Button
+                                    variant="contained"
+                                    color="warning"
+                                    size="large"
+                                    sx={{
+                                        minWidth: '120px'
+                                    }}
+                                    onClick={() => console.log('Double Down')}>
+                                    Double Down
+                                </Button>
+                            </Stack>
+                            : <PlaceBetDialogue onPlaceBet={handlePlaceBet} />
 
 
 
-            }
-        </Box>
+                }
+            </Box>
+            <Snackbar
+                open={openError}
+                autoHideDuration={4000}
+                onClose={() => setOpenError(false)}
+            >
+                <Alert severity="error" variant="filled">
+                    {errorMsg}
+                </Alert>
+            </Snackbar>
+        </>
 
     )
 }
