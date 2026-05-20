@@ -77,7 +77,8 @@ contract BlackJackTable {
             uint8 dealerTotal,
             bool shuffled,
             uint8 drawIndex,
-            Result result
+            Result result,
+            Bytes memory deck
         )
     {
         gameID = activeGame[player];
@@ -94,7 +95,8 @@ contract BlackJackTable {
             token.dealerHandTotalValue,
             token.isShuffled,
             token.drawIndex,
-            token.result
+            token.result,
+            token.deck
         );
     }
 
