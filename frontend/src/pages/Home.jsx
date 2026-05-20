@@ -20,6 +20,23 @@ function Home() {
     const [address, setAddress] = useState("");
     const navigate = useNavigate();
 
+    const loadBalance = async () => {
+        try {
+            const vault = await getVaultContract();
+
+            // get connected wallet
+            const signerAddress = await vault.runner.getAddress();
+            setAddress(signerAddress);
+
+            // get vault balance
+            const bal = await vault.balances(signerAddress);
+
+            setBalance(formatEther(bal));
+        } catch (err) {
+            console.error("Failed to load balance:", err);
+        }
+    };
+
     const withdraw = async (amountInWei) => {
         try {
             const contract = await getVaultContract();
@@ -44,23 +61,6 @@ function Home() {
 
 
     useEffect(() => {
-        const loadBalance = async () => {
-            try {
-                const vault = await getVaultContract();
-
-                // get connected wallet
-                const signerAddress = await vault.runner.getAddress();
-                setAddress(signerAddress);
-
-                // get vault balance
-                const bal = await vault.balances(signerAddress);
-
-                setBalance(formatEther(bal));
-            } catch (err) {
-                console.error("Failed to load balance:", err);
-            }
-        };
-
         loadBalance();
     }, [address]);
 
@@ -137,7 +137,7 @@ function Home() {
                     <WithdrawButton onWithdraw={withdraw} />
                 </div>
                 <button className='play-button'
-                    onClick={() => navigate('/blackjack')}
+                    onClick={() => navigate('/Deposit')}
                     style={{
                         position: 'relative',
                         marginBottom: '180px',
