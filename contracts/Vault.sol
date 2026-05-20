@@ -85,6 +85,7 @@ contract Vault is IVault {
     ) public override {
         require(betAmount > 0, "Bet amount must be more than 0");
         require(locked[player] >= betAmount, "No active bet found");
+        require(token.gameState == State.FINISHED, "Not finalised");
 
         locked[player] -= betAmount;
         // Player win
@@ -126,6 +127,7 @@ contract Vault is IVault {
     ) public override {
         require(locked[player] >= betAmount, "No active locked bet found");
         require(token.result == Result.DEALER_WIN, "Player has not lost");
+        require(token.gameState == State.FINISHED, "Not finalized");
         // Deduct from players locked stake; house keeps eth in contract
         locked[player] -= betAmount;
         // House already owns ETH implicitly
