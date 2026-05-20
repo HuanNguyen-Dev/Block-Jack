@@ -169,7 +169,7 @@ function BlackjackTable() {
 
         setHasGame(active);
     };
-
+    if (needsDeposit == null) return <div>Loading...</div>
     return (
         <>
             <Box
