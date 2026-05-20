@@ -6,6 +6,8 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { getVaultContract } from '../contract/vault';
 import WithdrawButton from '../components/Withdraw';
+import { formatEther } from "ethers";
+
 function Home() {
     const [cards, setCards] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -13,6 +15,8 @@ function Home() {
     const [isFanned, setisFanned] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
     const [openError, setOpenError] = useState(false);
+    const [balance, setBalance] = useState("0");
+    const [address, setAddress] = useState("");
     const navigate = useNavigate();
 
     const cleanError = (msg) => {
@@ -55,7 +59,26 @@ function Home() {
     }
 
 
+    useEffect(() => {
+        const loadBalance = async () => {
+            try {
+                const vault = await getVaultContract();
 
+                // get connected wallet
+                const signerAddress = await vault.runner.getAddress();
+                setAddress(signerAddress);
+
+                // get vault balance
+                const bal = await vault.balances(signerAddress);
+
+                setBalance(formatEther(bal));
+            } catch (err) {
+                console.error("Failed to load balance:", err);
+            }
+        };
+
+        loadBalance();
+    }, [address]);
 
 
     useEffect(() => {
@@ -104,12 +127,29 @@ function Home() {
                     padding: 0,
                     margin: 0,
                 }}>
+
                 <div style={{
                     position: "absolute",
                     top: "20px",
                     left: "20px",
                     zIndex: 999
                 }}>
+                    <div
+                        className='base-button'
+                        style={{
+                            width: 200,
+                            position: "absolute",
+                            top: "60px",
+                            zIndex: 999,
+                            fontFamily: "'Pixelify Sans', sans-serif",
+                            color: "white",
+                            fontSize: "24px",
+                            padding: "10px 16px",
+                            borderRadius: "12px"
+                        }}
+                    >
+                        Balance: {balance} ETH
+                    </div>
                     <WithdrawButton onWithdraw={withdraw} />
                 </div>
                 <button className='play-button'

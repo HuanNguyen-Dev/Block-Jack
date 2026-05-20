@@ -46,16 +46,19 @@ export default function PlaceDepositDialogue({ onPlaceDeposit }) {
 
     return (
         <React.Fragment>
-            <Button
+            <button
+                className='base-button bet-button'
                 variant="contained"
                 onClick={handleClickOpen}
-                sx={{
-                    zIndex: 10,
-                    bottom: 80,
+                style={{
+                    position: "absolute",
+                    top: "250px",
+                    transform: "translateY(-20px)",
+                    zIndex: 10
                 }}
             >
                 Place Deposit Amount
-            </Button>
+            </button>
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -86,10 +89,14 @@ export default function PlaceDepositDialogue({ onPlaceDeposit }) {
                     </form>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button type="submit" form="place-deposit">
+                    <button 
+                    className='base-button bet-button'
+                    onClick={handleClose}>Cancel</button>
+                    <button 
+                    className='base-button bet-button'
+                    type="submit" form="place-deposit">
                         SET
-                    </Button>
+                    </button>
                 </DialogActions>
             </Dialog>
         </React.Fragment>

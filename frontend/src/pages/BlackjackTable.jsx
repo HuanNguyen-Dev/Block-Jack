@@ -185,16 +185,7 @@ function BlackjackTable() {
             </button>
             {
                 needsDeposit ? (
-                    <Stack
-                        direction="row"
-                        spacing={2}
-                        sx={{
-                            position: 'relative',
-                            zIndex: 10,
-                            bottom: 40,
-                        }}>
                       <PlaceDepositDialogue onPlaceDeposit={handleDeposit} />
-                    </Stack>
                 ) :
                     hasWagered ?
                         <Stack direction="row"
