@@ -98,6 +98,106 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "endGame",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "tokenID",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "bet",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "player",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "playerSeed",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "serverSeed",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "finalSeed",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "drawIndex",
+            "type": "uint8"
+          },
+          {
+            "internalType": "enum State",
+            "name": "gameState",
+            "type": "uint8"
+          },
+          {
+            "internalType": "enum Result",
+            "name": "result",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes",
+            "name": "deck",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bool",
+            "name": "isShuffled",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerHandTotalValue",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dealerHandTotalValue",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerAceCount",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dealerAceCount",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8[]",
+            "name": "playerHand",
+            "type": "uint8[]"
+          },
+          {
+            "internalType": "uint8[]",
+            "name": "dealerHand",
+            "type": "uint8[]"
+          }
+        ],
+        "internalType": "struct GameToken",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -219,6 +319,11 @@
             "internalType": "uint8[]",
             "name": "playerHand",
             "type": "uint8[]"
+          },
+          {
+            "internalType": "uint8[]",
+            "name": "dealerHand",
+            "type": "uint8[]"
           }
         ],
         "indexed": false,
@@ -293,6 +398,108 @@
     "name": "stand",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "player",
+        "type": "address"
+      }
+    ],
+    "name": "getGameState",
+    "outputs": [
+      {
+        "internalType": "enum State",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "player",
+        "type": "address"
+      }
+    ],
+    "name": "getHands",
+    "outputs": [
+      {
+        "internalType": "uint8[]",
+        "name": "playerHand",
+        "type": "uint8[]"
+      },
+      {
+        "internalType": "uint8[]",
+        "name": "dealerHand",
+        "type": "uint8[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "player",
+        "type": "address"
+      }
+    ],
+    "name": "getPlayerGame",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "gameID",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "bet",
+        "type": "uint256"
+      },
+      {
+        "internalType": "enum State",
+        "name": "gameState",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "playerTotal",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "dealerTotal",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bool",
+        "name": "shuffled",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint8",
+        "name": "drawIndex",
+        "type": "uint8"
+      },
+      {
+        "internalType": "enum Result",
+        "name": "result",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes",
+        "name": "deck",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
