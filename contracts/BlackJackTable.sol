@@ -100,20 +100,20 @@ contract BlackJackTable {
         );
     }
 
-    function getHands(address player) external view returns (
-        uint8[] memory playerHand,
-        uint8[] memory dealerHand
-    ){
+    function getHands(
+        address player
+    )
+        external
+        view
+        returns (uint8[] memory playerHand, uint8[] memory dealerHand)
+    {
         uint256 gameID = activeGame[player];
 
         require(gameID != 0, "No active game");
 
         GameToken storage token = games[gameID];
 
-        return(
-            token.playerHand,
-            token.dealerHand
-        );
+        return (token.playerHand, token.dealerHand);
     }
 
     function assignToken(uint256 _playerSeed) external {
@@ -189,17 +189,20 @@ contract BlackJackTable {
 
     function settleFinalHands(GameToken storage token) internal returns (bool) {
         if (token.playerHandTotalValue > token.dealerHandTotalValue) {
-            endGame(token, Result.PLAYER_WIN, token.bet * 2);
+            token.result = Result.PLAYER_WIN;
+            token.gameState = State.FINISHED;
             return true;
         }
 
         if (token.dealerHandTotalValue > token.playerHandTotalValue) {
-            endGame(token, Result.DEALER_WIN, token.bet);
+            token.result = Result.DEALER_WIN;
+            token.gameState = State.FINISHED;
             return true;
         }
 
         if (token.dealerHandTotalValue == token.playerHandTotalValue) {
-            endGame(token, Result.PUSH, token.bet);
+            token.result = Result.PUSH;
+            token.gameState = State.FINISHED;
             return true;
         }
 
@@ -211,12 +214,14 @@ contract BlackJackTable {
         GameToken storage token
     ) internal returns (bool) {
         if (token.playerHandTotalValue > 21) {
-            endGame(token, Result.DEALER_WIN, token.bet);
+            token.result = Result.DEALER_WIN;
+            token.gameState = State.FINISHED;
             return true;
         }
 
         if (token.dealerHandTotalValue > 21) {
-            endGame(token, Result.PLAYER_WIN, token.bet * 2);
+            token.result = Result.PLAYER_WIN;
+            token.gameState = State.FINISHED;
             return true;
         }
 
@@ -224,7 +229,8 @@ contract BlackJackTable {
             hasBlackJack(token.playerHandTotalValue) &&
             !hasBlackJack(token.dealerHandTotalValue)
         ) {
-            endGame(token, Result.PLAYER_WIN, token.bet * 2);
+            token.result = Result.PLAYER_WIN;
+            token.gameState = State.FINISHED;
             return true;
         }
 
@@ -232,12 +238,14 @@ contract BlackJackTable {
             hasBlackJack(token.playerHandTotalValue) &&
             hasBlackJack(token.dealerHandTotalValue)
         ) {
-            endGame(token, Result.PUSH, token.bet);
+            token.result = Result.PUSH;
+            token.gameState = State.FINISHED;
             return true;
         }
 
         if (hasBlackJack(token.dealerHandTotalValue)) {
-            endGame(token, Result.DEALER_WIN, token.bet);
+            token.result = Result.DEALER_WIN;
+            token.gameState = State.FINISHED;
             return true;
         }
 
@@ -374,23 +382,23 @@ contract BlackJackTable {
         settleFinalHands(token);
     }
 
-    function endGame(
-        GameToken storage token,
-        Result result,
-        uint256 amount
-    ) internal {
-        token.result = result;
-        token.gameState = State.FINISHED;
+    function endGame() external returns (GameToken memory) {
+        uint256 gameID = activeGame[msg.sender];
+        GameToken storage token = games[gameID];
+
+        require(token.gameState == State.FINISHED);
+
         if (
-            amount > 0 &&
+            token.bet > 0 &&
             (token.result == Result.PLAYER_WIN || token.result == Result.PUSH)
         ) {
-            vault.payout(token.player, amount, token);
+            vault.payout(token.player, token);
         } else if (token.result == Result.DEALER_WIN) {
-            vault.loseBet(token.player, amount, token);
+            vault.loseBet(token.player, token);
         }
         token.bet = 0;
         delete activeGame[token.player];
-        emit GameEnded(token.player, result);
+        emit GameEnded(token.player, token.result);
+        return (token);
     }
 }

@@ -41,7 +41,7 @@ contract Vault is IVault {
         emit Deposit(msg.sender, msg.value);
     }
 
-    function getHouseBalance() public view returns (uint256){
+    function getHouseBalance() public view returns (uint256) {
         return houseBalance;
     }
 
@@ -80,9 +80,9 @@ contract Vault is IVault {
     // payout functrion (only owner) - takes player and amount
     function payout(
         address player,
-        uint256 betAmount,
         GameToken memory token
     ) public override {
+        uint256 betAmount = token.bet;
         require(betAmount > 0, "Bet amount must be more than 0");
         require(locked[player] >= betAmount, "No active bet found");
         require(token.gameState == State.FINISHED, "Not finalised");
@@ -102,10 +102,7 @@ contract Vault is IVault {
             require(success, "Payout failed");
         } // Player push
         else if (token.result == Result.PUSH) {
-            require(
-                houseBalance >= betAmount,
-                "House has insufficient funds"
-            );
+            require(houseBalance >= betAmount, "House has insufficient funds");
 
             houseBalance -= betAmount;
 
@@ -122,9 +119,9 @@ contract Vault is IVault {
 
     function loseBet(
         address player,
-        uint256 betAmount,
         GameToken memory token
     ) public override {
+        uint256 betAmount = token.bet;
         require(locked[player] >= betAmount, "No active locked bet found");
         require(token.result == Result.DEALER_WIN, "Player has not lost");
         require(token.gameState == State.FINISHED, "Not finalized");
