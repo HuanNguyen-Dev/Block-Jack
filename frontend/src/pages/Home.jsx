@@ -30,6 +30,7 @@ function Home() {
             const receipt = await tx.wait();
 
             console.log("Withdraw confirmed:", receipt);
+            await loadBalance();
 
             return receipt;
         } catch (err) {
