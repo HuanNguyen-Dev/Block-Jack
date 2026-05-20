@@ -100,6 +100,22 @@ contract BlackJackTable {
         );
     }
 
+    function getHands(address player) external view returns (
+        uint8[] memory playerHand,
+        uint8[] memory dealerHand
+    ){
+        uint256 gameID = activeGame[player];
+
+        require(gameID != 0, "No active game");
+
+        GameToken storage token = games[gameID];
+
+        return(
+            token.playerHand,
+            token.dealerHand
+        );
+    }
+
     function assignToken(uint256 _playerSeed) external {
         require(activeGame[msg.sender] == 0, "Game already in progress");
         uint256 gameID = nextGameID++;
@@ -341,6 +357,7 @@ contract BlackJackTable {
             token.dealerHandTotalValue,
             token.dealerAceCount
         );
+        token.dealerHand.push(card);
     }
 
     function stand() external {
