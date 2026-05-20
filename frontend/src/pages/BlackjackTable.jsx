@@ -163,7 +163,7 @@ function BlackjackTable() {
             component="section"
             className='blackjack-hero'
             sx={{
-
+                
                 position: 'relative',
                 flexDirection: 'column',
                 width: '100%',

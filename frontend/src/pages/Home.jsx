@@ -2,13 +2,62 @@ import heroImg from '/frontend/src/assets/main.png'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Box, cardHeaderClasses } from '@mui/material';
-
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import { getVaultContract } from '../contract/vault';
+import WithdrawButton from '../components/Withdraw';
 function Home() {
     const [cards, setCards] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const [hoveredCard, setHoveredCard] = useState(null);
     const [isFanned, setisFanned] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
+    const [openError, setOpenError] = useState(false);
     const navigate = useNavigate();
+
+    const cleanError = (msg) => {
+        if (!msg) return "Transaction failed";
+
+        if (msg.includes("withdrawal amount")) return "Enter a valid amount";
+        if (msg.includes("Insufficient balance")) return "Not enough balance";
+        if (msg.includes("House insolvent")) return "Casino has insufficient liquidity";
+
+        return msg;
+    };
+
+    const withdraw = async (amountInWei) => {
+        try {
+            const contract = await getVaultContract();
+            const tx = await contract.withdraw(amountInWei);
+
+            console.log("Transaction sent:", tx.hash);
+
+            const receipt = await tx.wait();
+
+            console.log("Withdraw confirmed:", receipt);
+
+            return receipt;
+        } catch (err) {
+            console.error("Withdraw failed:", err);
+
+            const reason =
+                err?.reason ||
+                err?.shortMessage ||
+                err?.data?.message ||
+                err?.error?.message ||
+                err?.message;
+
+            setErrorMsg(cleanError(reason));
+            setOpenError(true);
+
+            return;
+        }
+    }
+
+
+
+
+
     useEffect(() => {
         const fetchCards = async () => {
             try {
@@ -42,6 +91,7 @@ function Home() {
             <Box
                 id="center-index"
                 sx={{
+                    position: "relative",
                     backgroundImage: `url(${heroImg})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
@@ -54,18 +104,26 @@ function Home() {
                     padding: 0,
                     margin: 0,
                 }}>
-
+                <div style={{
+                    position: "absolute",
+                    top: "20px",
+                    left: "20px",
+                    zIndex: 999
+                }}>
+                    <WithdrawButton onWithdraw={withdraw} />
+                </div>
                 <button className='play-button'
                     onClick={() => navigate('/blackjack')}
-                    style={{ 
+                    style={{
                         position: 'relative',
                         marginBottom: '180px',
                         marginTop: '-40px',
                         zIndex: (cards.length + 1),
-                     }}>
+                    }}>
                     <span>Play</span>
                 </button>
-                <div className="cards-container" style={{position: 'relative'}}>
+
+                <div className="cards-container" style={{ position: 'relative' }}>
                     <div className="cards"
                         onClick={() => setisFanned(!isFanned)}>
                         {isLoaded ? (
@@ -101,6 +159,15 @@ function Home() {
                     </div>
                 </div>
             </Box>
+            <Snackbar
+                open={openError}
+                autoHideDuration={4000}
+                onClose={() => setOpenError(false)}
+            >
+                <Alert severity="error" variant="filled">
+                    {errorMsg}
+                </Alert>
+            </Snackbar>
         </>
     );
 }
