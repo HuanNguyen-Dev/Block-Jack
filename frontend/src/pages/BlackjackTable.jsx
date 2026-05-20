@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { Box, Button, Stack } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import PlaceBetDialogue from '../components/BetInput';
+import PlaceDepositDialogue from '../components/DepositInput';
 import { getBlackjackContract } from '../contract/blackjack-table';
 import { getVaultContract } from '../contract/vault';
 import { parseEther } from "ethers";
@@ -14,7 +15,7 @@ function BlackjackTable() {
     const [cards, setCards] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const [hasWagered, setHasWagered] = useState(false);
-    const [gameId, setGameId] = useState(0n);
+    const [hasGame, setHasGame] = useState(false);
     const [vaultBalance, setVaultBalance] = useState(0n);
     const [needsDeposit, setNeedsDeposit] = useState(false);
     const [depositAmount, setDepositAmount] = useState("");
@@ -51,22 +52,6 @@ function BlackjackTable() {
 
 
     useEffect(() => {
-        const checkBalance = async () => {
-            try {
-                const vault = await getVaultContract();
-                const contract = await getBlackjackContract();
-
-                const player = await contract.runner.getAddress();
-
-                // assumes Vault has: balances[address]
-                const balance = await vault.balances(player);
-
-                setVaultBalance(balance);
-
-            } catch (err) {
-                console.error("Balance check failed:", err);
-            }
-        };
 
         checkBalance();
     }, []);
@@ -91,6 +76,7 @@ function BlackjackTable() {
         if (!address) return;
         checkGame();
     }, [address]);
+
     const handleDeposit = async (amountEth) => {
         try {
             const vault = await getVaultContract();
@@ -121,8 +107,7 @@ function BlackjackTable() {
             const balance = await vault.balances(player);
 
             setVaultBalance(balance);
-
-            setNeedsDeposit(balance === 0n);
+            setNeedsDeposit(BigInt(balance.toString()) === 0n);
         } catch (err) {
             console.error("Balance check failed:", err);
         }
@@ -139,7 +124,7 @@ function BlackjackTable() {
             // Example seed
             const playerSeed = Date.now();
             // 1. assign token
-            if (gameId === 0n) {
+            if (!hasGame) {
                 const tx1 = await contract.assignToken(playerSeed);
                 await tx1.wait();
                 await checkGame();
@@ -156,7 +141,7 @@ function BlackjackTable() {
             await tx2.wait();
             await checkGame();
             console.log("Bet placed!");
-            setHasWagered(gameId !== 0n);
+            setHasWagered(true);
 
         } catch (err) {
             console.error(err);
@@ -167,9 +152,9 @@ function BlackjackTable() {
         const contract = await getBlackjackContract();
         const player = await contract.runner.getAddress();
 
-        const id = await contract.activeGame(player);
+        const active = await contract.hasActiveGame(player);
 
-        setGameId(BigInt(id));
+        setHasGame(active);
     };
 
     return (
@@ -200,10 +185,15 @@ function BlackjackTable() {
             </button>
             {
                 needsDeposit ? (
-                    <Stack>
-                        <Button onClick={() => handleDeposit("0.01")}>
-                            Deposit to Vault
-                        </Button>
+                    <Stack
+                        direction="row"
+                        spacing={2}
+                        sx={{
+                            position: 'relative',
+                            zIndex: 10,
+                            bottom: 40,
+                        }}>
+                      <PlaceDepositDialogue onPlaceDeposit={handleDeposit} />
                     </Stack>
                 ) :
                     hasWagered ?
