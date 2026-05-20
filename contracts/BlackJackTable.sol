@@ -78,7 +78,7 @@ contract BlackJackTable {
             bool shuffled,
             uint8 drawIndex,
             Result result,
-            Bytes memory deck
+            bytes memory deck
         )
     {
         gameID = activeGame[player];
