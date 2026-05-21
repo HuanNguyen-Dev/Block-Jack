@@ -15,8 +15,6 @@ import { parseTxError } from '../utils';
 function BlackjackTable() {
     const baseURL = 'https://deckofcardsapi.com/static/img/';
     const backOfCard = 'https://deckofcardsapi.com/static/img/back.png';
-    const [cards, setCards] = useState([]);
-    const [isLoaded, setIsLoaded] = useState(false);
     const [isFanned, setisFanned] = useState(true);
     const [hoveredCard, setHoveredCard] = useState(null);
 
@@ -111,34 +109,6 @@ function BlackjackTable() {
     }
 
     useEffect(() => {
-        const fetchCards = async () => {
-            try {
-                // Fetch two decks of cards
-                const deckRes = await fetch('https://deckofcardsapi.com/api/deck/new/?deck_count=2&shuffle=false');
-                const deckData = await deckRes.json();
-                const deckId = deckData.deck_id;
-
-                // fetch the entire deck
-                const cardsRes = await fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=52`);
-                const cardsData = await cardsRes.json();
-
-                // Set the cards data to state
-                setCards(cardsData.cards);
-                setIsLoaded(true);
-
-                // Maybe send hash of deck to solidity and store it in blockchain
-
-
-            } catch (error) {
-                // handle gracefully later
-                console.error('Error fetching cards:', error);
-            }
-        };
-
-        fetchCards();
-    }, []);
-
-    useEffect(() => {
         const loadAddress = async () => {
             try {
                 const contract = await getBlackjackContract();
@@ -173,6 +143,7 @@ function BlackjackTable() {
 
 
             if (!active) {
+                setGameState(STATES.NONE);
                 return;
             }
             // gameid, bet, gamestate, playertotal, dealer total, shuffled,
@@ -194,7 +165,8 @@ function BlackjackTable() {
         }
     }
 
-    const renderHand = (hand, hiddenFirst = false) => {
+    const renderHand = (hand, { hideDealerHole = false } = {}) => {
+        const showHoleCard = gameState !== STATES.PLAYER_TURN;
         return (
             <div
                 className="cards-container"
@@ -221,20 +193,20 @@ function BlackjackTable() {
                             : index * 5;
 
                         const hoverX = (index - middleIndex) * 2;
+                        const hoverKey = `${card}-${index}`;
 
-                        const isHovered = hoveredCard === `${hand}-${index}`;
+                        const isHovered = hoveredCard === hoverKey;
+                        const isHoleCard = hideDealerHole && card === null;
 
                         const imageSrc =
-                            hiddenFirst && index === 0
-                                ? backOfCard
-                                : getCardImage(card);
+                            isHoleCard ? backOfCard : getCardImage(card);
 
                         return (
                             <div
                                 key={`${card}-${index}`}
                                 className="card"
                                 onMouseEnter={() =>
-                                    setHoveredCard(`${hand}-${index}`)
+                                    setHoveredCard(hoverKey)
                                 }
                                 onMouseLeave={() =>
                                     setHoveredCard(null)
@@ -261,11 +233,6 @@ function BlackjackTable() {
                                 <img
                                     src={imageSrc}
                                     alt={`card-${card}`}
-                                    style={{
-                                        width: '120px',
-                                        userSelect: 'none',
-                                        pointerEvents: 'none',
-                                    }}
                                 />
                             </div>
                         );
@@ -466,6 +433,10 @@ function BlackjackTable() {
 
     }
     else {
+        const displayDealerHand =
+            dealerHand.length === 1
+                ? [...dealerHand, null]
+                : dealerHand;
         return (
             <>
                 <Box
@@ -507,13 +478,17 @@ function BlackjackTable() {
                                 fontSize: '2rem',
                             }}
                         >
-                            Dealer ({dealerTotal})
+                            Dealer (
+                            {
+                                gameState === STATES.PLAYER_TURN
+                                    ? '?'
+                                    : dealerTotal
+                            }
+                            )
                         </Typography>
-
-                        {renderHand(
-                            dealerHand,
-                            gameState === STATES.PLAYER_TURN
-                        )}
+                        {renderHand(displayDealerHand, {
+                            hideDealerHole: gameState === STATES.PLAYER_TURN
+                        })}
                     </Box>
 
                     {/* Player Area */}

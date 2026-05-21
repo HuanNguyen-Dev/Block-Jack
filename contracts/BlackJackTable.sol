@@ -292,7 +292,7 @@ contract BlackJackTable {
     }
 
     function isAce(uint8 card) internal pure returns (bool) {
-        return (card == 1 || card == 11);
+        return (card == 1);
     }
 
     function addCardToHand(
@@ -314,20 +314,22 @@ contract BlackJackTable {
         return (currentTotal, aceCount);
     }
 
-    function drawCard(GameToken storage token) internal returns (uint8, uint8) {
+    function drawCard(GameToken storage token) internal returns (uint8 raw, uint8 value) {
         require(token.isShuffled, "Deck has not been shuffled");
         (uint8[104] memory deck, uint256 originalSeed) = abi.decode(
             token.deck,
             (uint8[104], uint256)
         );
-        uint8 raw = deck[token.drawIndex];
+        raw = deck[token.drawIndex];
         // Map 13 cards
-        uint8 value = (raw % 13) + 1;
+        uint8 rank = (raw % 52) / 4;
+        value = rank + 1;
+        // 0-3 = ace, 4-7 = 2, etc
         if (value > 10) value = 10;
         token.drawIndex++;
         // Emit raw value so we retain information on suits
         emit CardDrawn(token.player, originalSeed, value, deck);
-        return (value, raw);
+        return (raw, value);
     }
 
     function hitPlayer() external {
@@ -347,21 +349,21 @@ contract BlackJackTable {
     }
 
     function _hitPlayer(GameToken storage token) internal returns (uint8) {
-        (uint8 card, uint8 raw) = drawCard(token);
+        (uint8 raw, uint8 value) = drawCard(token);
         (token.playerHandTotalValue, token.playerAceCount) = addCardToHand(
-            card,
+            value,
             token.playerHandTotalValue,
             token.playerAceCount
         );
         token.playerHand.push(raw);
-        return card;
+        return value;
     }
 
     function _hitDealer(GameToken storage token) internal {
         require(token.gameState == State.DEALER_TURN);
-        (uint8 card, uint8 raw) = drawCard(token);
+        (uint8 raw, uint8 value) = drawCard(token);
         (token.dealerHandTotalValue, token.dealerAceCount) = addCardToHand(
-            card,
+            value,
             token.dealerHandTotalValue,
             token.dealerAceCount
         );
