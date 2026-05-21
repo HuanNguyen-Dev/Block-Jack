@@ -9,7 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 // Obtained from: https://mui.com/material-ui/react-dialog/
 
-export default function PlaceBetDialogue({ onPlaceBet }) {
+export default function PlaceDepositDialogue({ onPlaceDeposit }) {
     const [open, setOpen] = React.useState(false);
     const [amount, setAmount] = React.useState('');
 
@@ -36,7 +36,7 @@ export default function PlaceBetDialogue({ onPlaceBet }) {
         }
 
         // Parent call back function
-        onPlaceBet(amount);
+        onPlaceDeposit(amount);
         console.log(amount);
 
         // Backend Logic here maybe
@@ -57,7 +57,7 @@ export default function PlaceBetDialogue({ onPlaceBet }) {
                     zIndex: 10
                 }}
             >
-                Place Bet Amount
+                Place Deposit Amount
             </button>
             <Dialog
                 open={open}
@@ -70,18 +70,18 @@ export default function PlaceBetDialogue({ onPlaceBet }) {
                 <DialogTitle>Enter in Ether</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Please enter your bet amount here. The limits are 100 gwei to 0.001 ether.
-                        Minimum: 0.0000001 ETH
+                        Please enter the amount you would like to deposit.
+                            Minimum: 0.0000001 ETH
                         Maximum: 0.001 ETH
                     </DialogContentText>
-                    <form onSubmit={handleSubmit} id="place-bet">
+                    <form onSubmit={handleSubmit} id="place-deposit">
                         <TextField
                             autoFocus
                             required
                             margin="dense"
-                            id="bet"
+                            id="deposit"
                             name="amount"
-                            label="Bet Amount"
+                            label="Deposit Amount"
                             type="number"
                             fullWidth
                             variant="standard"
@@ -93,12 +93,10 @@ export default function PlaceBetDialogue({ onPlaceBet }) {
                 <DialogActions>
                     <button
                         className='base-button bet-button'
-                        onClick={handleClose}>
-                        Cancel
-                    </button>
+                        onClick={handleClose}>Cancel</button>
                     <button
                         className='base-button bet-button'
-                        type="submit" form="place-bet">
+                        type="submit" form="place-deposit">
                         SET
                     </button>
                 </DialogActions>

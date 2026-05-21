@@ -4,14 +4,16 @@ import heroImg from '/frontend/src/assets/main.png'
 import { useEffect, useState } from 'react'
 import './App.css'
 import Home from './pages/Home'
-import BlackjackTable from './pages/BlackjackTable'
+import Deposit from './pages/Deposit'
+import BlackjackTable from './pages/BlackjackTable.jsx'
 import { Routes, Route } from 'react-router-dom'
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="blackjack" element={<BlackjackTable />} />
+      <Route path="deposit" element={<Deposit />} />
+      <Route path="BlackjackTable" element={< BlackjackTable/>}/>
     </Routes>
   )
 }

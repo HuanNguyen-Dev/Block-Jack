@@ -46,4 +46,5 @@ struct GameToken {
     uint8 playerAceCount;
     uint8 dealerAceCount;
     uint8[] playerHand;
+    uint8[] dealerHand;
 }
