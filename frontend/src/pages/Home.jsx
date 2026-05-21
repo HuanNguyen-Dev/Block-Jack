@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { Box, cardHeaderClasses } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { getBlackjackContract } from '../contract/blackjack-table';
 import { getVaultContract } from '../contract/vault';
 import WithdrawButton from '../components/Withdraw';
 import { formatEther } from "ethers";
@@ -18,7 +19,17 @@ function Home() {
     const [openError, setOpenError] = useState(false);
     const [balance, setBalance] = useState("0");
     const [address, setAddress] = useState("");
+    const [hasFinished, setHasFinished] = useState(false);
     const navigate = useNavigate();
+    const STATES = {
+        NONE: 0,
+        BET: 1,
+        DEALER_TURN: 2,
+        PLAYER_TURN: 3,
+        FINISHED: 4
+    };
+
+
 
     const loadBalance = async () => {
         try {
@@ -59,9 +70,51 @@ function Home() {
         }
     }
 
+    const handleEndGame = async () => {
+        try {
+            const contract =
+                await getBlackjackContract();
+
+            const tx = await contract.endGame();
+
+            await tx.wait();
+            await loadGameState();
+        } catch (err) {
+            console.error(err);
+            setErrorMsg(parseTxError(err));
+            setOpenError(true);
+        }
+    }
+
+    const loadGameState = async () => {
+        try {
+            const contract = await getBlackjackContract();
+            const player = await contract.runner.getAddress();
+
+            // 1. Check active game
+            const active = await contract.hasActiveGame(player);
+
+
+            if (!active) {
+                return;
+            }
+
+            const game = await contract.getPlayerGame(player);
+            setHasFinished(Number(game.gameState) == STATES.FINISHED);
+
+        } catch (err) {
+            console.error(err);
+
+            setErrorMsg(parseTxError(err));
+            setOpenError(true);
+        }
+    }
+
 
     useEffect(() => {
+        if (!address) return;
         loadBalance();
+        loadGameState();
     }, [address]);
 
 
@@ -136,16 +189,29 @@ function Home() {
                     </div>
                     <WithdrawButton onWithdraw={withdraw} />
                 </div>
-                <button className='play-button'
-                    onClick={() => navigate('/Deposit')}
-                    style={{
-                        position: 'relative',
-                        marginBottom: '180px',
-                        marginTop: '-40px',
-                        zIndex: (cards.length + 1),
-                    }}>
-                    <span>Play</span>
-                </button>
+                {hasFinished ?
+                    <button className='base-button bet-button'
+                        onClick={handleEndGame}
+                        style={{
+                            position: 'relative',
+                            marginBottom: '180px',
+                            marginTop: '-40px',
+                            zIndex: (cards.length + 1),
+                        }}>
+                        <span>End Game</span>
+                    </button>   :
+                    <button className='play-button'
+                        onClick={() => navigate('/Deposit')}
+                        style={{
+                            position: 'relative',
+                            marginBottom: '180px',
+                            marginTop: '-40px',
+                            zIndex: (cards.length + 1),
+                        }}>
+                        <span>Play</span>
+                    </button>
+
+                }
 
                 <div className="cards-container" style={{ position: 'relative' }}>
                     <div className="cards"

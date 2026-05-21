@@ -7,6 +7,8 @@ import PlaceBetDialogue from '../components/BetInput';
 import PlaceDepositDialogue from '../components/DepositInput';
 import { getBlackjackContract } from '../contract/blackjack-table';
 import { getVaultContract } from '../contract/vault';
+import DisplayMessage from '../components/NoBets';
+import BackButton from '../components/BackButton';
 import { parseEther } from "ethers";
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
@@ -28,6 +30,8 @@ function BlackjackTable() {
     const [address, setAddress] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
     const [openError, setOpenError] = useState(false);
+
+    const [hasStand, setHasStand] = useState(false);
     const navigate = useNavigate();
 
     const STATES = {
@@ -153,6 +157,7 @@ function BlackjackTable() {
             setGameState(Number(game.gameState));
             setPlayerTotal(Number(game.playerTotal));
             setDealerTotal(Number(game.dealerTotal));
+            setHasStand(Number(game.gameState) == STATES.FINISHED);
 
             const hands = await contract.getHands(player);
             setPlayerHand(hands?.playerHand?.map(Number) || []);
@@ -160,6 +165,22 @@ function BlackjackTable() {
         } catch (err) {
             console.error(err);
 
+            setErrorMsg(parseTxError(err));
+            setOpenError(true);
+        }
+    }
+
+    const handleEndGame = async () => {
+        try {
+            const contract =
+                await getBlackjackContract();
+
+            const tx = await contract.endGame();
+
+            await tx.wait();
+            await loadGameData();
+        } catch (err) {
+            console.error(err);
             setErrorMsg(parseTxError(err));
             setOpenError(true);
         }
@@ -244,134 +265,24 @@ function BlackjackTable() {
 
     if (gameState == null) {
         return (
-            <Box
-                component="section"
-                className="blackjack-hero"
-                sx={{
-                    position: 'relative',
-                    width: '100%',
-                    height: '100vh',
-                    overflow: 'hidden',
-                }}
-            >
-                {/* Background image */}
-                <img
-                    src={blackjackTableIMG}
-                    alt="Blackjack Table"
-                    className="table-image"
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                    }}
-                />
-                <Typography
-                    variant="h3"
-                    sx={{
-                        color: '#fff',
-                        fontWeight: 700,
-                        mb: 1,
-                        letterSpacing: 1,
-                        fontFamily: "'Pixelify Sans', sans-serif",
-
-                    }}
-                >
-                    Loading...
-                </Typography>
-
-            </Box>
+            <>
+                <BackButton></BackButton>
+                <DisplayMessage
+                    title={"Please Wait..."}
+                    subtitle={"Loading..."}
+                ></DisplayMessage>
+            </>
         )
     }
     if (gameState == STATES.BET || gameState == STATES.NONE) {
         return (
-            <Box
-                component="section"
-                className="blackjack-hero"
-                sx={{
-                    position: 'relative',
-                    width: '100%',
-                    height: '100vh',
-                    overflow: 'hidden',
-                }}
-            >
-                {/* Background image */}
-                <img
-                    src={blackjackTableIMG}
-                    alt="Blackjack Table"
-                    className="table-image"
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                    }}
-                />
-
-                {/* Back button */}
-                <button
-                    className='play-button'
-                    onClick={() => navigate('/')}
-                    style={{
-                        position: 'absolute',
-                        top: 10,
-                        left: 10,
-                        padding: '10px 20px',
-                        zIndex: 20,
-                    }}
-                >
-                    <span>Back</span>
-                </button>
-
-                {/* Center overlay */}
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        inset: 0,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        zIndex: 10,
-                        backgroundColor: 'rgba(0,0,0,0.35)',
-                    }}
-                >
-                    <Box
-                        sx={{
-                            px: 6,
-                            py: 4,
-                            borderRadius: 4,
-                            textAlign: 'center',
-                            backdropFilter: 'blur(8px)',
-                            background: 'rgba(0,0,0,0.55)',
-                            border: '1px solid rgba(255,255,255,0.15)',
-                            boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
-                        }}
-                    >
-                        <Typography
-                            variant="h3"
-                            sx={{
-                                color: '#fff',
-                                fontWeight: 700,
-                                mb: 1,
-                                letterSpacing: 1,
-                                fontFamily: "'Pixelify Sans', sans-serif",
-
-                            }}
-                        >
-                            No Bets Found! Please Place Your Bets
-                        </Typography>
-
-                        <Typography
-                            variant="body1"
-                            sx={{
-                                color: 'rgba(255,255,255,0.8)',
-                                fontSize: '1.1rem',
-                                fontFamily: "'Pixelify Sans', sans-serif",
-                            }}
-                        >
-                            Waiting for player action...
-                        </Typography>
-                    </Box>
-                </Box>
-            </Box>
+            <>
+                <BackButton></BackButton>
+                <DisplayMessage
+                    title={"No Bets Found! Please Place Your Bets"}
+                    subtitle={"Waiting for user action..."}
+                ></DisplayMessage>
+            </>
         );
     }
     else if (gameState == STATES.DEALER_TURN && dealerTotal == 0 && playerTotal == 0) {
@@ -392,16 +303,7 @@ function BlackjackTable() {
                     {/* <h1 className="table-title">Blackjack Table</h1> */}
                     <img src={blackjackTableIMG} alt="Blackjack Table" className="table-image" />
 
-                    <button className='play-button'
-                        onClick={() => navigate('/')}
-                        style={{
-                            position: 'absolute',
-                            top: 10,
-                            left: 10,
-                            padding: '10px 20px',
-                        }}>
-                        <span>Back</span>
-                    </button>
+                    <BackButton></BackButton>
                     {
                         <Stack direction="row"
                             spacing={2}
@@ -432,6 +334,51 @@ function BlackjackTable() {
         );
 
     }
+    else if (hasStand) {
+        <>
+            <Box
+                component="section"
+                className='blackjack-hero'
+                sx={{
+
+                    position: 'relative',
+                    flexDirection: 'column',
+                    width: '100%',
+                    height: '100%'
+                }}
+            >
+
+                <img src={blackjackTableIMG} alt="Blackjack Table" className="table-image" />
+
+                <BackButton></BackButton>
+                {
+                    <Stack direction="row"
+                        spacing={2}
+                        sx={{
+                            position: 'relative',
+                            zIndex: 10,
+                            bottom: 80,
+                        }}>
+                        <button
+                            className='base-button bet-button'
+
+                            onClick={handleEndGame}>
+                            End Game
+                        </button>
+                    </Stack>
+                }
+            </Box>
+            <Snackbar
+                open={openError}
+                autoHideDuration={4000}
+                onClose={() => setOpenError(false)}
+            >
+                <Alert severity="error" variant="filled">
+                    {errorMsg}
+                </Alert>
+            </Snackbar>
+        </>
+    }
     else {
         const displayDealerHand =
             dealerHand.length === 1
@@ -450,7 +397,8 @@ function BlackjackTable() {
                         overflow: 'hidden',
                     }}
                 >
-
+                    <BackButton
+                    ></BackButton>
                     <img
                         src={blackjackTableIMG}
                         alt="Blackjack Table"
