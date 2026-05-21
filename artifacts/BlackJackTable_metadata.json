@@ -224,11 +224,11 @@
 	},
 	"sources": {
 		"contracts/BlackJackTable.sol": {
-			"keccak256": "0x7dfc8d9457b029b983b2d74a30a26a6415e70143da1a295e13baad55bc618dbe",
+			"keccak256": "0x6cc84a7be1f46021685c71faf06bcb3b45dad0cacc2953af0f167a5feeee63cd",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://5362a0b5adc72ccba62f6bfb8a2a228dfe184fa0249db23d1993eff0ce09ecaa",
-				"dweb:/ipfs/QmWf4RCF2uBxGWDhpUb8stRF2r44Avh27Kxu9jouPnf4im"
+				"bzz-raw://7bb6fcd3abbff7816c9d93a179c013c75ff116b8e451527d870a8e2014ac3f90",
+				"dweb:/ipfs/QmfWwexvPfFv8fbm2pqZpRK2PC3CgnDwd35qWoDisZ262b"
 			]
 		},
 		"contracts/Data.sol": {

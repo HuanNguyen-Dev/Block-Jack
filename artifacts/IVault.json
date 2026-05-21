@@ -51,8 +51,8 @@
 		"methodIdentifiers": {
 			"deposit()": "d0e30db0",
 			"lockBet(address,uint256)": "ef899ee5",
-			"loseBet(address,uint256)": "2526bb70",
-			"payout(address,uint256,uint8)": "ee4c5df6"
+			"loseBet(address,uint256,(uint256,uint256,address,uint256,uint256,uint256,uint8,uint8,uint8,bytes,bool,uint8,uint8,bool,bool))": "8517ed2f",
+			"payout(address,uint256,(uint256,uint256,address,uint256,uint256,uint256,uint8,uint8,uint8,bytes,bool,uint8,uint8,bool,bool))": "8d3b0686"
 		}
 	},
 	"abi": [
@@ -92,6 +92,88 @@
 					"internalType": "uint256",
 					"name": "amount",
 					"type": "uint256"
+				},
+				{
+					"components": [
+						{
+							"internalType": "uint256",
+							"name": "tokenID",
+							"type": "uint256"
+						},
+						{
+							"internalType": "uint256",
+							"name": "bet",
+							"type": "uint256"
+						},
+						{
+							"internalType": "address",
+							"name": "player",
+							"type": "address"
+						},
+						{
+							"internalType": "uint256",
+							"name": "playerSeed",
+							"type": "uint256"
+						},
+						{
+							"internalType": "uint256",
+							"name": "serverSeed",
+							"type": "uint256"
+						},
+						{
+							"internalType": "uint256",
+							"name": "finalSeed",
+							"type": "uint256"
+						},
+						{
+							"internalType": "uint8",
+							"name": "drawIndex",
+							"type": "uint8"
+						},
+						{
+							"internalType": "enum State",
+							"name": "gameState",
+							"type": "uint8"
+						},
+						{
+							"internalType": "enum Result",
+							"name": "result",
+							"type": "uint8"
+						},
+						{
+							"internalType": "bytes",
+							"name": "deck",
+							"type": "bytes"
+						},
+						{
+							"internalType": "bool",
+							"name": "isShuffled",
+							"type": "bool"
+						},
+						{
+							"internalType": "uint8",
+							"name": "playerHandTotalValue",
+							"type": "uint8"
+						},
+						{
+							"internalType": "uint8",
+							"name": "dealerHandTotalValue",
+							"type": "uint8"
+						},
+						{
+							"internalType": "bool",
+							"name": "dealerIsSoft",
+							"type": "bool"
+						},
+						{
+							"internalType": "bool",
+							"name": "playerIsSoft",
+							"type": "bool"
+						}
+					],
+					"internalType": "struct GameToken",
+					"name": "token",
+					"type": "tuple"
 				}
 			],
 			"name": "loseBet",
@@ -112,9 +194,86 @@
 					"type": "uint256"
 				},
 				{
-					"internalType": "enum Result",
-					"name": "result",
-					"type": "uint8"
+					"components": [
+						{
+							"internalType": "uint256",
+							"name": "tokenID",
+							"type": "uint256"
+						},
+						{
+							"internalType": "uint256",
+							"name": "bet",
+							"type": "uint256"
+						},
+						{
+							"internalType": "address",
+							"name": "player",
+							"type": "address"
+						},
+						{
+							"internalType": "uint256",
+							"name": "playerSeed",
+							"type": "uint256"
+						},
+						{
+							"internalType": "uint256",
+							"name": "serverSeed",
+							"type": "uint256"
+						},
+						{
+							"internalType": "uint256",
+							"name": "finalSeed",
+							"type": "uint256"
+						},
+						{
+							"internalType": "uint8",
+							"name": "drawIndex",
+							"type": "uint8"
+						},
+						{
+							"internalType": "enum State",
+							"name": "gameState",
+							"type": "uint8"
+						},
+						{
+							"internalType": "enum Result",
+							"name": "result",
+							"type": "uint8"
+						},
+						{
+							"internalType": "bytes",
+							"name": "deck",
+							"type": "bytes"
+						},
+						{
+							"internalType": "bool",
+							"name": "isShuffled",
+							"type": "bool"
+						},
+						{
+							"internalType": "uint8",
+							"name": "playerHandTotalValue",
+							"type": "uint8"
+						},
+						{
+							"internalType": "uint8",
+							"name": "dealerHandTotalValue",
+							"type": "uint8"
+						},
+						{
+							"internalType": "bool",
+							"name": "dealerIsSoft",
+							"type": "bool"
+						},
+						{
+							"internalType": "bool",
+							"name": "playerIsSoft",
+							"type": "bool"
+						}
+					],
+					"internalType": "struct GameToken",
+					"name": "token",
+					"type": "tuple"
 				}
 			],
 			"name": "payout",
