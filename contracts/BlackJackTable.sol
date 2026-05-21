@@ -188,6 +188,7 @@ contract BlackJackTable {
     }
 
     function settleFinalHands(GameToken storage token) internal returns (bool) {
+        if (handleBlackJackEvents(token)) return true;
         if (token.playerHandTotalValue > token.dealerHandTotalValue) {
             token.result = Result.PLAYER_WIN;
             token.gameState = State.FINISHED;
@@ -206,7 +207,6 @@ contract BlackJackTable {
             return true;
         }
 
-        if (!handleBlackJackEvents(token)) return false;
         return false;
     }
 
