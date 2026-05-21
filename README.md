@@ -53,16 +53,24 @@ Each game session will have a unique game token that encapsulates:
    - **evaluateToken**: Verifies the game result and determines if a payout is required.
 
 3. **Oracle Contract**:
-   - **Randomise**: Generates a random number and updates the game token with cryptographic proof.
-
+   - **Randomise**: Generates a random number and encodes the deck (Note: encoding DOES NOT prevent attackers from retrieving the deck, it is only a proof of concept).
 ## Technologies Used
 
 - **Ethereum Smart Contracts** (Solidity)
 - **Ethers.js** for frontend interaction
-- **React** for frontend UI
+- **React** for frontend UI, MUI
 - **Remix IDE** for smart contract development and deployment
 
 ## Future Enhancements
 
 - **Wallet Integration**: Future improvements could include support for more wallet types and multiple cryptocurrency payments.
 - **Game Features**: More game variations and improved user interaction can be added to enhance the gaming experience.
+
+## Notes
+This is a proof of concept, to visualise that the deck is correctly shuffled, encoded and decoded, the values of the cards drawn as well as the shuffled deck are all emitted to the blockchain 
+to show proof of implementation.
+
+### INSTALLING
+Run `git clone https://github.com/HuanNguyen-Dev/Block-Jack` into a desired file
+Run `npm install` to install dependencies.
+Download the MetaMask chrome extension browser.
