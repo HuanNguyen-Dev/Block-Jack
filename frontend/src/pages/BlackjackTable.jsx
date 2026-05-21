@@ -162,8 +162,8 @@ function BlackjackTable() {
             setDealerTotal(Number(game.dealerTotal));
 
             const hands = await contract.getHands(player);
-            setPlayerHand(hands.playerHand.map(Number));
-            setDealerHand(hands.dealerHand.map(Number));
+            setPlayerHand(hands?.playerHand?.map(Number) || []);
+            setDealerHand(hands?.dealerHand?.map(Number) || []);
         } catch (err) {
             console.error(err);
 
@@ -171,7 +171,7 @@ function BlackjackTable() {
             setOpenError(true);
         }
     }
-    if (gameState == null ) {
+    if (gameState == null) {
         return (
             <Box
                 component="section"
@@ -205,7 +205,7 @@ function BlackjackTable() {
 
                     }}
                 >
-                   Loading...
+                    Loading...
                 </Typography>
 
             </Box>
@@ -303,68 +303,128 @@ function BlackjackTable() {
             </Box>
         );
     }
-    return (
-        <>
-            <Box
-                component="section"
-                className='blackjack-hero'
-                sx={{
+    else if (gameState == STATES.DEALER_TURN && dealerTotal == 0 && playerTotal == 0) {
+        return (
+            <>
+                <Box
+                    component="section"
+                    className='blackjack-hero'
+                    sx={{
 
-                    position: 'relative',
-                    flexDirection: 'column',
-                    width: '100%',
-                    height: '100%'
-                }}
-            >
+                        position: 'relative',
+                        flexDirection: 'column',
+                        width: '100%',
+                        height: '100%'
+                    }}
+                >
 
-                {/* <h1 className="table-title">Blackjack Table</h1> */}
-                <img src={blackjackTableIMG} alt="Blackjack Table" className="table-image" />
+                    {/* <h1 className="table-title">Blackjack Table</h1> */}
+                    <img src={blackjackTableIMG} alt="Blackjack Table" className="table-image" />
 
-                <button className='play-button'
-                    onClick={() => navigate('/')}
-                    style={{
-                        position: 'absolute',
-                        top: 10,
-                        left: 10,
-                        padding: '10px 20px',
-                    }}>
-                    <span>Back</span>
-                </button>
-                {
-                    <Stack direction="row"
-                        spacing={2}
-                        sx={{
-                            position: 'relative',
-                            zIndex: 10,
-                            bottom: 80,
+                    <button className='play-button'
+                        onClick={() => navigate('/')}
+                        style={{
+                            position: 'absolute',
+                            top: 10,
+                            left: 10,
+                            padding: '10px 20px',
                         }}>
-                        <button
-                            className='base-button bet-button'
+                        <span>Back</span>
+                    </button>
+                    {
+                        <Stack direction="row"
+                            spacing={2}
+                            sx={{
+                                position: 'relative',
+                                zIndex: 10,
+                                bottom: 80,
+                            }}>
+                            <button
+                                className='base-button bet-button'
 
-                            onClick={handleStand}>
-                            Stand
-                        </button>
+                                onClick={handleStand}>
+                                Deal Hands
+                            </button>
+                        </Stack>
+                    }
+                </Box>
+                <Snackbar
+                    open={openError}
+                    autoHideDuration={4000}
+                    onClose={() => setOpenError(false)}
+                >
+                    <Alert severity="error" variant="filled">
+                        {errorMsg}
+                    </Alert>
+                </Snackbar>
+            </>
+        );
 
-                        <button
-                            className='base-button bet-button'
-                            onClick={handleHit}>
-                            Hit
-                        </button>
-                    </Stack>
-                }
-            </Box>
-            <Snackbar
-                open={openError}
-                autoHideDuration={4000}
-                onClose={() => setOpenError(false)}
-            >
-                <Alert severity="error" variant="filled">
-                    {errorMsg}
-                </Alert>
-            </Snackbar>
-        </>
+    }
+    else {
+        return (
+            <>
+                <Box
+                    component="section"
+                    className='blackjack-hero'
+                    sx={{
 
-    )
+                        position: 'relative',
+                        flexDirection: 'column',
+                        width: '100%',
+                        height: '100%'
+                    }}
+                >
+
+                    {/* <h1 className="table-title">Blackjack Table</h1> */}
+                    <img src={blackjackTableIMG} alt="Blackjack Table" className="table-image" />
+
+                    <button className='play-button'
+                        onClick={() => navigate('/')}
+                        style={{
+                            position: 'absolute',
+                            top: 10,
+                            left: 10,
+                            padding: '10px 20px',
+                        }}>
+                        <span>Back</span>
+                    </button>
+                    {
+                        <Stack direction="row"
+                            spacing={2}
+                            sx={{
+                                position: 'relative',
+                                zIndex: 10,
+                                bottom: 80,
+                            }}>
+                            <button
+                                className='base-button bet-button'
+
+                                onClick={handleStand}>
+                                Stand
+                            </button>
+
+                            <button
+                                className='base-button bet-button'
+                                onClick={handleHit}>
+                                Hit
+                            </button>
+                        </Stack>
+                    }
+                </Box>
+                <Snackbar
+                    open={openError}
+                    autoHideDuration={4000}
+                    onClose={() => setOpenError(false)}
+                >
+                    <Alert severity="error" variant="filled">
+                        {errorMsg}
+                    </Alert>
+                </Snackbar>
+            </>
+
+        )
+    }
 }
 
 export default BlackjackTable;

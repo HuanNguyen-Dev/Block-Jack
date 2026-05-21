@@ -1,7 +1,7 @@
 import React from 'react';
 import blackjackTableIMG from '../assets/blackjack-table-pixilart.png'
 import { useEffect, useState } from 'react'
-import { Box, Button, Stack } from '@mui/material'
+import { Box, Button, Stack, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import PlaceBetDialogue from '../components/BetInput';
 import PlaceDepositDialogue from '../components/DepositInput';
@@ -116,7 +116,7 @@ function Deposit() {
 
             setVaultBalance(balance);
             setNeedsDeposit(BigInt(balance.toString()) === 0n);
-            setHasWagered(BigInt(locked.toString()) > 0n) ;
+            setHasWagered(BigInt(locked.toString()) > 0n);
         } catch (err) {
             console.error("Balance check failed:", err);
 
@@ -173,8 +173,61 @@ function Deposit() {
     };
     if (needsDeposit == null) return (
         <>
-            <img src={blackjackTableIMG} alt="Blackjack Table" className="table-image" />
-            <div>Loading...</div>
+            <Box
+                component="section"
+                className="blackjack-hero"
+                sx={{
+                    position: 'relative',
+                    width: '100%',
+                    height: '100vh',
+                    overflow: 'hidden',
+                }}
+            >
+                <button className='play-button'
+                    onClick={() => navigate('/')}
+                    style={{
+                        position: 'absolute',
+                        top: 10,
+                        left: 10,
+                        padding: '10px 20px',
+                    }}>
+                    <span>Back</span>
+                </button>
+                {/* Background image */}
+                <img
+                    src={blackjackTableIMG}
+                    alt="Blackjack Table"
+                    className="table-image"
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                    }}
+                />
+                <Typography
+                    variant="h3"
+                    sx={{
+                        color: '#fff',
+                        fontWeight: 700,
+                        mb: 1,
+                        letterSpacing: 1,
+                        fontFamily: "'Pixelify Sans', sans-serif",
+
+                    }}
+                >
+                    Loading...
+                </Typography>
+
+            </Box>
+            <Snackbar
+                open={openError}
+                autoHideDuration={4000}
+                onClose={() => setOpenError(false)}
+            >
+                <Alert severity="error" variant="filled">
+                    {errorMsg}
+                </Alert>
+            </Snackbar>
         </>
     )
     return (
@@ -210,19 +263,31 @@ function Deposit() {
                         <PlaceDepositDialogue onPlaceDeposit={handleDeposit} />
                     ) :
                         hasWagered ?
-                            <button className='base-button bet-button'
-                                onClick={() => navigate('/BlackjackTable')}
-                                style={{
-                                    position: "absolute",
-                                    top: "250px",
-                                    transform: "translateY(-20px)",
-                                    zIndex: 10,
-                                    padding: '10px 20px',
-                                }}>
-                                <span>Start Game</span>
-                            </button>
+                            <>
+                                <button className='base-button bet-button'
+                                    onClick={() => navigate('/BlackjackTable')}
+                                    style={{
+                                        position: "absolute",
+                                        top: "250px",
+                                        transform: "translateY(-20px)",
+                                        zIndex: 10,
+                                        padding: '10px 20px',
+                                    }}>
+                                    <span>Start Game</span>
+                                </button>
+                                <Snackbar
+                                    open={openError}
+                                    autoHideDuration={4000}
+                                    onClose={() => setOpenError(false)}
+                                >
+                                    <Alert severity="error" variant="filled">
+                                        {errorMsg}
+                                    </Alert>
+                                </Snackbar>
+                            </>
                             :
                             <PlaceBetDialogue onPlaceBet={handlePlaceBet} />
+
 
 
 
