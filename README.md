@@ -71,6 +71,6 @@ This is a proof of concept, to visualise that the deck is correctly shuffled, en
 to show proof of implementation.
 
 ### INSTALLING
-Run `git clone https://github.com/HuanNguyen-Dev/Block-Jack` into a desired file
-Run `npm install` to install dependencies.
-Download the MetaMask chrome extension browser.
+Run `git clone https://github.com/HuanNguyen-Dev/Block-Jack` into a desired file  
+Run `npm install` to install dependencies.  
+Download the MetaMask chrome extension browser.  
