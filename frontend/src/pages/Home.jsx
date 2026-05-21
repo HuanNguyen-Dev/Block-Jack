@@ -18,6 +18,7 @@ function Home() {
     const [errorMsg, setErrorMsg] = useState("");
     const [openError, setOpenError] = useState(false);
     const [balance, setBalance] = useState("0");
+    const [houseBal, setHouseBal] = useState("0");
     const [address, setAddress] = useState("");
     const [hasFinished, setHasFinished] = useState(false);
     const navigate = useNavigate();
@@ -46,8 +47,10 @@ function Home() {
             const vault = await getVaultContract();
             // get vault balance
             const bal = await vault.balances(address);
+            const houseBal = await vault.getHouseBalance();
 
             setBalance(formatEther(bal));
+            setHouseBal(formatEther(houseBal));
         } catch (err) {
             console.error("Failed to load balance:", err);
             setErrorMsg(parseTxError(err));
@@ -194,6 +197,7 @@ function Home() {
                         }}
                     >
                         Balance: {balance} ETH
+                        House Balance: {houseBal} ETH
                     </div>
                     <WithdrawButton onWithdraw={withdraw} />
                 </div>
