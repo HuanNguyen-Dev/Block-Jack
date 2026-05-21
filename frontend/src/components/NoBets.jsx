@@ -25,20 +25,7 @@ export default function DisplayMessage({title, subtitle}) {
                 }}
             />
 
-            {/* Back button */}
-            <button
-                className='play-button'
-                onClick={() => navigate('/')}
-                style={{
-                    position: 'absolute',
-                    top: 10,
-                    left: 10,
-                    padding: '10px 20px',
-                    zIndex: 20,
-                }}
-            >
-                <span>Back</span>
-            </button>
+            <BackButton></BackButton>
 
             {/* Center overlay */}
             <Box

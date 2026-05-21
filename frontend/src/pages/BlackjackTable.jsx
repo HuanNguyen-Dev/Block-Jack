@@ -287,7 +287,6 @@ function BlackjackTable() {
     if (gameState == STATES.BET || gameState == STATES.NONE) {
         return (
             <>
-                <BackButton></BackButton>
                 <DisplayMessage
                     title={"No Bets Found! Please Place Your Bets"}
                     subtitle={"Waiting for user action..."}
