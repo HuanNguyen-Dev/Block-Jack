@@ -29,22 +29,29 @@ function Home() {
         FINISHED: 4
     };
 
-
+    const getAddress = async () => {
+        try {
+            // get connected wallet
+            const vault = await getVaultContract();
+            const signerAddress = await vault.runner.getAddress();
+            setAddress(signerAddress);
+        } catch (err) {
+            setErrorMsg(parseTxError(err));
+            setOpenError(true);
+        }
+    }
 
     const loadBalance = async () => {
         try {
             const vault = await getVaultContract();
-
-            // get connected wallet
-            const signerAddress = await vault.runner.getAddress();
-            setAddress(signerAddress);
-
             // get vault balance
-            const bal = await vault.balances(signerAddress);
+            const bal = await vault.balances(address);
 
             setBalance(formatEther(bal));
         } catch (err) {
             console.error("Failed to load balance:", err);
+            setErrorMsg(parseTxError(err));
+            setOpenError(true);
         }
     };
 
@@ -112,6 +119,7 @@ function Home() {
 
 
     useEffect(() => {
+        getAddress();
         if (!address) return;
         loadBalance();
         loadGameState();
@@ -199,7 +207,7 @@ function Home() {
                             zIndex: (cards.length + 1),
                         }}>
                         <span>End Game</span>
-                    </button>   :
+                    </button> :
                     <button className='play-button'
                         onClick={() => navigate('/Deposit')}
                         style={{

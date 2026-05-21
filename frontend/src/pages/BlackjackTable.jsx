@@ -9,6 +9,7 @@ import { getBlackjackContract } from '../contract/blackjack-table';
 import { getVaultContract } from '../contract/vault';
 import DisplayMessage from '../components/NoBets';
 import BackButton from '../components/BackButton';
+import DisplayResults from '../components/DisplayResult';
 import { parseEther } from "ethers";
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
@@ -21,6 +22,7 @@ function BlackjackTable() {
     const [hoveredCard, setHoveredCard] = useState(null);
 
     const [gameState, setGameState] = useState(null);
+    const [gameResult, setGameResult] = useState(null);
     const [playerHand, setPlayerHand] = useState([]);
     const [dealerHand, setDealerHand] = useState([]);
     const [playerTotal, setPlayerTotal] = useState(0);
@@ -41,6 +43,13 @@ function BlackjackTable() {
         PLAYER_TURN: 3,
         FINISHED: 4
     };
+
+    const RESULT = {
+        NONE: 0,
+        PLAYER_WIN: 1,
+        DEALER_WIN: 2,
+        PUSH: 3
+    }
 
     const getCardImage = (rawCard) => {
 
@@ -155,6 +164,7 @@ function BlackjackTable() {
             const game = await contract.getPlayerGame(player);
             setBetAmount(game.bet);
             setGameState(Number(game.gameState));
+            setGameResult(Number(game.result));
             setPlayerTotal(Number(game.playerTotal));
             setDealerTotal(Number(game.dealerTotal));
             setHasStand(Number(game.gameState) == STATES.FINISHED);
@@ -335,49 +345,66 @@ function BlackjackTable() {
 
     }
     else if (hasStand) {
-        <>
-            <Box
-                component="section"
-                className='blackjack-hero'
-                sx={{
+        return (
+            <>
+                <Box
+                    component="section"
+                    className='blackjack-hero'
+                    sx={{
 
-                    position: 'relative',
-                    flexDirection: 'column',
-                    width: '100%',
-                    height: '100%'
-                }}
-            >
+                        position: 'relative',
+                        flexDirection: 'column',
+                        width: '100%',
+                        height: '100%'
+                    }}
+                >
 
-                <img src={blackjackTableIMG} alt="Blackjack Table" className="table-image" />
+                    <img src={blackjackTableIMG} alt="Blackjack Table" className="table-image" />
 
-                <BackButton></BackButton>
-                {
-                    <Stack direction="row"
-                        spacing={2}
-                        sx={{
-                            position: 'relative',
-                            zIndex: 10,
-                            bottom: 80,
-                        }}>
-                        <button
-                            className='base-button bet-button'
+                    <BackButton></BackButton>
+                    {
+                        gameResult == RESULT.DEALER_WIN ?
+                            <DisplayResults
+                                Result={"DEALER WINS"}>
+                            </DisplayResults> :
+                            gameResult == RESULT.PLAYER_WIN ?
+                                <DisplayResults
+                                    Result={"PLAYER WINS"}>
+                                </DisplayResults>
+                                :
+                                <DisplayResults
+                                    Result={"PUSH"}>
+                                </DisplayResults>
 
-                            onClick={handleEndGame}>
-                            End Game
-                        </button>
-                    </Stack>
-                }
-            </Box>
-            <Snackbar
-                open={openError}
-                autoHideDuration={4000}
-                onClose={() => setOpenError(false)}
-            >
-                <Alert severity="error" variant="filled">
-                    {errorMsg}
-                </Alert>
-            </Snackbar>
-        </>
+                    }
+                    {
+                        < Stack direction="row"
+                            spacing={2}
+                            sx={{
+                                position: 'relative',
+                                zIndex: 10,
+                                bottom: 80,
+                            }}>
+                            <button
+                                className='base-button bet-button'
+
+                                onClick={handleEndGame}>
+                                End Game
+                            </button>
+                        </Stack>
+                    }
+                </Box >
+                <Snackbar
+                    open={openError}
+                    autoHideDuration={4000}
+                    onClose={() => setOpenError(false)}
+                >
+                    <Alert severity="error" variant="filled">
+                        {errorMsg}
+                    </Alert>
+                </Snackbar>
+            </>
+        );
     }
     else {
         const displayDealerHand =
