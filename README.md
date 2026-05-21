@@ -74,3 +74,10 @@ to show proof of implementation.
 Run `git clone https://github.com/HuanNguyen-Dev/Block-Jack` into a desired file  
 Run `npm install` to install dependencies.  
 Download the MetaMask chrome extension browser.  
+Click Play and deposit money into the vault  
+The following interactions will then be as follows:  
+- Place your bet  
+- Start the game  
+- Deal the initial hands  
+- Hit/Stand  
+- End Game
