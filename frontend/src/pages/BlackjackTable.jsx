@@ -483,31 +483,34 @@ function BlackjackTable() {
                     </Box>
 
                     {/* Buttons */}
-                    <Stack
-                        direction="row"
-                        spacing={2}
-                        sx={{
-                            position: 'absolute',
-                            bottom: 20,
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                            zIndex: 20,
-                        }}
-                    >
-                        <button
-                            className='base-button bet-button'
-                            onClick={handleStand}
+                    {
+                        hasStand ? null :
+                        <Stack
+                            direction="row"
+                            spacing={2}
+                            sx={{
+                                position: 'absolute',
+                                bottom: 20,
+                                left: '50%',
+                                transform: 'translateX(-50%)',
+                                zIndex: 20,
+                            }}
                         >
-                            Stand
-                        </button>
+                            <button
+                                className='base-button bet-button'
+                                onClick={handleStand}
+                            >
+                                Stand
+                            </button>
 
-                        <button
-                            className='base-button bet-button'
-                            onClick={handleHit}
-                        >
-                            Hit
-                        </button>
-                    </Stack>
+                            <button
+                                className='base-button bet-button'
+                                onClick={handleHit}
+                            >
+                                Hit
+                            </button>
+                        </Stack>
+                    }
                 </Box>
                 <Snackbar
                     open={openError}

@@ -71,6 +71,8 @@ export default function PlaceDepositDialogue({ onPlaceDeposit }) {
                 <DialogContent>
                     <DialogContentText>
                         Please enter the amount you would like to deposit.
+                            Minimum: 0.0000001 ETH
+                        Maximum: 0.001 ETH
                     </DialogContentText>
                     <form onSubmit={handleSubmit} id="place-deposit">
                         <TextField
@@ -89,12 +91,12 @@ export default function PlaceDepositDialogue({ onPlaceDeposit }) {
                     </form>
                 </DialogContent>
                 <DialogActions>
-                    <button 
-                    className='base-button bet-button'
-                    onClick={handleClose}>Cancel</button>
-                    <button 
-                    className='base-button bet-button'
-                    type="submit" form="place-deposit">
+                    <button
+                        className='base-button bet-button'
+                        onClick={handleClose}>Cancel</button>
+                    <button
+                        className='base-button bet-button'
+                        type="submit" form="place-deposit">
                         SET
                     </button>
                 </DialogActions>
