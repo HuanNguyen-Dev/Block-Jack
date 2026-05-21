@@ -35,16 +35,85 @@ contract BlackJackTable {
         uint256 finalSeed
     );
     event HandleTableEvents(GameToken token);
-    event CardDrawn(address player, uint256 originalSeed, uint8 value,uint8[104]deck);
+    event CardDrawn(
+        address player,
+        uint256 originalSeed,
+        uint8 value,
+        uint8[104] deck
+    );
     event Shuffle(bytes tokenDeck, uint8[104] deck);
     event GameEnded(address player, Result result);
     event InitialHand(uint8 dealer, uint8 player);
     // Modifiers
 
-    function getPlayerHand() public view returns ( uint8[] memory){
+    function getPlayerHand() public view returns (uint8[] memory) {
         uint256 gameID = activeGame[msg.sender];
         GameToken storage token = games[gameID];
         return token.playerHand;
+    }
+
+    function hasActiveGame(address player) external view returns (bool) {
+        return activeGame[player] != 0;
+    }
+
+    function getGameState(address player) external view returns (State) {
+        uint256 gameID = activeGame[player];
+
+        require(gameID != 0, "No active game");
+
+        return games[gameID].gameState;
+    }
+
+    function getPlayerGame(
+        address player
+    )
+        external
+        view
+        returns (
+            uint256 gameID,
+            uint256 bet,
+            State gameState,
+            uint8 playerTotal,
+            uint8 dealerTotal,
+            bool shuffled,
+            uint8 drawIndex,
+            Result result,
+            bytes memory deck
+        )
+    {
+        gameID = activeGame[player];
+
+        require(gameID != 0, "No active game");
+
+        GameToken storage token = games[gameID];
+
+        return (
+            token.tokenID,
+            token.bet,
+            token.gameState,
+            token.playerHandTotalValue,
+            token.dealerHandTotalValue,
+            token.isShuffled,
+            token.drawIndex,
+            token.result,
+            token.deck
+        );
+    }
+
+    function getHands(
+        address player
+    )
+        external
+        view
+        returns (uint8[] memory playerHand, uint8[] memory dealerHand)
+    {
+        uint256 gameID = activeGame[player];
+
+        require(gameID != 0, "No active game");
+
+        GameToken storage token = games[gameID];
+
+        return (token.playerHand, token.dealerHand);
     }
 
     function assignToken(uint256 _playerSeed) external {
@@ -64,7 +133,6 @@ contract BlackJackTable {
         token.dealerHandTotalValue = 0;
         token.bet = 0;
 
-
         emit GameCreated(token.tokenID, msg.sender);
     }
 
@@ -83,9 +151,7 @@ contract BlackJackTable {
         vault.lockBet(msg.sender, bet);
         token.bet = bet;
 
-        token.finalSeed = oracle.generateSeed(
-            token.playerSeed
-        );
+        token.finalSeed = oracle.generateSeed(token.playerSeed);
 
         token.gameState = State.DEALER_TURN;
 
@@ -95,9 +161,7 @@ contract BlackJackTable {
         emit BetPlaced(token.tokenID, msg.sender, token.bet, token.finalSeed);
     }
 
-
-
-    function shuffleDeck(GameToken storage token) internal{
+    function shuffleDeck(GameToken storage token) internal {
         require(
             token.gameState == State.DEALER_TURN,
             "Only the dealer can shuffle"
@@ -116,7 +180,7 @@ contract BlackJackTable {
             // Generate a random number
             uint256 n = i + ((uint256(token.finalSeed)) % (deckSize - i));
             // Swap the location of the cards
-            (deck[i],deck[n]) = (deck[n], deck[i]);
+            (deck[i], deck[n]) = (deck[n], deck[i]);
         }
         token.deck = abi.encode(deck, token.finalSeed);
         token.isShuffled = true;
@@ -124,18 +188,21 @@ contract BlackJackTable {
     }
 
     function settleFinalHands(GameToken storage token) internal returns (bool) {
-        if (token.playerHandTotalValue > token.dealerHandTotalValue){
-            endGame(token, Result.PLAYER_WIN, token.bet * 2);
+        if (token.playerHandTotalValue > token.dealerHandTotalValue) {
+            token.result = Result.PLAYER_WIN;
+            token.gameState = State.FINISHED;
             return true;
         }
 
-        if (token.dealerHandTotalValue > token.playerHandTotalValue){
-            endGame(token, Result.DEALER_WIN, token.bet);
+        if (token.dealerHandTotalValue > token.playerHandTotalValue) {
+            token.result = Result.DEALER_WIN;
+            token.gameState = State.FINISHED;
             return true;
         }
 
-        if (token.dealerHandTotalValue == token.playerHandTotalValue){
-            endGame(token, Result.PUSH, token.bet);
+        if (token.dealerHandTotalValue == token.playerHandTotalValue) {
+            token.result = Result.PUSH;
+            token.gameState = State.FINISHED;
             return true;
         }
 
@@ -147,12 +214,14 @@ contract BlackJackTable {
         GameToken storage token
     ) internal returns (bool) {
         if (token.playerHandTotalValue > 21) {
-            endGame(token, Result.DEALER_WIN, token.bet);
+            token.result = Result.DEALER_WIN;
+            token.gameState = State.FINISHED;
             return true;
         }
 
         if (token.dealerHandTotalValue > 21) {
-            endGame(token, Result.PLAYER_WIN, token.bet * 2);
+            token.result = Result.PLAYER_WIN;
+            token.gameState = State.FINISHED;
             return true;
         }
 
@@ -160,7 +229,8 @@ contract BlackJackTable {
             hasBlackJack(token.playerHandTotalValue) &&
             !hasBlackJack(token.dealerHandTotalValue)
         ) {
-            endGame(token, Result.PLAYER_WIN, token.bet * 2);
+            token.result = Result.PLAYER_WIN;
+            token.gameState = State.FINISHED;
             return true;
         }
 
@@ -168,15 +238,16 @@ contract BlackJackTable {
             hasBlackJack(token.playerHandTotalValue) &&
             hasBlackJack(token.dealerHandTotalValue)
         ) {
-            endGame(token, Result.PUSH, token.bet);
+            token.result = Result.PUSH;
+            token.gameState = State.FINISHED;
             return true;
         }
 
         if (hasBlackJack(token.dealerHandTotalValue)) {
-            endGame(token, Result.DEALER_WIN, token.bet);
+            token.result = Result.DEALER_WIN;
+            token.gameState = State.FINISHED;
             return true;
         }
-
 
         emit HandleTableEvents(token);
         return false;
@@ -207,7 +278,10 @@ contract BlackJackTable {
         // _hitDealer(token);
 
         // Early exits
-        emit InitialHand(token.dealerHandTotalValue, token.playerHandTotalValue);
+        emit InitialHand(
+            token.dealerHandTotalValue,
+            token.playerHandTotalValue
+        );
         if (handleBlackJackEvents(token)) return;
 
         token.gameState = State.PLAYER_TURN;
@@ -218,7 +292,7 @@ contract BlackJackTable {
     }
 
     function isAce(uint8 card) internal pure returns (bool) {
-        return (card == 1 || card == 11);
+        return (card == 1);
     }
 
     function addCardToHand(
@@ -230,27 +304,32 @@ contract BlackJackTable {
         if (isAce(card)) {
             currentTotal += 11;
             aceCount += 1;
-        } else{
+        } else {
             currentTotal += card;
         }
-        while(currentTotal > 21 && aceCount > 0){
+        while (currentTotal > 21 && aceCount > 0) {
             currentTotal -= 10;
             aceCount--;
         }
         return (currentTotal, aceCount);
     }
 
-    function drawCard(GameToken storage token) internal returns (uint8) {
+    function drawCard(GameToken storage token) internal returns (uint8 raw, uint8 value) {
         require(token.isShuffled, "Deck has not been shuffled");
-        (uint8[104] memory deck, uint256 originalSeed) = abi.decode(token.deck, (uint8[104], uint256));
-        uint8 raw = deck[token.drawIndex];
+        (uint8[104] memory deck, uint256 originalSeed) = abi.decode(
+            token.deck,
+            (uint8[104], uint256)
+        );
+        raw = deck[token.drawIndex];
         // Map 13 cards
-        uint8 value = (raw % 13) + 1;
-        if (value > 10 ) value = 10;
+        uint8 rank = (raw % 52) / 4;
+        value = rank + 1;
+        // 0-3 = ace, 4-7 = 2, etc
+        if (value > 10) value = 10;
         token.drawIndex++;
         // Emit raw value so we retain information on suits
         emit CardDrawn(token.player, originalSeed, value, deck);
-        return value;
+        return (raw, value);
     }
 
     function hitPlayer() external {
@@ -264,29 +343,31 @@ contract BlackJackTable {
         require(token.playerHandTotalValue < 21, "Cannot hit");
 
         // handle blackjack
+        _hitPlayer(token);
         bool ended = handleBlackJackEvents(token);
         if (ended) return;
     }
 
-    function _hitPlayer(GameToken storage token) internal  returns (uint8){
-        uint8 card = drawCard(token);
-        (token.playerHandTotalValue,token.playerAceCount) = addCardToHand(
-            card,
+    function _hitPlayer(GameToken storage token) internal returns (uint8) {
+        (uint8 raw, uint8 value) = drawCard(token);
+        (token.playerHandTotalValue, token.playerAceCount) = addCardToHand(
+            value,
             token.playerHandTotalValue,
             token.playerAceCount
         );
-        token.playerHand.push(card);
-        return card;
+        token.playerHand.push(raw);
+        return value;
     }
 
     function _hitDealer(GameToken storage token) internal {
         require(token.gameState == State.DEALER_TURN);
-        uint8 card = drawCard(token);
+        (uint8 raw, uint8 value) = drawCard(token);
         (token.dealerHandTotalValue, token.dealerAceCount) = addCardToHand(
-            card,
+            value,
             token.dealerHandTotalValue,
             token.dealerAceCount
         );
+        token.dealerHand.push(raw);
     }
 
     function stand() external {
@@ -303,21 +384,23 @@ contract BlackJackTable {
         settleFinalHands(token);
     }
 
-    function endGame(
-        GameToken storage token,
-        Result result,
-        uint256 amount
-    ) internal {
-        token.result = result;
-        token.gameState = State.FINISHED;
-        if (amount > 0 && (token.result == Result.PLAYER_WIN || token.result == Result.PUSH) ) {
-            vault.payout(token.player, amount, token);
+    function endGame() external returns (GameToken memory) {
+        uint256 gameID = activeGame[msg.sender];
+        GameToken storage token = games[gameID];
+
+        require(token.gameState == State.FINISHED);
+
+        if (
+            token.bet > 0 &&
+            (token.result == Result.PLAYER_WIN || token.result == Result.PUSH)
+        ) {
+            vault.payout(token.player, token);
+        } else if (token.result == Result.DEALER_WIN) {
+            vault.loseBet(token.player, token);
         }
-        else if(token.result == Result.DEALER_WIN){
-            vault.loseBet(token.player, amount,token);
-        }
-        delete activeGame[token.player];
         token.bet = 0;
-        emit GameEnded(token.player, result);
+        delete activeGame[token.player];
+        emit GameEnded(token.player, token.result);
+        return (token);
     }
 }

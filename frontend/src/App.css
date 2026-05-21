@@ -80,7 +80,7 @@ body {
   width: 90px;
   height: 130px;
   transition: transform 0.3s ease-in-out;
-  position:absolute;
+  position: absolute;
 }
 
 .card img {
@@ -91,7 +91,26 @@ body {
   transition: transform 0.3s ease-in-out;
 }
 
+.base-button {
+  cursor: pointer;
+  z-index: 100;
+
+  border-radius: 50px;
+  background: #656b696b;
+
+  font-family: 'Pixelify Sans', sans-serif;
+  font-weight: bold;
+
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+
+  border: none;
+}
+
 .play-button {
+  width: 120px;
+  height: 75px;
+  font-size: 36px;
   cursor: pointer;
   z-index: 100;
 
@@ -109,6 +128,25 @@ body {
   transition: all 0.3s ease-in-out;
 }
 
+.withdraw-button {
+  width: 110px;
+  height: 55px;
+  color:white;
+  font-size: 22px;
+}
+
+.bet-button {
+  height: 55px;
+  font-weight: bold;
+  font-size: 36px;
+  background: #dce2e06b;
+  transition: all 0.3s ease-in-out;
+}
+
+.bet-button:hover {
+  transform: translate(-10%, -10%) scale(1.1);
+  background-color: rgba(255, 255, 255, 0.1);
+}
 
 .play-button:hover {
   transform: translate(-10%, -10%) scale(1.1);
@@ -117,13 +155,13 @@ body {
 
 
 .blackjack-hero {
-  height: 100vh;          
-  width: 100%;                
+  height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;   
-  align-items: center;        
-  background-color: #0b3d0b; 
+  justify-content: center;
+  align-items: center;
+  background-color: #0b3d0b;
   position: relative;
   overflow: hidden;
 }
@@ -133,17 +171,17 @@ body {
   font-size: 3rem;
   margin-bottom: 20px;
   text-shadow: 2px 2px 6px #000;
-  z-index: 2;              
+  z-index: 2;
 }
 
 .table-image {
   width: 100%;
-  height: 100%;     
-  position: absolute;        
+  height: 100%;
+  position: absolute;
   top: 0;
   left: 0;
-  z-index: 1;    
-}          
+  z-index: 1;
+}
 
 #next-steps {
   background-color: #000000;

@@ -2,13 +2,133 @@ import heroImg from '/frontend/src/assets/main.png'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Box, cardHeaderClasses } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import { getBlackjackContract } from '../contract/blackjack-table';
+import { getVaultContract } from '../contract/vault';
+import WithdrawButton from '../components/Withdraw';
+import { formatEther } from "ethers";
+import { parseTxError } from '../utils';
 
 function Home() {
     const [cards, setCards] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const [hoveredCard, setHoveredCard] = useState(null);
     const [isFanned, setisFanned] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
+    const [openError, setOpenError] = useState(false);
+    const [balance, setBalance] = useState("0");
+    const [houseBal, setHouseBal] = useState("0");
+    const [address, setAddress] = useState("");
+    const [hasFinished, setHasFinished] = useState(false);
     const navigate = useNavigate();
+    const STATES = {
+        NONE: 0,
+        BET: 1,
+        DEALER_TURN: 2,
+        PLAYER_TURN: 3,
+        FINISHED: 4
+    };
+
+    const getAddress = async () => {
+        try {
+            // get connected wallet
+            const vault = await getVaultContract();
+            const signerAddress = await vault.runner.getAddress();
+            setAddress(signerAddress);
+        } catch (err) {
+            setErrorMsg(parseTxError(err));
+            setOpenError(true);
+        }
+    }
+
+    const loadBalance = async () => {
+        try {
+            const vault = await getVaultContract();
+            // get vault balance
+            const bal = await vault.balances(address);
+            const houseBal = await vault.getHouseBalance();
+
+            setBalance(formatEther(bal));
+            setHouseBal(formatEther(houseBal));
+        } catch (err) {
+            console.error("Failed to load balance:", err);
+            setErrorMsg(parseTxError(err));
+            setOpenError(true);
+        }
+    };
+
+    const withdraw = async (amountInWei) => {
+        try {
+            const contract = await getVaultContract();
+            const tx = await contract.withdraw(amountInWei);
+
+            console.log("Transaction sent:", tx.hash);
+
+            const receipt = await tx.wait();
+
+            console.log("Withdraw confirmed:", receipt);
+            await loadBalance();
+
+            return receipt;
+        } catch (err) {
+            console.error("Withdraw failed:", err);
+            setErrorMsg(parseTxError(err));
+            setOpenError(true);
+
+            return;
+        }
+    }
+
+    const handleEndGame = async () => {
+        try {
+            const contract =
+                await getBlackjackContract();
+
+            const tx = await contract.endGame();
+
+            await tx.wait();
+            await loadGameState();
+        } catch (err) {
+            console.error(err);
+            setErrorMsg(parseTxError(err));
+            setOpenError(true);
+        }
+    }
+
+    const loadGameState = async () => {
+        try {
+            const contract = await getBlackjackContract();
+            const player = await contract.runner.getAddress();
+
+            // 1. Check active game
+            const active = await contract.hasActiveGame(player);
+
+
+            if (!active) {
+                return;
+            }
+
+            const game = await contract.getPlayerGame(player);
+            setHasFinished(Number(game.gameState) == STATES.FINISHED);
+
+        } catch (err) {
+            console.error(err);
+
+            setErrorMsg(parseTxError(err));
+            setOpenError(true);
+        }
+    }
+
+
+    useEffect(() => {
+        getAddress();
+        if (!address) return;
+        loadBalance();
+        loadGameState();
+    }, [address]);
+
+
     useEffect(() => {
         const fetchCards = async () => {
             try {
@@ -42,6 +162,7 @@ function Home() {
             <Box
                 id="center-index"
                 sx={{
+                    position: "relative",
                     backgroundImage: `url(${heroImg})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
@@ -55,17 +176,56 @@ function Home() {
                     margin: 0,
                 }}>
 
-                <button className='play-button'
-                    onClick={() => navigate('/blackjack')}
-                    style={{ 
-                        position: 'relative',
-                        marginBottom: '180px',
-                        marginTop: '-40px',
-                        zIndex: (cards.length + 1),
-                     }}>
-                    <span>Play</span>
-                </button>
-                <div className="cards-container" style={{position: 'relative'}}>
+                <div style={{
+                    position: "absolute",
+                    top: "20px",
+                    left: "20px",
+                    zIndex: 999
+                }}>
+                    <div
+                        className='base-button'
+                        style={{
+                            width: 200,
+                            position: "absolute",
+                            top: "60px",
+                            zIndex: 999,
+                            fontFamily: "'Pixelify Sans', sans-serif",
+                            color: "white",
+                            fontSize: "24px",
+                            padding: "10px 16px",
+                            borderRadius: "12px"
+                        }}
+                    >
+                        Balance: {balance} ETH
+                        House Balance: {houseBal} ETH
+                    </div>
+                    <WithdrawButton onWithdraw={withdraw} />
+                </div>
+                {hasFinished ?
+                    <button className='base-button bet-button'
+                        onClick={handleEndGame}
+                        style={{
+                            position: 'relative',
+                            marginBottom: '180px',
+                            marginTop: '-40px',
+                            zIndex: (cards.length + 1),
+                        }}>
+                        <span>End Game</span>
+                    </button> :
+                    <button className='play-button'
+                        onClick={() => navigate('/Deposit')}
+                        style={{
+                            position: 'relative',
+                            marginBottom: '180px',
+                            marginTop: '-40px',
+                            zIndex: (cards.length + 1),
+                        }}>
+                        <span>Play</span>
+                    </button>
+
+                }
+
+                <div className="cards-container" style={{ position: 'relative' }}>
                     <div className="cards"
                         onClick={() => setisFanned(!isFanned)}>
                         {isLoaded ? (
@@ -101,6 +261,15 @@ function Home() {
                     </div>
                 </div>
             </Box>
+            <Snackbar
+                open={openError}
+                autoHideDuration={4000}
+                onClose={() => setOpenError(false)}
+            >
+                <Alert severity="error" variant="filled">
+                    {errorMsg}
+                </Alert>
+            </Snackbar>
         </>
     );
 }
