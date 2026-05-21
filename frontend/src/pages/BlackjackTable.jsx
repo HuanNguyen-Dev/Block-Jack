@@ -343,68 +343,7 @@ function BlackjackTable() {
         );
 
     }
-    else if (hasStand) {
-        return (
-            <>
-                <Box
-                    component="section"
-                    className='blackjack-hero'
-                    sx={{
 
-                        position: 'relative',
-                        flexDirection: 'column',
-                        width: '100%',
-                        height: '100%'
-                    }}
-                >
-
-                    <img src={blackjackTableIMG} alt="Blackjack Table" className="table-image" />
-
-                    <BackButton></BackButton>
-                    {
-                        gameResult == RESULT.DEALER_WIN ?
-                            <DisplayResults
-                                Result={"DEALER WINS"}>
-                            </DisplayResults> :
-                            gameResult == RESULT.PLAYER_WIN ?
-                                <DisplayResults
-                                    Result={"PLAYER WINS"}>
-                                </DisplayResults>
-                                :
-                                <DisplayResults
-                                    Result={"PUSH"}>
-                                </DisplayResults>
-
-                    }
-                    {
-                        < Stack direction="row"
-                            spacing={2}
-                            sx={{
-                                position: 'relative',
-                                zIndex: 10,
-                                bottom: 80,
-                            }}>
-                            <button
-                                className='base-button bet-button'
-
-                                onClick={handleEndGame}>
-                                End Game
-                            </button>
-                        </Stack>
-                    }
-                </Box >
-                <Snackbar
-                    open={openError}
-                    autoHideDuration={4000}
-                    onClose={() => setOpenError(false)}
-                >
-                    <Alert severity="error" variant="filled">
-                        {errorMsg}
-                    </Alert>
-                </Snackbar>
-            </>
-        );
-    }
     else {
         const displayDealerHand =
             dealerHand.length === 1
@@ -464,6 +403,57 @@ function BlackjackTable() {
                             hideDealerHole: gameState === STATES.PLAYER_TURN
                         })}
                     </Box>
+                    {
+                        hasStand ?
+                            <Box
+                                component="section"
+                                className='blackjack-hero'
+                                sx={{
+
+                                    position: 'relative',
+                                    flexDirection: 'column',
+                                    width: '100%',
+                                    height: '100%'
+                                }}
+                            >
+
+                                <img src={blackjackTableIMG} alt="Blackjack Table" className="table-image" />
+
+                                <BackButton></BackButton>
+                                {
+                                    gameResult == RESULT.DEALER_WIN ?
+                                        <DisplayResults
+                                            Result={"DEALER WINS"}>
+                                        </DisplayResults> :
+                                        gameResult == RESULT.PLAYER_WIN ?
+                                            <DisplayResults
+                                                Result={"PLAYER WINS"}>
+                                            </DisplayResults>
+                                            :
+                                            <DisplayResults
+                                                Result={"PUSH"}>
+                                            </DisplayResults>
+
+                                }
+                                {
+                                    < Stack direction="row"
+                                        spacing={2}
+                                        sx={{
+                                            position: 'relative',
+                                            zIndex: 10,
+                                            bottom: 80,
+                                        }}>
+                                        <button
+                                            className='base-button bet-button'
+
+                                            onClick={handleEndGame}>
+                                            End Game
+                                        </button>
+                                    </Stack>
+                                }
+                            </Box >
+                            : null
+                    }
 
                     {/* Player Area */}
                     <Box
