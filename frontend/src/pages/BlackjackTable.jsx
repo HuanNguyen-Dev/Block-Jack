@@ -17,6 +17,8 @@ function BlackjackTable() {
     const backOfCard = 'https://deckofcardsapi.com/static/img/back.png';
     const [cards, setCards] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [isFanned, setisFanned] = useState(true);
+    const [hoveredCard, setHoveredCard] = useState(null);
 
     const [gameState, setGameState] = useState(null);
     const [playerHand, setPlayerHand] = useState([]);
@@ -38,7 +40,27 @@ function BlackjackTable() {
         FINISHED: 4
     };
 
+    const getCardImage = (rawCard) => {
 
+        const normalized = rawCard % 52;
+
+        const rankIndex = Math.floor(normalized / 4);
+        const suitIndex = normalized % 4;
+
+        const suits = ['H', 'D', 'C', 'S'];
+
+        let rank = '';
+
+        if (rankIndex === 0) rank = 'A';
+        else if (rankIndex >= 1 && rankIndex <= 8)
+            rank = `${rankIndex + 1}`;
+        else if (rankIndex === 9) rank = '0';
+        else if (rankIndex === 10) rank = 'J';
+        else if (rankIndex === 11) rank = 'Q';
+        else if (rankIndex === 12) rank = 'K';
+
+        return `${baseURL}${rank}${suits[suitIndex]}.png`;
+    };
     const handleDeal = async () => {
         try {
             const contract = await getBlackjackContract();
@@ -171,6 +193,88 @@ function BlackjackTable() {
             setOpenError(true);
         }
     }
+
+    const renderHand = (hand, hiddenFirst = false) => {
+        return (
+            <div
+                className="cards-container"
+                style={{
+                    position: 'relative',
+                    height: '220px',
+                    width: '100%',
+                }}
+            >
+                <div
+                    className="cards"
+                    onClick={() => setisFanned(!isFanned)}
+                >
+                    {hand.map((card, index) => {
+
+                        const middleIndex = Math.floor(hand.length / 2);
+
+                        const angle = isFanned
+                            ? (index - middleIndex) * 8
+                            : 0;
+
+                        const horizontalTranslation = isFanned
+                            ? (index - middleIndex) * 30
+                            : index * 5;
+
+                        const hoverX = (index - middleIndex) * 2;
+
+                        const isHovered = hoveredCard === `${hand}-${index}`;
+
+                        const imageSrc =
+                            hiddenFirst && index === 0
+                                ? backOfCard
+                                : getCardImage(card);
+
+                        return (
+                            <div
+                                key={`${card}-${index}`}
+                                className="card"
+                                onMouseEnter={() =>
+                                    setHoveredCard(`${hand}-${index}`)
+                                }
+                                onMouseLeave={() =>
+                                    setHoveredCard(null)
+                                }
+                                style={{
+                                    position: 'absolute',
+
+                                    transform: `
+                                    rotate(${angle}deg)
+                                    translateX(${(isHovered ? hoverX : 0) + horizontalTranslation}px)
+                                    scale(${isHovered ? 1.3 : 1.15})
+                                    translateY(${isHovered ? -40 : 0}px)
+                                `,
+
+                                    transformOrigin: 'bottom center',
+
+                                    zIndex: isHovered
+                                        ? hand.length + 10
+                                        : index,
+
+                                    transition: 'transform 0.25s ease',
+                                }}
+                            >
+                                <img
+                                    src={imageSrc}
+                                    alt={`card-${card}`}
+                                    style={{
+                                        width: '120px',
+                                        userSelect: 'none',
+                                        pointerEvents: 'none',
+                                    }}
+                                />
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        );
+    };
+
     if (gameState == null) {
         return (
             <Box
@@ -342,7 +446,7 @@ function BlackjackTable() {
                             <button
                                 className='base-button bet-button'
 
-                                onClick={handleStand}>
+                                onClick={handleDeal}>
                                 Deal Hands
                             </button>
                         </Stack>
@@ -368,49 +472,103 @@ function BlackjackTable() {
                     component="section"
                     className='blackjack-hero'
                     sx={{
-
                         position: 'relative',
                         flexDirection: 'column',
                         width: '100%',
-                        height: '100%'
+                        height: '100vh',
+                        overflow: 'hidden',
                     }}
                 >
 
-                    {/* <h1 className="table-title">Blackjack Table</h1> */}
-                    <img src={blackjackTableIMG} alt="Blackjack Table" className="table-image" />
+                    <img
+                        src={blackjackTableIMG}
+                        alt="Blackjack Table"
+                        className="table-image"
+                    />
 
-                    <button className='play-button'
-                        onClick={() => navigate('/')}
-                        style={{
+                    {/* Dealer Area */}
+                    <Box
+                        sx={{
                             position: 'absolute',
-                            top: 10,
-                            left: 10,
-                            padding: '10px 20px',
-                        }}>
-                        <span>Back</span>
-                    </button>
-                    {
-                        <Stack direction="row"
-                            spacing={2}
+                            top: 40,
+                            width: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            zIndex: 10,
+                        }}
+                    >
+
+                        <Typography
                             sx={{
-                                position: 'relative',
-                                zIndex: 10,
-                                bottom: 80,
-                            }}>
-                            <button
-                                className='base-button bet-button'
+                                color: 'white',
+                                mb: 2,
+                                fontFamily: "'Pixelify Sans', sans-serif",
+                                fontSize: '2rem',
+                            }}
+                        >
+                            Dealer ({dealerTotal})
+                        </Typography>
 
-                                onClick={handleStand}>
-                                Stand
-                            </button>
+                        {renderHand(
+                            dealerHand,
+                            gameState === STATES.PLAYER_TURN
+                        )}
+                    </Box>
 
-                            <button
-                                className='base-button bet-button'
-                                onClick={handleHit}>
-                                Hit
-                            </button>
-                        </Stack>
-                    }
+                    {/* Player Area */}
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            bottom: 120,
+                            width: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            zIndex: 10,
+                        }}
+                    >
+
+                        <Typography
+                            sx={{
+                                color: 'white',
+                                mb: 2,
+                                fontFamily: "'Pixelify Sans', sans-serif",
+                                fontSize: '2rem',
+                            }}
+                        >
+                            Player ({playerTotal})
+                        </Typography>
+
+                        {renderHand(playerHand)}
+                    </Box>
+
+                    {/* Buttons */}
+                    <Stack
+                        direction="row"
+                        spacing={2}
+                        sx={{
+                            position: 'absolute',
+                            bottom: 20,
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            zIndex: 20,
+                        }}
+                    >
+                        <button
+                            className='base-button bet-button'
+                            onClick={handleStand}
+                        >
+                            Stand
+                        </button>
+
+                        <button
+                            className='base-button bet-button'
+                            onClick={handleHit}
+                        >
+                            Hit
+                        </button>
+                    </Stack>
                 </Box>
                 <Snackbar
                     open={openError}

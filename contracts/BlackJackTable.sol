@@ -314,7 +314,7 @@ contract BlackJackTable {
         return (currentTotal, aceCount);
     }
 
-    function drawCard(GameToken storage token) internal returns (uint8) {
+    function drawCard(GameToken storage token) internal returns (uint8, uint8) {
         require(token.isShuffled, "Deck has not been shuffled");
         (uint8[104] memory deck, uint256 originalSeed) = abi.decode(
             token.deck,
@@ -327,7 +327,7 @@ contract BlackJackTable {
         token.drawIndex++;
         // Emit raw value so we retain information on suits
         emit CardDrawn(token.player, originalSeed, value, deck);
-        return value;
+        return (value, raw);
     }
 
     function hitPlayer() external {
@@ -347,25 +347,25 @@ contract BlackJackTable {
     }
 
     function _hitPlayer(GameToken storage token) internal returns (uint8) {
-        uint8 card = drawCard(token);
+        (uint8 card, uint8 raw) = drawCard(token);
         (token.playerHandTotalValue, token.playerAceCount) = addCardToHand(
             card,
             token.playerHandTotalValue,
             token.playerAceCount
         );
-        token.playerHand.push(card);
+        token.playerHand.push(raw);
         return card;
     }
 
     function _hitDealer(GameToken storage token) internal {
         require(token.gameState == State.DEALER_TURN);
-        uint8 card = drawCard(token);
+        (uint8 card, uint8 raw) = drawCard(token);
         (token.dealerHandTotalValue, token.dealerAceCount) = addCardToHand(
             card,
             token.dealerHandTotalValue,
             token.dealerAceCount
         );
-        token.dealerHand.push(card);
+        token.dealerHand.push(raw);
     }
 
     function stand() external {
