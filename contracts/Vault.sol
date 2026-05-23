@@ -4,6 +4,7 @@ import "./interfaces/IVault.sol";
 import "contracts/Data.sol";
 
 contract Vault is IVault {
+
     // owner
     uint256 public houseBalance;
     // for each address assign a uint256 (bal)
@@ -12,12 +13,16 @@ contract Vault is IVault {
     // for each address assign a bet
     mapping(address => uint256) public locked;
 
-    // add logging e.g events for deposit, withdraw, payout
+//---------------------------------------------------------------------------------------
+
+    // logging events for: Deposit, LockBet, Payout, Withdraw, LoseBet
     event Deposit(address user, uint256 amount);
     event LockBet(address player, uint256 balance, uint256 amount);
     event Payout(address indexed player, uint256 amount, Result result);
     event Withdraw(address indexed player, uint256 amount);
     event LoseBet(address indexed player, uint256 amount);
+
+//---------------------------------------------------------------------------------------
 
     // modifier for only the owner
     address public owner;
@@ -25,14 +30,15 @@ contract Vault is IVault {
         require(msg.sender == owner, "Not owner");
         _;
     }
-    // constructor to assign the owner
 
+    // constructor to assign the owner
     constructor() payable {
         // payable constructor can receive ether
         owner = payable(msg.sender);
     }
+//---------------------------------------------------------------------------------------
 
-    // deposit function extern payable
+    /// deposit function allows ///player to deposit ETH from personal wallet into the vault
     function deposit() external payable override {
         require(msg.value > 0, "Deposit amount must be > 0");
         balances[msg.sender] += msg.value;
@@ -41,19 +47,28 @@ contract Vault is IVault {
         emit Deposit(msg.sender, msg.value);
     }
 
+    /// allows total ETH tracked by house balance to be read
+    /// @return houseBalance the amount of ETH in house balance in wei
     function getHouseBalance() public view returns (uint256) {
         return houseBalance;
     }
 
+    /// allows total eth held within contract balance to be read
+    /// @return address(this).balance the ETH balance held in house wallet
     function getContractBalance() public view returns (uint256) {
         return address(this).balance;
     }
 
+    /// allows ///players ETH balance in the contract to be read
+    ///@param player address of the players wallet
+    ///@return ///player wallet balance
     function getPlayerBalance(address player) external view returns (uint256) {
         return balances[player];
     }
 
-    // lock the users bet
+    // lock the users bet amount prior to initialising game
+    ///@param player the address of the players wallet
+    ///@param amount the amount of the requested bet
     function lockBet(address player, uint256 amount) external override {
         require(balances[player] >= amount, "Insufficient balance");
 
@@ -61,8 +76,9 @@ contract Vault is IVault {
         locked[player] += amount;
         emit LockBet(player, balances[player], amount);
     }
-    // withdraw function takes amount
-
+    
+    /// allows a player to withdraw available (unlocked) ETH from their balance
+    /// @param amount The amount of ETH to withdraw (in wei)
     function withdraw(uint256 amount) public {
         require(amount > 0, "Please enter withdrawal amount");
         require(balances[msg.sender] >= amount, "Insufficient balance");
@@ -77,7 +93,11 @@ contract Vault is IVault {
         emit Withdraw(msg.sender, amount);
     }
 
-    // payout functrion (only owner) - takes player and amount
+
+    /// once game is finished pays out the player if they won or pushed
+    /// @param player the wallet address of the player to pay out
+    /// @param token the GameToken struct containing the bet amount, game state, and result
+
     function payout(
         address player,
         GameToken memory token
@@ -117,6 +137,9 @@ contract Vault is IVault {
         revert("Use deposit()");
     }
 
+    /// in the case of a finished game where the dealer wins — house retains the locked ETH
+    /// @param player The wallet address of the player
+    /// @param token The GameToken struct containing the bet amount, game state, and result
     function loseBet(
         address player,
         GameToken memory token
