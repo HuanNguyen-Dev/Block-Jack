@@ -343,14 +343,12 @@ contract BlackJackTable {
     function _dealInitialHands(GameToken storage token) internal {
         // Player draws
         _hitPlayer(token);
+
         // Dealer Draws
         _hitDealer(token);
 
         // Player Draws
         _hitPlayer(token);
-
-        // // Dealer Draws
-        // _hitDealer(token);
 
         // Early exits
         emit InitialHand(
