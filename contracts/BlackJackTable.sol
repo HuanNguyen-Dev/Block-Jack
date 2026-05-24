@@ -4,6 +4,28 @@ import "./interfaces/IVault.sol";
 import "./interfaces/IOracle.sol";
 import "contracts/Data.sol";
 
+
+//------------------------------------------------------------------------------
+// blackjack table contract
+//
+// manages the core blackjack gameplay logic and state transitions for each
+// active player session. the contract coordinates deck generation, card draws,
+// hand evaluation, blackjack/bust detection, and final game settlement.
+//
+// functionalities:
+// - create and track active player game sessions
+// - generate and shuffle a two-shoe blackjack deck
+// - manage player and dealer turns
+// - evaluate blackjack, bust, push, and win conditions
+// - interact with the vault contract for bet locking and settlement
+// - interact with the oracle contract for randomness generation
+// - emit gameplay events for frontend tracking and debugging
+//
+// gameplay flow:
+// assign token -> place bet -> shuffle -> initial deal ->
+// player actions -> dealer turn -> settlement -> payout/loss handling
+//------------------------------------------------------------------------------
+
 contract BlackJackTable {
 
     // constructor for the addresses of the vault and oracle
