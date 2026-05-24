@@ -3,6 +3,26 @@ pragma solidity ^0.8.30; // may have to change for ganache
 import "./interfaces/IVault.sol";
 import "contracts/Data.sol";
 
+//------------------------------------------------------------------------------
+// vault contract
+//
+// manages all player eth balances and locked bets for the blackjack platform.
+// players may deposit and withdraw eth, while the blackjacktable contract
+// controls bets during gameplay.
+//
+// functionalities
+// - store player balances within the platform
+// - lock and release bets during active games
+// - process payouts for wins and pushes
+// - retain losing bets within the house balance
+// - emit events for all balance-changing operations
+//
+// security assumptions:
+// - only trusted game contracts should invoke settlement functions
+// - eth transfers use low-level calls and revert on failure
+//------------------------------------------------------------------------------
+
+
 contract Vault is IVault {
 
     // owner
