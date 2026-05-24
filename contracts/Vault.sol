@@ -3,6 +3,26 @@ pragma solidity ^0.8.30; // may have to change for ganache
 import "./interfaces/IVault.sol";
 import "contracts/Data.sol";
 
+//------------------------------------------------------------------------------
+// vault contract
+//
+// manages all player eth balances and locked bets for the blackjack platform.
+// players may deposit and withdraw eth, while the blackjacktable contract
+// controls bets during gameplay.
+//
+// functionalities
+// - store player balances within the platform
+// - lock and release bets during active games
+// - process payouts for wins and pushes
+// - retain losing bets within the house balance
+// - emit events for all balance-changing operations
+//
+// security assumptions:
+// - only trusted game contracts should invoke settlement functions
+// - eth transfers use low-level calls and revert on failure
+//------------------------------------------------------------------------------
+
+
 contract Vault is IVault {
 
     // owner
@@ -38,7 +58,7 @@ contract Vault is IVault {
     }
 //---------------------------------------------------------------------------------------
 
-    /// deposit function allows ///player to deposit ETH from personal wallet into the vault
+    /// deposit function allows player to deposit ETH from personal wallet into the vault
     function deposit() external payable override {
         require(msg.value > 0, "Deposit amount must be > 0");
         balances[msg.sender] += msg.value;
@@ -59,14 +79,14 @@ contract Vault is IVault {
         return address(this).balance;
     }
 
-    /// allows ///players ETH balance in the contract to be read
+    /// allows players ETH balance in the contract to be read
     ///@param player address of the players wallet
-    ///@return ///player wallet balance
+    ///@return player wallet balance
     function getPlayerBalance(address player) external view returns (uint256) {
         return balances[player];
     }
 
-    // lock the users bet amount prior to initialising game
+    /// lock the users bet amount prior to initialising game
     ///@param player the address of the players wallet
     ///@param amount the amount of the requested bet
     function lockBet(address player, uint256 amount) external override {
@@ -97,7 +117,6 @@ contract Vault is IVault {
     /// once game is finished pays out the player if they won or pushed
     /// @param player the wallet address of the player to pay out
     /// @param token the GameToken struct containing the bet amount, game state, and result
-
     function payout(
         address player,
         GameToken memory token
@@ -132,6 +151,7 @@ contract Vault is IVault {
 
         emit Payout(player, betAmount, token.result);
     }
+
     // receive() payable due to deposit being a payable function
     receive() external payable {
         revert("Use deposit()");
@@ -147,7 +167,7 @@ contract Vault is IVault {
         uint256 betAmount = token.bet;
         require(locked[player] >= betAmount, "No active locked bet found");
         require(token.result == Result.DEALER_WIN, "Player has not lost");
-        require(token.gameState == State.FINISHED, "Not finalized");
+        require(token.gameState == State.FINISHED, "Not finalised");
         // Deduct from players locked stake; house keeps eth in contract
         locked[player] -= betAmount;
         // House already owns ETH implicitly

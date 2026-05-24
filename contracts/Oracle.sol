@@ -1,6 +1,24 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.30; // may have to change for ganache
 import "./interfaces/IOracle.sol";
+
+//------------------------------------------------------------------------------
+// oracle contract
+//
+// provides pseudo-random seed generation for the blackjack system by combining
+// a player-supplied seed with on-chain block data. this is used to generate
+// deck shuffling inputs for gameplay.
+//
+// responsibilities:
+// - generate server-side entropy from block data
+// - combine player and server seeds into a final randomness value
+// - provide a shared randomness source for game contracts
+//
+// note:
+// not secure randomness for high-stakes production systems (e.g. vrf)
+//------------------------------------------------------------------------------
+
+
 contract Oracle is IOracle {
 
     /// owner address
