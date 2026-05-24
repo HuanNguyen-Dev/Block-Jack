@@ -250,7 +250,7 @@ contract BlackJackTable {
     }
     
     /// handles special Blackjack outcomes (busts and natural blackjacks)
-    /// Checke before and after the initial deal. Covers:
+    /// check before and after the initial deal. Covers:
     ///      - Player bust (> 21) = DEALER_WIN
     ///      - Dealer bust (> 21) = PLAYER_WIN
     ///      - Player natural blackjack only = PLAYER_WIN
@@ -315,7 +315,7 @@ contract BlackJackTable {
         _dealInitialHands(token);
     }
 
-    /// deals one card to the player and one to the dealer, then checks for early exits
+    /// deals hands to the player and dealer, then checks for early exits
     /// checks for blackjack/bust conditions. If none apply, advances state to PLAYER_TURN.
     /// @param token The active GameToken storage reference
     function _dealInitialHands(GameToken storage token) internal {
