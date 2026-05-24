@@ -41,6 +41,88 @@
 						"internalType": "uint256",
 						"name": "amount",
 						"type": "uint256"
+					},
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "tokenID",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "bet",
+								"type": "uint256"
+							},
+							{
+								"internalType": "address",
+								"name": "player",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "playerSeed",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "serverSeed",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "finalSeed",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint8",
+								"name": "drawIndex",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum State",
+								"name": "gameState",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum Result",
+								"name": "result",
+								"type": "uint8"
+							},
+							{
+								"internalType": "bytes",
+								"name": "deck",
+								"type": "bytes"
+							},
+							{
+								"internalType": "bool",
+								"name": "isShuffled",
+								"type": "bool"
+							},
+							{
+								"internalType": "uint8",
+								"name": "playerHandTotalValue",
+								"type": "uint8"
+							},
+							{
+								"internalType": "uint8",
+								"name": "dealerHandTotalValue",
+								"type": "uint8"
+							},
+							{
+								"internalType": "bool",
+								"name": "dealerIsSoft",
+								"type": "bool"
+							},
+							{
+								"internalType": "bool",
+								"name": "playerIsSoft",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct GameToken",
+						"name": "token",
+						"type": "tuple"
 					}
 				],
 				"name": "loseBet",
@@ -61,9 +143,86 @@
 						"type": "uint256"
 					},
 					{
-						"internalType": "enum Result",
-						"name": "result",
-						"type": "uint8"
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "tokenID",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "bet",
+								"type": "uint256"
+							},
+							{
+								"internalType": "address",
+								"name": "player",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "playerSeed",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "serverSeed",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "finalSeed",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint8",
+								"name": "drawIndex",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum State",
+								"name": "gameState",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum Result",
+								"name": "result",
+								"type": "uint8"
+							},
+							{
+								"internalType": "bytes",
+								"name": "deck",
+								"type": "bytes"
+							},
+							{
+								"internalType": "bool",
+								"name": "isShuffled",
+								"type": "bool"
+							},
+							{
+								"internalType": "uint8",
+								"name": "playerHandTotalValue",
+								"type": "uint8"
+							},
+							{
+								"internalType": "uint8",
+								"name": "dealerHandTotalValue",
+								"type": "uint8"
+							},
+							{
+								"internalType": "bool",
+								"name": "dealerIsSoft",
+								"type": "bool"
+							},
+							{
+								"internalType": "bool",
+								"name": "playerIsSoft",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct GameToken",
+						"name": "token",
+						"type": "tuple"
 					}
 				],
 				"name": "payout",
@@ -100,19 +259,19 @@
 	},
 	"sources": {
 		"contracts/Data.sol": {
-			"keccak256": "0x52293825bfdccb07a6eba6969a9250d0618b5d4e25ecdb1c588f2d6102ba2034",
+			"keccak256": "0x2786ebde88efe0d9dd5f42971dbb267f3e88d5f600c76a8d662e0f31169e2aa3",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://5dff2b6befb011893a3921f57c47a6f83e25dee76fa54a9e7a6d735297156f48",
-				"dweb:/ipfs/QmUgCoLq77RdEiJyKUqpFNGF78gVsASpjrbFrcoinVS4R8"
+				"bzz-raw://5ff59bec93cc9a2f62a35c8d9996eaa891e9a0450f702598320c1355a1f6a8d7",
+				"dweb:/ipfs/QmPr72dMDptzUNcfpXBX1KsMqmpVCsQpprcMvYEtq8wBw6"
 			]
 		},
 		"contracts/Interfaces/IVault.sol": {
-			"keccak256": "0x7e1746e7ddd6e2cc82bcc20d5343a022bff6a2f842e0b4d4c5ac5794cffb879f",
+			"keccak256": "0xa52ea2d1f9e595a45b3dbc9de381c884756df2f6a19b6738559d47669a2f6442",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://c4e3145bb3e6d79e9044b71548cb523fd72d482fc8f77c109ac8ef06353ebd60",
-				"dweb:/ipfs/QmScB338uYSUWMmUxURGZA9gaifJomn5M2mUkTTtf5Uddk"
+				"bzz-raw://a99fd30841fdbbf5a266f0ebdc8ae4341ef191bc7305f4b4b0b671b70cf25c8e",
+				"dweb:/ipfs/QmVSUpzGyBaSUCtxsqHwNbshJaQCeEPbeMDhFTC7gb8Jkb"
 			]
 		}
 	},
