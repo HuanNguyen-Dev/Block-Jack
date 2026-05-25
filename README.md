@@ -10,6 +10,15 @@ Block-Jack leverages smart contracts to create a secure and decentralized online
 
 Blockchain technology is ideal for this application as it ensures transparency, provable fairness, and reduces the reliance on third-party intermediaries. All transactions are publicly verifiable, and the use of cryptocurrencies provides anonymity and lower transaction fees. By removing the need for intermediaries, players are provided with a cost-effective, secure, and decentralised platform to engage in blackjack.
 
+| Feature | Traditional Casino | Block-Jack |
+|---|---|---|
+| Fair RNG | Trust the operator | Cryptographically verifiable |
+| Transparency | Hidden logic | All results on-chain |
+| Fees | High (intermediaries) | Low (crypto only) |
+| Anonymity | KYC required | Wallet address only |
+| Custody | Platform holds funds | You control your wallet |
+ 
+
 ## Smart Contracts
 
 ### Vault Contract
