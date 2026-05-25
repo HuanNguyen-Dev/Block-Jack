@@ -80,13 +80,26 @@ This is a proof of concept, to visualise that the deck is correctly shuffled, en
 to show proof of implementation.
 
 ### INSTALLING
-Run `git clone https://github.com/HuanNguyen-Dev/Block-Jack` into a desired file  
-Run `npm install` to install dependencies.  
-Download the MetaMask chrome extension browser.  
-Click Play and deposit money into the vault  
-The following interactions will then be as follows:  
-- Place your bet  
-- Start the game  
-- Deal the initial hands  
-- Hit/Stand  
-- End Game
+```bash
+# Clone the repository
+git clone https://github.com/HuanNguyen-Dev/Block-Jack
+ 
+# Navigate into the project
+cd Block-Jack
+ 
+# Install dependencies
+npm install
+ 
+# Start the app
+npm start
+```
+
+### GAMEPLAY
+1. **Connect Wallet** — open the app and connect MetaMask
+2. **Deposit** — add funds to the Vault
+3. **Place Bet** — choose your wager amount
+4. **Start Game** — a game token is minted on-chain
+5. **Deal** — initial hands are dealt using the Oracle RNG
+6. **Hit or Stand** — play your hand; each action updates the game token
+7. **End Game** — outcome is evaluated on-chain; winnings paid out automatically
+
