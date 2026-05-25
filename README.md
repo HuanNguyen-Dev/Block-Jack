@@ -63,12 +63,16 @@ Each game session will have a unique game token that encapsulates:
 
 3. **Oracle Contract**:
    - **Randomise**: Generates a random number and encodes the deck (Note: encoding DOES NOT prevent attackers from retrieving the deck, it is only a proof of concept).
+ 
 ## Technologies Used
 
-- **Ethereum Smart Contracts** (Solidity)
-- **Ethers.js** for frontend interaction
-- **React** for frontend UI, MUI
-- **Remix IDE** for smart contract development and deployment
+| Layer | Technology |
+|---|---|
+| Smart Contracts | Solidity (Ethereum) |
+| Frontend | React, Material UI (MUI) |
+| Blockchain Interaction | ethers.js |
+| Wallet | MetaMask |
+| Dev & Deployment | Remix IDE |
 
 ## Future Enhancements
 
@@ -94,7 +98,7 @@ npm install
 npm start
 ```
 
-### GAMEPLAY
+### SETUP AND GAMEPLAY
 1. **Connect Wallet** — open the app and connect MetaMask
 2. **Deposit** — add funds to the Vault
 3. **Place Bet** — choose your wager amount
@@ -102,4 +106,5 @@ npm start
 5. **Deal** — initial hands are dealt using the Oracle RNG
 6. **Hit or Stand** — play your hand; each action updates the game token
 7. **End Game** — outcome is evaluated on-chain; winnings paid out automatically
+8. **Withdraw** - Remove funds from the vault
 
